@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Layout Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Theme shared with Layer Splitter: wireframe desk on graph paper, outlined panels with sticky-note heads */
+:root{
+  --bg:#f1f1f4; --grid:#e1e1e8; --panel:#ffffff; --stroke:#18181f; --line:#dedee6;
+  --fg:#18181f; --muted:#5f5f6e; --hover:#f4f2f9;
+  --accent:#9747ff; --accent-ink:#ffffff; --accent-soft:#f0e6ff;
+  --n-blue:#a9cfe8; --n-pink:#e8b8df; --n-yellow:#f3d48c; --n-green:#c4d7a1;
+  --badge-bg:#ffffff; --badge-fg:#18181f; --chip-bg:#13233f; --chip-fg:#ffffff;
+  --warn:#8a4b00; --warn-bg:#fff2dc; --bad:#b4233a; --ok:#1d7a4f;
+  --check:#e8e8ee; --check-2:#ffffff;
+  --alert:#f25c05; --alert-bg:#fff0e5;
+  --font-display:"Archivo","IBM Plex Sans Thai",system-ui,sans-serif;
+  --font-ui:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:12px; --sw:1.5px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1628; --grid:#16243b; --panel:#111e34; --stroke:#e6ecf6; --line:#24344f;
+  --fg:#eef2f9; --muted:#9eabc2; --hover:#18294a;
+  --accent:#b07cff; --accent-ink:#120a22; --accent-soft:#2a2150;
+  --n-blue:#284b66; --n-pink:#58324f; --n-yellow:#5a4720; --n-green:#3b4f2c;
+  --chip-bg:#e6ecf6; --chip-fg:#0c1628;
+  --warn:#f0b35a; --warn-bg:#33270f; --bad:#ff7a8e; --ok:#5fd39b;
+  --check:#1a2a44; --check-2:#132239; --alert:#ff8a3d; --alert-bg:#3a2210; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1628; --grid:#16243b; --panel:#111e34; --stroke:#e6ecf6; --line:#24344f;
+  --fg:#eef2f9; --muted:#9eabc2; --hover:#18294a;
+  --accent:#b07cff; --accent-ink:#120a22; --accent-soft:#2a2150;
+  --n-blue:#284b66; --n-pink:#58324f; --n-yellow:#5a4720; --n-green:#3b4f2c;
+  --chip-bg:#e6ecf6; --chip-fg:#0c1628;
+  --warn:#f0b35a; --warn-bg:#33270f; --bad:#ff7a8e; --ok:#5fd39b;
+  --check:#1a2a44; --check-2:#132239; --alert:#ff8a3d; --alert-bg:#3a2210; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background-color:var(--bg);color:var(--fg);font:14px/1.5 var(--font-ui);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 28px}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.top{display:flex;align-items:center;gap:12px;margin:0 auto 16px;max-width:1500px}
+.logo{width:38px;height:38px;border-radius:10px;background:var(--accent);border:var(--sw) solid var(--stroke);display:grid;place-items:center;flex:none;box-shadow:3px 3px 0 var(--stroke)}
+.logo svg{width:20px;height:20px}
+header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
+.disclaimer{flex:1;min-width:0;margin:0 0 0 8px;font-size:11.5px;line-height:1.5;color:var(--muted);text-wrap:pretty}
+@media (max-width:760px){header.top{flex-wrap:wrap}.disclaimer{flex-basis:100%;margin:0}}
+
+.btn{border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:8px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;font-weight:500}
+.btn:hover{background:var(--hover)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);font-weight:600;box-shadow:3px 3px 0 var(--stroke);transition:transform .08s,box-shadow .08s}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.primary:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--stroke)}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn.block{width:100%;padding:11px 12px}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent);padding:3px 6px;font-size:12.5px}
+.btn.ghost:hover{background:var(--accent-soft)}
+.btn.small{padding:3px 9px;font-size:12px}
+.btn.icon{width:30px;height:30px;padding:0}
+.btn.icon svg{width:15px;height:15px}
+.btn.on{background:var(--accent);color:var(--accent-ink)}
+
+.app{max-width:1500px;margin:0 auto;display:grid;gap:16px;grid-template-columns:340px minmax(0,1fr);align-items:start}
+.side{display:grid;gap:16px;min-width:0}
+@media (max-width:960px){.app{grid-template-columns:minmax(0,1fr)}}
+
+.panel{background:var(--panel);border:var(--sw) solid var(--stroke);border-radius:var(--r);min-width:0;overflow:hidden}
+.panel h2{font:600 15px/1.2 var(--font-display);margin:0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phead{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:var(--sw) solid var(--stroke);min-height:52px;background:var(--panel)}
+.phead .count{margin-left:auto;white-space:nowrap;opacity:.7;font:12px var(--font-data)}
+.n-blue .phead{background:var(--n-blue)} .n-pink .phead{background:var(--n-pink)}
+.n-yellow .phead{background:var(--n-yellow)} .n-green .phead{background:var(--n-green)}
+.step{display:grid;place-items:center;min-width:32px;height:32px;padding:0 5px;border-radius:5px;background:var(--badge-bg);color:var(--badge-fg);border:var(--sw) solid var(--stroke);font:700 14px var(--font-display);flex:none}
+.pbody{padding:14px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.pbody>*{min-width:0}
+
+/* 01 image */
+.drop{border:var(--sw) dashed var(--stroke);border-radius:10px;padding:22px 14px 18px;text-align:center;display:grid;gap:9px;justify-items:center;transition:background .15s}
+.drop.over{background:var(--accent-soft)}
+.drop svg{width:34px;height:34px}
+.drop small{color:var(--muted);font-size:12px;line-height:1.5}
+.master{display:grid;gap:8px}
+.mwrap{position:relative;display:grid;place-items:center;border-radius:9px;border:var(--sw) solid var(--line);padding:10px;
+  background-color:var(--check-2);background-image:linear-gradient(45deg,var(--check) 25%,transparent 25%),linear-gradient(-45deg,var(--check) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--check) 75%),linear-gradient(-45deg,transparent 75%,var(--check) 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0}
+.mwrap canvas{display:block;max-width:100%;max-height:220px;cursor:crosshair;outline:var(--sw) solid var(--stroke)}
+.minfo{display:flex;align-items:center;gap:8px;min-width:0}
+.minfo .name{flex:1;min-width:0;font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.minfo .dim{font:11.5px var(--font-data);color:var(--muted);white-space:nowrap}
+.hint{color:var(--muted);font-size:12px;line-height:1.45}
+.ratio{font:500 10.5px var(--font-data);background:var(--chip-bg);color:var(--chip-fg);border-radius:4px;padding:2px 6px;white-space:nowrap;flex:none}
+.status{font-size:12.5px;color:var(--muted)} .status.bad{color:var(--bad)} .status.ok{color:var(--ok)}
+
+/* 02 sizes */
+.group{border:var(--sw) solid var(--line);border-radius:9px;overflow:hidden}
+.group>summary{list-style:none;display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;font:600 13px var(--font-display);background:var(--hover)}
+.group>summary::-webkit-details-marker{display:none}
+.group>summary .chev{width:12px;height:12px;transition:transform .15s;flex:none}
+.group:not([open])>summary .chev{transform:rotate(-90deg)}
+.group>summary .gc{margin-left:auto;font:11.5px var(--font-data);color:var(--muted);font-weight:400}
+.szlist{display:grid;padding:4px}
+.szrow{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:7px;cursor:pointer;font-size:13px;min-height:34px}
+.szrow:hover{background:var(--hover)}
+.szrow input{width:16px;height:16px;accent-color:var(--accent);margin:0;flex:none}
+.shape{width:24px;height:24px;display:grid;place-items:center;flex:none}
+.shape i{display:block;border:1.5px solid var(--fg);border-radius:2px;background:var(--accent-soft)}
+.szrow .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.szrow .px{font:11.5px var(--font-data);color:var(--muted);white-space:nowrap}
+.szrow .x{border:0;background:none;color:var(--muted);cursor:pointer;padding:2px 5px;border-radius:4px}
+.szrow .x:hover{color:var(--bad);background:var(--line)}
+.addrow{display:flex;gap:6px;align-items:center;padding:6px}
+.addrow input{width:0;flex:1;min-width:0;border:var(--sw) solid var(--stroke);border-radius:7px;padding:5px 7px;background:var(--panel);font:12.5px var(--font-data)}
+.addrow input.nm{flex:1.6;font-family:var(--font-ui)}
+.addrow span{color:var(--muted)}
+.selbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.selbar .sum{margin-left:auto;font:12px var(--font-data);color:var(--muted)}
+
+/* 03 settings */
+.field{display:grid;gap:7px}
+.field>label,.field>.lbl{font:600 13px var(--font-display)}
+.field select{width:100%;border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:8px;padding:8px 10px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);border:var(--sw) solid var(--stroke);border-radius:8px;overflow:hidden}
+.seg label{position:relative;text-align:center;font-size:12.5px;padding:7px 2px;cursor:pointer;border-left:var(--sw) solid var(--stroke)}
+.seg label:first-child{border-left:0}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--accent);color:var(--accent-ink);font-weight:600}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:-3px}
+.rangerow{display:flex;align-items:center;gap:10px}
+.rangerow input{flex:1;accent-color:var(--accent)}
+.rangerow output{font:12px var(--font-data);min-width:38px;text-align:right}
+.checkrow{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer}
+.checkrow input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;margin:0;flex:none}
+.checkrow .num{width:52px;border:var(--sw) solid var(--stroke);border-radius:6px;padding:2px 6px;background:var(--panel);font:12px var(--font-data)}
+.checks{display:grid;gap:8px}
+.colorrow{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.colorrow input{width:34px;height:26px;border:var(--sw) solid var(--stroke);border-radius:6px;padding:0;background:none}
+.swatch{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--stroke);vertical-align:-2px}
+
+/* 04 results */
+#results{min-height:420px}
+.rhead-actions{margin-left:auto;display:flex;gap:6px;align-items:center}
+.rbody{padding:16px;display:grid;gap:20px}
+.empty-state{display:grid;gap:10px;justify-items:center;color:var(--muted);text-align:center;padding:70px 20px}
+.empty-state strong{color:var(--fg);font:600 15px var(--font-display)}
+.empty-state svg{width:44px;height:44px;opacity:.6}
+.rgroup h3{font:600 14px var(--font-display);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.rgroup h3 .count{font:11.5px var(--font-data);color:var(--muted);font-weight:400}
+.cards{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+.card{border:var(--sw) solid var(--stroke);border-radius:10px;overflow:hidden;background:var(--panel);display:flex;flex-direction:column;max-width:100%;min-width:200px}
+.card .pic{position:relative;padding:12px;display:grid;place-items:center;border-bottom:var(--sw) solid var(--stroke);
+  background-color:var(--check-2);background-image:linear-gradient(45deg,var(--check) 25%,transparent 25%),linear-gradient(-45deg,var(--check) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--check) 75%),linear-gradient(-45deg,transparent 75%,var(--check) 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0}
+.card canvas{display:block;outline:var(--sw) solid var(--stroke)}
+.card.editing canvas{cursor:grab;touch-action:none;outline:2px solid var(--accent);outline-offset:2px}
+.card.editing canvas:active{cursor:grabbing}
+.card .pic .ratio{position:absolute;left:6px;top:6px;z-index:1}
+.card .edithint{position:absolute;right:6px;top:6px;font:600 10.5px var(--font-ui);background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:1px 6px}
+.card .cap{padding:8px 10px 4px;display:grid;gap:3px;min-width:0}
+.card .fn{font:600 13px var(--font-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .dim{font:11.5px var(--font-data);color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.tag{font:500 11px var(--font-ui);border-radius:4px;padding:1px 6px;border:1px solid var(--line)}
+.tag.crop{background:var(--accent-soft);border-color:transparent}
+.tag.fill{background:var(--n-blue);border-color:transparent}
+.tag.up{background:var(--alert-bg);color:var(--alert);border-color:transparent;font-weight:600}
+.cact{display:flex;gap:6px;align-items:center;padding:6px 10px 10px}
+.cact select{border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:7px;padding:4px 6px;font-size:12px;min-width:0;flex:1}
+.progress{height:8px;border-radius:99px;border:var(--sw) solid var(--stroke);background:var(--panel);overflow:hidden;width:120px}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
+@media (max-width:560px){.rhead-actions .lbl{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+
+<header class="top">
+  <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1" opacity=".75"/><rect x="5" y="16" width="8" height="5" rx="1" opacity=".55"/></svg></div>
+  <div><h1>Layout Guide</h1></div>
+  <p class="disclaimer">ไกด์จัดวางตั้งต้นจากภาพต้นแบบภาพเดียว ไม่ใช่ภาพส่งงานจริง · รองรับ JPG, PNG, WebP และ PSD · ภาพประมวลผลในเบราว์เซอร์ ไม่ถูกส่งออกจากเครื่อง · ใช้ฟรี</p>
+  <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,.psd,.psb" hidden>
+</header>
+
+<main class="app">
+<div class="side">
+  <!-- 01 IMAGE -->
+  <section class="panel n-blue" aria-label="ภาพต้นแบบ">
+    <div class="phead"><span class="step">01</span><h2>ภาพต้นแบบ</h2></div>
+    <div class="pbody">
+      <div class="drop" id="drop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4 4 0 0 1-.5 9.5"/><path d="M12 12v8M8.5 15.5 12 12l3.5 3.5"/></svg>
+        <button class="btn primary" id="browseBtn" type="button">เลือกภาพ</button>
+        <small>หรือลากภาพมาวางที่นี่</small>
+      </div>
+      <div class="master" id="master" hidden>
+        <div class="minfo"><span class="name" id="mName"></span><span class="dim" id="mDim"></span><span class="ratio" id="mRatio"></span></div>
+        <div class="mwrap"><canvas id="mCanvas"></canvas></div>
+        <div class="selbar">
+          <span class="hint" id="focusHint">แตะบนภาพเพื่อกำหนดจุดสำคัญ (ไม่บังคับ)</span>
+          <button class="btn ghost" id="clearFocus" type="button" hidden>ใช้จุดอัตโนมัติ</button>
+        </div>
+        <button class="btn small" id="changeBtn" type="button">เปลี่ยนภาพ</button>
+      </div>
+      <div class="status" id="status" role="status"></div>
+    </div>
+  </section>
+
+  <!-- 02 SIZES -->
+  <section class="panel n-yellow" aria-label="เลือกไซส์">
+    <div class="phead"><span class="step">02</span><h2>เลือกไซส์</h2><span class="count" id="selCount">0 ไซส์</span></div>
+    <div class="pbody">
+      <div class="selbar">
+        <button class="btn ghost" id="selAll" type="button">เลือกทั้งหมด</button>
+        <button class="btn ghost" id="selNone" type="button">ล้าง</button>
+        <button class="btn ghost" id="selDefault" type="button">ค่าเริ่มต้น</button>
+      </div>
+      <div id="groups" style="display:grid;gap:10px"></div>
+    </div>
+  </section>
+
+  <!-- 03 SETTINGS -->
+  <section class="panel n-pink" aria-label="ตั้งค่า">
+    <div class="phead"><span class="step">03</span><h2>ตั้งค่า</h2></div>
+    <div class="pbody">
+      <div class="field">
+        <label for="mode">การจัดวาง</label>
+        <select id="mode">
+          <option value="auto">อัตโนมัติ (แนะนำ)</option>
+          <option value="cover">ตัดให้เต็มกรอบเสมอ</option>
+          <option value="contain">แสดงครบทั้งภาพเสมอ</option>
+        </select>
+        <div id="keepField">
+          <div class="rangerow"><input type="range" id="keep" min="50" max="100" step="1" value="85" aria-label="เก็บเนื้อหาสำคัญอย่างน้อย"><output id="keepOut">85%</output></div>
+          <div class="hint">เก็บเนื้อหาสำคัญอย่างน้อยเท่านี้ ถ้าตัดแล้วเสียเกิน แอปจะย่อภาพและเติมพื้นหลังแทน</div>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">เติมพื้นหลังส่วนที่ขาด</span>
+        <div class="seg" role="radiogroup" aria-label="เติมพื้นหลัง">
+          <label><input type="radio" name="fill" value="blur" checked>เบลอ</label>
+          <label><input type="radio" name="fill" value="mirror">สะท้อน</label>
+          <label><input type="radio" name="fill" value="edge">ยืดขอบ</label>
+          <label><input type="radio" name="fill" value="solid">สีเดียว</label>
+        </div>
+        <div class="colorrow" id="colorRow" hidden><input type="color" id="fillColor" value="#ffffff" aria-label="สีพื้นหลัง"><span>สีพื้นหลัง</span><button class="btn ghost" id="autoColor" type="button">ใช้สีขอบภาพ</button></div>
+      </div>
+      <div class="field">
+        <span class="lbl">เส้นไกด์</span>
+        <div class="checks">
+          <label class="checkrow"><input type="checkbox" id="gSafe" checked>Safe zone <input type="number" class="num" id="safePct" value="5" min="0" max="25" step="1" aria-label="ระยะ safe zone เปอร์เซ็นต์">%</label>
+          <label class="checkrow"><input type="checkbox" id="gThirds">กริด 1/3</label>
+          <label class="checkrow"><input type="checkbox" id="gBound" checked>ขอบภาพต้นแบบ + พื้นที่เติม <span class="swatch" style="background:#f25c0533;border-color:#f25c05"></span></label>
+          <label class="checkrow"><input type="checkbox" id="gFocus" checked>จุดสำคัญ</label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">ไฟล์ที่เซฟ</span>
+        <div class="checks">
+          <label class="checkrow"><input type="checkbox" id="exGuides" checked>ใส่เส้นไกด์ในไฟล์ด้วย</label>
+        </div>
+        <select id="fmt" aria-label="รูปแบบไฟล์"><option value="png">PNG</option><option value="jpg">JPG</option></select>
+      </div>
+      <button class="btn primary block" id="genBtn" type="button" disabled>สร้างไกด์</button>
+    </div>
+  </section>
+</div>
+
+<!-- 04 RESULTS -->
+<section class="panel n-green" id="results" aria-label="ผลลัพธ์">
+  <div class="phead"><span class="step">04</span><h2>ผลลัพธ์</h2>
+    <div class="rhead-actions">
+      <div class="progress" id="prog" hidden><i></i></div>
+      <span class="count" id="resCount"></span>
+      <button class="btn small" id="zipBtn" type="button" disabled><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span class="lbl">เซฟทั้งหมด</span> ZIP</button>
+    </div>
+  </div>
+  <div class="rbody" id="rbody">
+    <div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/><rect x="5" y="16" width="8" height="5" rx="1"/></svg><strong>ยังไม่มีผลลัพธ์</strong><span>ใส่ภาพต้นแบบ เลือกไซส์ แล้วกด "สร้างไกด์"</span></div>
+  </div>
+</section>
+</main>
+
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const ACCENT='#9747ff', ALERT='#f25c05';
+
+/* ---------- size presets ---------- */
+const GROUPS=[
+ {id:'social',name:'โซเชียล / วิดีโอ',sizes:[
+  ['แนวนอน 16:9',1920,1080,1],['Story / Reels 9:16',1080,1920,1],['สี่เหลี่ยม 1:1',1080,1080,1],['Feed แนวตั้ง 4:5',1080,1350,1],
+  ['ลิงก์แชร์ 1.91:1',1200,628,0],['Pinterest 2:3',1000,1500,0],['Cinema 21:9',2560,1080,0]]},
+ {id:'web',name:'แบนเนอร์เว็บ (IAB)',sizes:[
+  ['Super Leaderboard',970,90,0],['Leaderboard',728,90,1],['Mobile Banner',320,50,0],['Large Mobile Banner',320,100,0],
+  ['Billboard',970,250,0],['Medium Rectangle',300,250,0],['Large Rectangle',336,280,0],
+  ['Half Page',300,600,1],['Skyscraper',160,600,0],['Portrait',300,1050,0]]},
+ {id:'dooh',name:'DOOH / จอ LED',sizes:[
+  ['Ultra-wide 32:9',3840,1080,0],['Billboard ริมทาง',1400,400,0],['Poster 2.1:1',840,400,0],['จอแนวนอน 2:1',1920,960,0],
+  ['จอ LED 2.5:1',1920,768,0],['Sari wall 5:1',1920,384,0],['Sari wall 8:1',3840,480,1],['แถบ Place-based',560,160,0],
+  ['จอ 4:3',1280,960,0],['จอห้าง แนวตั้ง',800,1280,0],['เสาแนวตั้งสูง',720,3840,1]]},
+];
+const ALL=[]; // flat list {id,g,name,w,h,def}
+GROUPS.forEach(g=>g.sizes.forEach(([n,w,h,d])=>ALL.push({id:g.id+'-'+w+'x'+h,g:g.id,name:n,w,h,def:!!d})));
+
+const store={get(k,d){try{const v=localStorage.getItem('lg.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('lg.'+k,JSON.stringify(v))}catch(e){}}};
+let custom=store.get('custom',[]).filter(c=>c&&c.w>0&&c.h>0);
+let sel=new Set(store.get('sel',ALL.filter(s=>s.def).map(s=>s.id)));
+const over={}; // per-size overrides {mode, dx, dy}
+
+function sizesAll(){return ALL.concat(custom.map(c=>({id:c.id,g:'custom',name:c.name||'กำหนดเอง',w:c.w,h:c.h})))}
+function selectedSizes(){return sizesAll().filter(s=>sel.has(s.id))}
+
+/* ---------- utils ---------- */
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function ratioText(w,h){const g=gcd(w,h),a=w/g,b=h/g;if(a<=32&&b<=32)return a+':'+b;return w>=h?(Math.round(w/h*100)/100)+':1':'1:'+(Math.round(h/w*100)/100)}
+function mk(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function setStatus(t,cls){const s=$('status');s.textContent=t||'';s.className='status'+(cls?' '+cls:'')}
+
+/* ---------- state ---------- */
+const S={src:null,W:0,H:0,name:'',focus:null,map:null,generated:false,edgeColor:'#ffffff'};
+
+/* ---------- loading ---------- */
+let agPsdP=null;
+function loadAgPsd(){if(window.agPsd)return Promise.resolve();if(agPsdP)return agPsdP;
+  agPsdP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/ag-psd@31.0.3/dist/bundle.js';s.onload=res;s.onerror=()=>{agPsdP=null;rej(new Error('โหลดตัวอ่าน PSD ไม่สำเร็จ'))};document.head.appendChild(s)});return agPsdP}
+
+async function loadFile(f){
+  if(!f)return;
+  setStatus('กำลังเปิดภาพ…');
+  try{
+    let src;
+    if(/\.(psd|psb)$/i.test(f.name)){
+      await loadAgPsd();
+      const buf=await f.arrayBuffer();
+      const psd=agPsd.readPsd(buf,{skipLayerImageData:true,skipThumbnail:true});
+      if(!psd.canvas)throw new Error('ไฟล์ PSD นี้ไม่มีภาพรวม (เปิด Maximize Compatibility ตอนเซฟใน Photoshop)');
+      src=psd.canvas;
+    }else{
+      src=await new Promise((res,rej)=>{const im=new Image();const u=URL.createObjectURL(f);im.onload=()=>{res(im)};im.onerror=()=>rej(new Error('เปิดภาพนี้ไม่ได้'));im.src=u});
+    }
+    S.src=src;S.W=src.naturalWidth||src.width;S.H=src.naturalHeight||src.height;S.name=f.name.replace(/\.[^.]+$/,'');S.focus=null;
+    for(const k in over)delete over[k];
+    buildEnergy();showMaster();setStatus('');updateGen();
+    if(S.generated)buildResults();
+  }catch(e){setStatus(e.message||'เปิดภาพไม่สำเร็จ','bad')}
+}
+
+/* ---------- content map (edges + saturation) ---------- */
+function buildEnergy(){
+  const L=160,k=L/Math.max(S.W,S.H),mw=Math.max(8,Math.round(S.W*k)),mh=Math.max(8,Math.round(S.H*k));
+  const c=document.createElement('canvas');c.width=mw;c.height=mh;const x=c.getContext('2d',{willReadFrequently:true});
+  x.drawImage(S.src,0,0,mw,mh);const d=x.getImageData(0,0,mw,mh).data;
+  const n=mw*mh,lum=new Float32Array(n),sat=new Float32Array(n);
+  let er=0,eg=0,eb=0,ec=0;
+  for(let i=0;i<n;i++){const r=d[i*4],g=d[i*4+1],b=d[i*4+2];lum[i]=.299*r+.587*g+.114*b;sat[i]=(Math.max(r,g,b)-Math.min(r,g,b))/255;
+    const px=i%mw,py=(i/mw)|0;if(px===0||py===0||px===mw-1||py===mh-1){er+=r;eg+=g;eb+=b;ec++}}
+  const grad=new Float32Array(n);let gmax=1e-6;
+  for(let y=1;y<mh-1;y++)for(let xx=1;xx<mw-1;xx++){const i=y*mw+xx;
+    const gx=-lum[i-mw-1]-2*lum[i-1]-lum[i+mw-1]+lum[i-mw+1]+2*lum[i+1]+lum[i+mw+1];
+    const gy=-lum[i-mw-1]-2*lum[i-mw]-lum[i-mw+1]+lum[i+mw-1]+2*lum[i+mw]+lum[i+mw+1];
+    const m=Math.sqrt(gx*gx+gy*gy);grad[i]=m;if(m>gmax)gmax=m}
+  const base=new Float32Array(n);
+  for(let i=0;i<n;i++){const px=(i%mw+.5)/mw-.5,py=((i/mw|0)+.5)/mh-.5;
+    const cb=.7+.3*Math.exp(-(px*px+py*py)/(2*.25*.25));
+    base[i]=(Math.min(1,grad[i]/gmax*1.4)+.4*sat[i])*cb+.02}
+  const hex=v=>Math.round(v/ec).toString(16).padStart(2,'0');
+  S.edgeColor='#'+hex(er)+hex(eg)+hex(eb);
+  if(!colorTouched)$('fillColor').value=S.edgeColor;
+  S.map={k,mw,mh,base};applyFocus();
+}
+function applyFocus(){
+  const m=S.map,{mw,mh,base}=m,E=Float32Array.from(base);
+  if(S.focus){let mx=0;for(const v of E)if(v>mx)mx=v;
+    const fx=S.focus.x*m.k,fy=S.focus.y*m.k,sg=.12*Math.max(mw,mh);
+    for(let y=0;y<mh;y++)for(let x=0;x<mw;x++){const dx=x+.5-fx,dy=y+.5-fy;E[y*mw+x]+=mx*2.5*Math.exp(-(dx*dx+dy*dy)/(2*sg*sg))}}
+  const I=new Float64Array((mw+1)*(mh+1));
+  for(let y=0;y<mh;y++){let row=0;for(let x=0;x<mw;x++){row+=E[y*mw+x];I[(y+1)*(mw+1)+x+1]=I[y*(mw+1)+x+1]+row}}
+  m.I=I;m.total=I[(mw+1)*(mh+1)-1];
+}
+function rectSum(x0,y0,x1,y1){const m=S.map,W=m.mw+1;
+  x0=Math.max(0,Math.min(m.mw,Math.round(x0)));x1=Math.max(0,Math.min(m.mw,Math.round(x1)));
+  y0=Math.max(0,Math.min(m.mh,Math.round(y0)));y1=Math.max(0,Math.min(m.mh,Math.round(y1)));
+  if(x1<=x0||y1<=y0)return 0;const I=m.I;return I[y1*W+x1]-I[y0*W+x1]-I[y1*W+x0]+I[y0*W+x0]}
+
+/* best window position at scale s (target px per source px) */
+function bestWindow(s,tw,th){
+  const m=S.map,k=m.k,ww=tw/s*k,wh=th/s*k;
+  const xs=ww>=m.mw-1e-6?[(m.mw-ww)/2]:range(0,m.mw-ww),ys=wh>=m.mh-1e-6?[(m.mh-wh)/2]:range(0,m.mh-wh);
+  let best=-1,bx=0,by=0,bd=1e9;const cx=(m.mw-ww)/2,cy=(m.mh-wh)/2;
+  for(const x of xs)for(const y of ys){const v=rectSum(x,y,x+ww,y+wh),dd=Math.abs(x-cx)+Math.abs(y-cy);
+    if(v>best+1e-9||(Math.abs(v-best)<=1e-9&&dd<bd)){best=v;bx=x;by=y;bd=dd}}
+  return {x:bx/k,y:by/k,kept:best/m.total};
+}
+function range(a,b){const r=[];for(let v=a;v<b;v+=1)r.push(v);r.push(b);return r}
+
+/* ---------- layout decision ---------- */
+function settings(){return{
+  mode:$('mode').value,keep:+$('keep').value/100,fill:document.querySelector('input[name=fill]:checked').value,color:$('fillColor').value,
+  safe:$('gSafe').checked?Math.max(0,Math.min(25,+$('safePct').value||0))/100:-1,thirds:$('gThirds').checked,bound:$('gBound').checked,focus:$('gFocus').checked,
+  exGuides:$('exGuides').checked,fmt:$('fmt').value}}
+
+function layoutFor(sz,st){
+  const W=S.W,H=S.H,tw=sz.w,th=sz.h,o=over[sz.id]||{};
+  const sc=Math.max(tw/W,th/H),s0=Math.min(tw/W,th/H),mode=o.mode||st.mode;
+  let s,win;
+  if(mode==='cover'||sc/s0<1.0005){s=sc}
+  else if(mode==='contain'){s=s0}
+  else{
+    win=bestWindow(sc,tw,th);
+    if(win.kept>=st.keep)s=sc;
+    else{let lo=s0,hi=sc;for(let i=0;i<18;i++){const mid=(lo+hi)/2;if(bestWindow(mid,tw,th).kept>=st.keep)lo=mid;else hi=mid}s=lo;win=null;
+      if(s/sc>.9)s=sc} // a fill strip under ~10% looks like a mistake, so crop instead
+  }
+  if(!win||mode!=='auto')win=bestWindow(s,tw,th);
+  const ox=-win.x*s+(o.dx||0)*tw,oy=-win.y*s+(o.dy||0)*th;
+  const iw=W*s,ih=H*s;
+  const vis=Math.max(0,Math.min(tw,ox+iw)-Math.max(0,ox))*Math.max(0,Math.min(th,oy+ih)-Math.max(0,oy));
+  const fill=1-vis/(tw*th);
+  // content kept after manual nudge
+  const k=S.map.k,kept=rectSum(-ox/s*k,-oy/s*k,(tw-ox)/s*k,(th-oy)/s*k)/S.map.total;
+  return {s,ox,oy,iw,ih,fill,kept,cropped:kept<.995};
+}
+
+/* ---------- drawing ---------- */
+function blurCanvas(c,f){
+  const w=c.width,h=c.height,a=document.createElement('canvas'),b=document.createElement('canvas');
+  a.width=Math.max(2,Math.round(w/f));a.height=Math.max(2,Math.round(h/f));
+  b.width=Math.max(2,Math.round(w/Math.max(2,f/4)));b.height=Math.max(2,Math.round(h/Math.max(2,f/4)));
+  const ax=a.getContext('2d'),bx=b.getContext('2d'),cx=c.getContext('2d');
+  for(const x of [ax,bx,cx]){x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high'}
+  ax.drawImage(c,0,0,a.width,a.height);bx.drawImage(a,0,0,b.width,b.height);
+  cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,w,h);cx.drawImage(b,0,0,w,h);
+}
+function drawFill(ctx,L,tw,th,k,st){
+  const src=S.src,W=S.W,H=S.H,{ox:x,oy:y,iw:w,ih:h}=L;
+  if(st.fill==='solid'){ctx.fillStyle=st.color;ctx.fillRect(0,0,tw,th);return}
+  const fc=document.createElement('canvas');fc.width=ctx.canvas.width;fc.height=ctx.canvas.height;
+  const f=fc.getContext('2d');f.imageSmoothingQuality='high';f.setTransform(k,0,0,k,0,0);
+  if(st.fill==='blur'){
+    const c=Math.max(tw/W,th/H)*1.08,cw=W*c,ch=H*c;
+    f.drawImage(src,(tw-cw)/2,(th-ch)/2,cw,ch);blurCanvas(fc,28);
+  }else if(st.fill==='mirror'){
+    const ix0=Math.floor(-x/w),ix1=Math.floor((tw-x-1e-6)/w),iy0=Math.floor(-y/h),iy1=Math.floor((th-y-1e-6)/h);
+    if((ix1-ix0+1)*(iy1-iy0+1)<=900){
+      for(let ix=ix0;ix<=ix1;ix++)for(let iy=iy0;iy<=iy1;iy++){if(!ix&&!iy)continue;
+        const fx=ix%2!==0,fy=iy%2!==0;f.save();f.translate(x+ix*w+(fx?w:0),y+iy*h+(fy?h:0));f.scale(fx?-1:1,fy?-1:1);f.drawImage(src,0,0,w,h);f.restore()}
+    }else{f.fillStyle=st.color;f.fillRect(0,0,tw,th)}
+  }else{ // edge stretch
+    const sx=Math.max(1,Math.round(W*.006)),sy=Math.max(1,Math.round(H*.006)),R=x+w,B=y+h;
+    const d=(a,b,c,dd,e,g,hh,ii)=>{if(hh>0&&ii>0)f.drawImage(src,a,b,c,dd,e,g,hh,ii)};
+    d(0,0,sx,H,0,y,x,h);d(W-sx,0,sx,H,R,y,tw-R,h);d(0,0,W,sy,x,0,w,y);d(0,H-sy,W,sy,x,B,w,th-B);
+    d(0,0,sx,sy,0,0,x,y);d(W-sx,0,sx,sy,R,0,tw-R,y);d(0,H-sy,sx,sy,0,B,x,th-B);d(W-sx,H-sy,sx,sy,R,B,tw-R,th-B);
+    blurCanvas(fc,10);
+  }
+  ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(fc,0,0);ctx.restore();
+}
+function drawGuides(ctx,L,tw,th,u,st){
+  // u = one "line unit" in target px
+  if(st.bound&&L.fill>.001){
+    ctx.save();ctx.beginPath();ctx.rect(0,0,tw,th);ctx.rect(L.ox,L.oy,L.iw,L.ih);ctx.fillStyle='rgba(242,92,5,.13)';ctx.fill('evenodd');
+    ctx.setLineDash([5*u,4*u]);ctx.lineWidth=1.5*u;ctx.strokeStyle=ALERT;ctx.strokeRect(L.ox,L.oy,L.iw,L.ih);ctx.restore();
+  }
+  if(st.thirds){ctx.save();
+    for(const [col,off] of [['rgba(0,0,0,.35)',u*.8],['rgba(255,255,255,.85)',0]]){ctx.strokeStyle=col;ctx.lineWidth=u;ctx.beginPath();
+      for(const t of [1/3,2/3]){ctx.moveTo(tw*t+off,0);ctx.lineTo(tw*t+off,th);ctx.moveTo(0,th*t+off);ctx.lineTo(tw,th*t+off)}ctx.stroke()}
+    ctx.restore()}
+  if(st.safe>=0){const mx=tw*st.safe,my=th*st.safe;ctx.save();ctx.setLineDash([6*u,4*u]);
+    ctx.lineWidth=2.2*u;ctx.strokeStyle='rgba(255,255,255,.75)';ctx.strokeRect(mx,my,tw-2*mx,th-2*my);
+    ctx.lineWidth=1.5*u;ctx.strokeStyle=ACCENT;ctx.strokeRect(mx,my,tw-2*mx,th-2*my);ctx.restore()}
+  if(st.focus&&S.focus){const fx=L.ox+S.focus.x*L.s,fy=L.oy+S.focus.y*L.s,r=7*u;
+    if(fx>-r&&fy>-r&&fx<tw+r&&fy<th+r){ctx.save();ctx.lineWidth=2*u;
+      ctx.strokeStyle='#fff';ctx.beginPath();ctx.arc(fx,fy,r,0,7);ctx.stroke();
+      ctx.lineWidth=1.4*u;ctx.strokeStyle=ALERT;ctx.beginPath();ctx.arc(fx,fy,r,0,7);ctx.moveTo(fx-r*1.7,fy);ctx.lineTo(fx-r*.5,fy);ctx.moveTo(fx+r*.5,fy);ctx.lineTo(fx+r*1.7,fy);ctx.moveTo(fx,fy-r*1.7);ctx.lineTo(fx,fy-r*.5);ctx.moveTo(fx,fy+r*.5);ctx.lineTo(fx,fy+r*1.7);ctx.stroke();ctx.restore()}}
+}
+/* render size sz onto canvas c, k = canvas px per target px */
+function render(c,sz,k,st,guides,u){
+  const tw=sz.w,th=sz.h;c.width=Math.max(1,Math.round(tw*k));c.height=Math.max(1,Math.round(th*k));
+  const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  const L=layoutFor(sz,st);
+  ctx.setTransform(1,0,0,1,0,0);
+  if(st.fmt==='jpg'||L.fill>.001){ctx.fillStyle=st.color;ctx.fillRect(0,0,c.width,c.height)}
+  ctx.setTransform(k,0,0,k,0,0);
+  if(L.fill>.001)drawFill(ctx,L,tw,th,k,st);
+  ctx.drawImage(S.src,L.ox,L.oy,L.iw,L.ih);
+  if(guides)drawGuides(ctx,L,tw,th,u,st);
+  return L;
+}
+
+/* ---------- master preview ---------- */
+function showMaster(){
+  $('drop').hidden=true;$('master').hidden=false;
+  $('mName').textContent=S.name;$('mDim').textContent=S.W+'×'+S.H;$('mRatio').textContent=ratioText(S.W,S.H);
+  drawMaster();
+}
+function drawMaster(){
+  const c=$('mCanvas'),maxW=300,maxH=220,r=S.W/S.H;let w=maxW,h=w/r;if(h>maxH){h=maxH;w=h*r}
+  const dpr=Math.min(2,window.devicePixelRatio||1);c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);c.style.width=w+'px';c.style.height=h+'px';
+  const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(S.src,0,0,c.width,c.height);
+  if(S.focus){const fx=S.focus.x/S.W*c.width,fy=S.focus.y/S.H*c.height,r2=8*dpr;x.lineWidth=2.5*dpr;x.strokeStyle='#fff';x.beginPath();x.arc(fx,fy,r2,0,7);x.stroke();x.lineWidth=1.6*dpr;x.strokeStyle=ALERT;x.beginPath();x.arc(fx,fy,r2,0,7);x.stroke();x.fillStyle=ALERT;x.beginPath();x.arc(fx,fy,2*dpr,0,7);x.fill()}
+  $('clearFocus').hidden=!S.focus;$('focusHint').textContent=S.focus?'กำหนดจุดสำคัญแล้ว':'แตะบนภาพเพื่อกำหนดจุดสำคัญ (ไม่บังคับ)';
+}
+$('mCanvas').addEventListener('click',e=>{
+  const r=e.currentTarget.getBoundingClientRect();S.focus={x:(e.clientX-r.left)/r.width*S.W,y:(e.clientY-r.top)/r.height*S.H};
+  for(const k in over){delete over[k].dx;delete over[k].dy}
+  applyFocus();drawMaster();redrawAll();
+});
+$('clearFocus').onclick=()=>{S.focus=null;applyFocus();drawMaster();redrawAll()};
+
+/* ---------- size picker ---------- */
+const chev='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>';
+function shapeIcon(w,h){const m=18,r=w/h;let a=m,b=m/r;if(b>m){b=m;a=m*r}return `<span class="shape"><i style="width:${Math.max(3,a).toFixed(1)}px;height:${Math.max(3,b).toFixed(1)}px"></i></span>`}
+function buildGroups(){
+  const box=$('groups'),open={};box.querySelectorAll('details').forEach(d=>open[d.dataset.g]=d.open);box.innerHTML='';
+  const groups=GROUPS.map(g=>({id:g.id,name:g.name})).concat([{id:'custom',name:'กำหนดเอง'}]);
+  const all=sizesAll();
+  for(const g of groups){
+    const items=all.filter(s=>s.g===g.id),on=items.filter(s=>sel.has(s.id)).length;
+    const d=mk('details','group');d.dataset.g=g.id;d.open=open[g.id]!=null?open[g.id]:(g.id!=='custom'||items.length>0||true);
+    d.innerHTML=`<summary>${chev}<span>${g.name}</span><span class="gc">${on}/${items.length}</span></summary>`;
+    const list=mk('div','szlist');
+    if(items.length){const tg=mk('button','btn ghost',on===items.length?'ไม่เลือกกลุ่มนี้':'เลือกทั้งกลุ่ม');tg.type='button';tg.style.justifySelf='start';
+      tg.onclick=()=>{const allOn=items.every(s=>sel.has(s.id));items.forEach(s=>allOn?sel.delete(s.id):sel.add(s.id));selChanged()};list.appendChild(tg)}
+    for(const s of items){
+      const row=mk('label','szrow');
+      row.innerHTML=`<input type="checkbox" ${sel.has(s.id)?'checked':''}>${shapeIcon(s.w,s.h)}<span class="nm" title="${esc(s.name)}">${esc(s.name)}</span><span class="px">${s.w}×${s.h}</span>`;
+      row.querySelector('input').onchange=e=>{e.target.checked?sel.add(s.id):sel.delete(s.id);selChanged()};
+      if(g.id==='custom'){const x=mk('button','x','✕');x.type='button';x.setAttribute('aria-label','ลบ '+s.name);
+        x.onclick=e=>{e.preventDefault();custom=custom.filter(c=>c.id!==s.id);sel.delete(s.id);store.set('custom',custom);selChanged()};row.appendChild(x)}
+      list.appendChild(row);
+    }
+    if(g.id==='custom'){
+      const add=mk('div','addrow');
+      add.innerHTML='<input class="nm" placeholder="ชื่อ (ไม่บังคับ)" aria-label="ชื่อไซส์"><input inputmode="numeric" placeholder="กว้าง" aria-label="กว้าง px"><span>×</span><input inputmode="numeric" placeholder="สูง" aria-label="สูง px"><button class="btn small" type="button">เพิ่ม</button>';
+      const [n,w,h]=add.querySelectorAll('input');
+      const go=()=>{const W=Math.round(+w.value),H=Math.round(+h.value);
+        if(!(W>=8&&H>=8&&W<=16384&&H<=16384)){w.focus();setStatus('ใส่ขนาด 8–16384 px','bad');return}
+        const c={id:'c-'+W+'x'+H+'-'+Date.now().toString(36),name:n.value.trim()||('กำหนดเอง '+ratioText(W,H)),w:W,h:H};
+        custom.push(c);sel.add(c.id);store.set('custom',custom);setStatus('');selChanged()};
+      add.querySelector('button').onclick=go;[n,w,h].forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')go()}));
+      list.appendChild(add);
+    }
+    d.appendChild(list);box.appendChild(d);
+  }
+  $('selCount').textContent=selectedSizes().length+' ไซส์';
+}
+function selChanged(){store.set('sel',[...sel]);buildGroups();updateGen();if(S.generated)buildResults()}
+$('selAll').onclick=()=>{sizesAll().forEach(s=>sel.add(s.id));selChanged()};
+$('selNone').onclick=()=>{sel.clear();selChanged()};
+$('selDefault').onclick=()=>{sel=new Set(ALL.filter(s=>s.def).map(s=>s.id));selChanged()};
+function updateGen(){const n=selectedSizes().length;$('genBtn').disabled=!S.src||!n;$('genBtn').textContent=S.generated?`สร้างใหม่ (${n} ไซส์)`:`สร้างไกด์ (${n} ไซส์)`}
+
+/* ---------- results ---------- */
+const cards=new Map(); // id -> {sz, el, canvas, disp}
+function dispSize(sz){const box=$('rbody').clientWidth-32-26,maxW=Math.max(170,Math.min(460,box)),maxH=260,r=sz.w/sz.h;let w=maxW,h=w/r;if(h>maxH){h=maxH;w=h*r}return{w,h}}
+function buildResults(){
+  S.generated=true;updateGen();cards.clear();
+  const rb=$('rbody');rb.innerHTML='';
+  if(!S.src){return}
+  const list=selectedSizes();
+  const groups=GROUPS.map(g=>({id:g.id,name:g.name})).concat([{id:'custom',name:'กำหนดเอง'}]);
+  for(const g of groups){
+    const items=list.filter(s=>s.g===g.id);if(!items.length)continue;
+    const sec=mk('section','rgroup');sec.innerHTML=`<h3>${g.name}<span class="count">${items.length}</span></h3>`;
+    const wrap=mk('div','cards');
+    for(const sz of items)wrap.appendChild(makeCard(sz));
+    sec.appendChild(wrap);rb.appendChild(sec);
+  }
+  if(!list.length)rb.innerHTML='<div class="empty-state"><strong>ยังไม่ได้เลือกไซส์</strong><span>เลือกไซส์ในช่อง 02</span></div>';
+  $('resCount').textContent=list.length?list.length+' ไซส์':'';$('zipBtn').disabled=!list.length;
+  redrawAll();
+}
+const ICON_MOVE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M12 2 9 5M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/></svg>';
+const ICON_DL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
+const ICON_RESET='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
+function makeCard(sz){
+  const el=mk('article','card');const d=dispSize(sz);el.style.width=(d.w+26)+'px';
+  el.innerHTML=`<div class="pic"><span class="ratio">${ratioText(sz.w,sz.h)}</span><span class="edithint" hidden>ลากเพื่อเลื่อน</span><canvas></canvas></div>
+  <div class="cap"><span class="fn" title="${esc(sz.name)}">${esc(sz.name)}</span><span class="dim">${sz.w}×${sz.h}px</span><div class="tags"></div></div>
+  <div class="cact"><select aria-label="การจัดวางของไซส์นี้"><option value="">ตามตั้งค่า</option><option value="cover">ตัดเต็มกรอบ</option><option value="contain">ครบทั้งภาพ</option></select>
+  <button class="btn icon mv" type="button" title="เลื่อนตำแหน่งภาพ" aria-label="เลื่อนตำแหน่งภาพ">${ICON_MOVE}</button>
+  <button class="btn icon rs" type="button" title="รีเซ็ต" aria-label="รีเซ็ต" hidden>${ICON_RESET}</button>
+  <button class="btn icon dl" type="button" title="เซฟไซส์นี้" aria-label="เซฟไซส์นี้">${ICON_DL}</button></div>`;
+  const c=el.querySelector('canvas'),selm=el.querySelector('select'),o=over[sz.id];
+  if(o&&o.mode)selm.value=o.mode;
+  selm.onchange=()=>{(over[sz.id]=over[sz.id]||{}).mode=selm.value;delete over[sz.id].dx;delete over[sz.id].dy;redraw(sz.id)};
+  el.querySelector('.mv').onclick=e=>{const on=el.classList.toggle('editing');e.currentTarget.classList.toggle('on',on);el.querySelector('.edithint').hidden=!on};
+  el.querySelector('.rs').onclick=()=>{delete over[sz.id];selm.value='';redraw(sz.id)};
+  el.querySelector('.dl').onclick=()=>downloadOne(sz);
+  // drag to pan (only in edit mode)
+  let drag=null;
+  c.addEventListener('pointerdown',e=>{if(!el.classList.contains('editing'))return;drag={x:e.clientX,y:e.clientY};c.setPointerCapture(e.pointerId);e.preventDefault()});
+  c.addEventListener('pointermove',e=>{if(!drag)return;const r=c.getBoundingClientRect(),oo=(over[sz.id]=over[sz.id]||{});
+    oo.dx=(oo.dx||0)+(e.clientX-drag.x)/r.width;oo.dy=(oo.dy||0)+(e.clientY-drag.y)/r.height;drag={x:e.clientX,y:e.clientY};schedule(sz.id)});
+  const end=()=>{drag=null};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
+  cards.set(sz.id,{sz,el,canvas:c});
+  return el;
+}
+const pending=new Set();let raf=0;
+function schedule(id){pending.add(id);if(!raf)raf=requestAnimationFrame(()=>{raf=0;const ids=[...pending];pending.clear();ids.forEach(redraw)})}
+function redraw(id){
+  const it=cards.get(id);if(!it||!S.src)return;const st=settings(),sz=it.sz,d=dispSize(sz),dpr=Math.min(2,window.devicePixelRatio||1);
+  it.el.style.width=(d.w+26)+'px';it.canvas.style.width=d.w+'px';it.canvas.style.height=d.h+'px';
+  const k=d.w*dpr/sz.w,L=render(it.canvas,sz,k,st,true,dpr/k);
+  const t=[];
+  if(L.fill>.005)t.push(`<span class="tag fill">เติมพื้นหลัง ${Math.round(L.fill*100)}%</span>`);
+  if(L.cropped)t.push(`<span class="tag crop">ตัด · เก็บเนื้อหา ${Math.round(L.kept*100)}%</span>`);
+  if(!L.cropped&&L.fill<=.005)t.push('<span class="tag crop">พอดีกรอบ</span>');
+  if(L.s>1.05)t.push(`<span class="tag up">ขยาย ×${L.s.toFixed(1)} อาจไม่คม</span>`);
+  it.el.querySelector('.tags').innerHTML=t.join('');
+  const o=over[sz.id];it.el.querySelector('.rs').hidden=!(o&&(o.mode||o.dx||o.dy));
+}
+function redrawAll(){if(!S.generated)return;cards.forEach((_,id)=>redraw(id))}
+
+/* ---------- export ---------- */
+function fileName(sz,st){return `${S.name}_${sz.w}x${sz.h}_${ratioText(sz.w,sz.h).replace(':','-')}.${st.fmt}`}
+function exportBlob(sz,st){
+  const c=document.createElement('canvas'),u=Math.max(2,Math.min(sz.w,sz.h)/260);
+  render(c,sz,1,st,st.exGuides,u);
+  return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('สร้างไฟล์ไม่สำเร็จ')),st.fmt==='jpg'?'image/jpeg':'image/png',.92));
+}
+function saveBlob(b,name){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+async function downloadOne(sz){try{const st=settings();saveBlob(await exportBlob(sz,st),fileName(sz,st))}catch(e){setStatus(e.message,'bad')}}
+let zipP=null;
+function loadZip(){if(window.JSZip)return Promise.resolve();if(zipP)return zipP;zipP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';s.onload=res;s.onerror=()=>{zipP=null;rej(new Error('โหลดตัวทำ ZIP ไม่สำเร็จ'))};document.head.appendChild(s)});return zipP}
+$('zipBtn').onclick=async()=>{
+  const btn=$('zipBtn'),prog=$('prog'),bar=prog.firstElementChild;btn.disabled=true;prog.hidden=false;bar.style.width='0';
+  try{
+    await loadZip();const st=settings(),zip=new JSZip(),list=[...cards.values()].map(c=>c.sz);
+    for(let i=0;i<list.length;i++){zip.file(fileName(list[i],st),await exportBlob(list[i],st));bar.style.width=((i+1)/list.length*90)+'%';await new Promise(r=>setTimeout(r))}
+    const b=await zip.generateAsync({type:'blob'});bar.style.width='100%';saveBlob(b,S.name+'_layout-guide.zip');
+  }catch(e){setStatus(e.message,'bad')}
+  finally{btn.disabled=false;setTimeout(()=>{prog.hidden=true},600)}
+};
+
+/* ---------- wiring ---------- */
+let colorTouched=false;
+$('browseBtn').onclick=$('changeBtn').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{loadFile(e.target.files[0]);e.target.value=''};
+const drop=$('drop');
+['dragenter','dragover'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();if(t==='drop'||e.target===document.documentElement)drop.classList.remove('over')}));
+document.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadFile(f)});
+document.addEventListener('paste',e=>{const it=[...(e.clipboardData||{}).items||[]].find(i=>i.type.startsWith('image/'));if(it){const f=it.getAsFile();loadFile(new File([f],'pasted.png',{type:f.type}))}});
+$('genBtn').onclick=buildResults;
+function syncUI(){const st=settings();$('keepOut').textContent=$('keep').value+'%';$('keepField').hidden=st.mode!=='auto';$('colorRow').hidden=st.fill!=='solid'}
+let t=0;function onSetting(){syncUI();cancelAnimationFrame(t);t=requestAnimationFrame(redrawAll)}
+['mode','keep','fillColor','gSafe','safePct','gThirds','gBound','gFocus','fmt'].forEach(id=>$(id).addEventListener('input',onSetting));
+$('fillColor').addEventListener('input',()=>{colorTouched=true});
+document.querySelectorAll('input[name=fill]').forEach(r=>r.addEventListener('change',onSetting));
+$('autoColor').onclick=()=>{$('fillColor').value=S.edgeColor;colorTouched=false;onSetting()};
+let rw=0;window.addEventListener('resize',()=>{clearTimeout(rw);rw=setTimeout(()=>{redrawAll();if(S.src)drawMaster()},150)});
+syncUI();buildGroups();updateGen();
+})();
+</script>
+</body></html>
