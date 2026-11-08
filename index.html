@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Layout Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -9,11 +9,10 @@
   --bg:#f1f1f4; --grid:#e1e1e8; --panel:#ffffff; --stroke:#18181f; --line:#dedee6;
   --fg:#18181f; --muted:#5f5f6e; --hover:#f4f2f9;
   --accent:#9747ff; --accent-ink:#ffffff; --accent-soft:#f0e6ff;
-  --n-blue:#a9cfe8; --n-pink:#e8b8df; --n-yellow:#f3d48c; --n-green:#c4d7a1; --n-lilac:#cfc2f2;
+  --n-blue:#a9cfe8; --n-pink:#e8b8df; --n-yellow:#f3d48c; --n-green:#c4d7a1;
   --badge-bg:#ffffff; --badge-fg:#18181f; --chip-bg:#13233f; --chip-fg:#ffffff;
   --warn:#8a4b00; --warn-bg:#fff2dc; --bad:#b4233a; --ok:#1d7a4f;
-  --check:#e8e8ee; --check-2:#ffffff;
-  --alert:#f25c05; --alert-bg:#fff0e5;
+  --check:#e8e8ee; --check-2:#ffffff; --alert:#f25c05; --alert-bg:#fff0e5;
   --font-display:"Archivo","IBM Plex Sans Thai",system-ui,sans-serif;
   --font-ui:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
@@ -23,7 +22,7 @@
   --bg:#0c1628; --grid:#16243b; --panel:#111e34; --stroke:#e6ecf6; --line:#24344f;
   --fg:#eef2f9; --muted:#9eabc2; --hover:#18294a;
   --accent:#b07cff; --accent-ink:#120a22; --accent-soft:#2a2150;
-  --n-blue:#284b66; --n-pink:#58324f; --n-yellow:#5a4720; --n-green:#3b4f2c; --n-lilac:#3a3166;
+  --n-blue:#284b66; --n-pink:#58324f; --n-yellow:#5a4720; --n-green:#3b4f2c;
   --chip-bg:#e6ecf6; --chip-fg:#0c1628;
   --warn:#f0b35a; --warn-bg:#33270f; --bad:#ff7a8e; --ok:#5fd39b;
   --check:#1a2a44; --check-2:#132239; --alert:#ff8a3d; --alert-bg:#3a2210; color-scheme:dark}}
@@ -31,7 +30,7 @@
   --bg:#0c1628; --grid:#16243b; --panel:#111e34; --stroke:#e6ecf6; --line:#24344f;
   --fg:#eef2f9; --muted:#9eabc2; --hover:#18294a;
   --accent:#b07cff; --accent-ink:#120a22; --accent-soft:#2a2150;
-  --n-blue:#284b66; --n-pink:#58324f; --n-yellow:#5a4720; --n-green:#3b4f2c; --n-lilac:#3a3166;
+  --n-blue:#284b66; --n-pink:#58324f; --n-yellow:#5a4720; --n-green:#3b4f2c;
   --chip-bg:#e6ecf6; --chip-fg:#0c1628;
   --warn:#f0b35a; --warn-bg:#33270f; --bad:#ff7a8e; --ok:#5fd39b;
   --check:#1a2a44; --check-2:#132239; --alert:#ff8a3d; --alert-bg:#3a2210; color-scheme:dark}
@@ -39,22 +38,23 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background-color:var(--bg);color:var(--fg);font:14px/1.5 var(--font-ui);
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 28px}
-button,select,input{font:inherit;color:inherit}
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;padding:18px 16px 28px}
+button,select,input,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-header.top{display:flex;align-items:center;gap:12px;margin:0 auto 16px;max-width:1500px}
+header.top{display:flex;align-items:center;gap:12px;margin:0 auto 16px;max-width:1400px}
 .logo{width:38px;height:38px;border-radius:10px;background:var(--accent);border:var(--sw) solid var(--stroke);display:grid;place-items:center;flex:none;box-shadow:3px 3px 0 var(--stroke)}
 .logo svg{width:20px;height:20px}
 header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
-.disclaimer{flex:1;min-width:0;margin:0 0 0 8px;font-size:11.5px;line-height:1.5;color:var(--muted);text-wrap:pretty}
-@media (max-width:760px){header.top{flex-wrap:wrap}.disclaimer{flex-basis:100%;margin:0}}
+.disclaimer{flex:1;min-width:0;margin:0 0 0 8px;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.quota{display:flex;align-items:center;gap:8px;border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:10px;padding:6px 10px;flex:none;box-shadow:3px 3px 0 var(--stroke)}
+.quota b{font:700 18px var(--font-display);font-variant-numeric:tabular-nums}
+.quota small{color:var(--muted);font-size:11.5px;line-height:1.25}
+.quota input{width:44px;border:var(--sw) solid var(--line);border-radius:6px;padding:1px 4px;background:var(--panel);font:12px var(--font-data)}
+.quota.low{background:var(--alert-bg)} .quota.low b{color:var(--alert)}
 
 .btn{border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:8px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;font-weight:500}
 .btn:hover{background:var(--hover)}
 .btn.primary{background:var(--accent);color:var(--accent-ink);font-weight:600;box-shadow:3px 3px 0 var(--stroke);transition:transform .08s,box-shadow .08s}
-.btn.primary:hover{filter:brightness(1.06)}
 .btn.primary:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--stroke)}
 .btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
 .btn.block{width:100%;padding:11px 12px}
@@ -65,224 +65,141 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
 .btn.icon svg{width:15px;height:15px}
 .btn.on{background:var(--accent);color:var(--accent-ink)}
 
-.app{max-width:1500px;margin:0 auto;display:grid;gap:16px;grid-template-columns:340px minmax(0,1fr);align-items:start}
+.app{max-width:1400px;margin:0 auto;display:grid;gap:16px;grid-template-columns:330px minmax(0,1fr);align-items:start}
 .col{display:grid;gap:16px;min-width:0}
-@media (max-width:960px){
-  .app{display:flex;flex-direction:column}
-  .col{display:contents}
-  #pImg{order:1}#pEdit{order:2}#pSizes{order:3}#pSet{order:4}#results{order:5}
-}
-
+@media (max-width:980px){.app{grid-template-columns:minmax(0,1fr)}}
 .panel{background:var(--panel);border:var(--sw) solid var(--stroke);border-radius:var(--r);min-width:0;overflow:hidden}
-.panel h2{font:600 15px/1.2 var(--font-display);margin:0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.phead{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:var(--sw) solid var(--stroke);min-height:52px;background:var(--panel)}
+.panel h2{font:600 15px/1.2 var(--font-display);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phead{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:var(--sw) solid var(--stroke);min-height:52px}
 .phead .count{margin-left:auto;white-space:nowrap;opacity:.7;font:12px var(--font-data)}
-.n-blue .phead{background:var(--n-blue)} .n-pink .phead{background:var(--n-pink)}
-.n-yellow .phead{background:var(--n-yellow)} .n-green .phead{background:var(--n-green)} .n-lilac .phead{background:var(--n-lilac)}
+.n-blue .phead{background:var(--n-blue)} .n-pink .phead{background:var(--n-pink)} .n-yellow .phead{background:var(--n-yellow)} .n-green .phead{background:var(--n-green)}
 .step{display:grid;place-items:center;min-width:32px;height:32px;padding:0 5px;border-radius:5px;background:var(--badge-bg);color:var(--badge-fg);border:var(--sw) solid var(--stroke);font:700 14px var(--font-display);flex:none}
-.pbody{padding:14px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.pbody{padding:14px;display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
 .pbody>*{min-width:0}
-.hint{color:var(--muted);font-size:12px;line-height:1.45}
+.hint{color:var(--muted);font-size:12px;line-height:1.5}
+.status{font-size:12.5px;color:var(--muted)} .status.bad{color:var(--bad)} .status.ok{color:var(--ok)} .status:empty{display:none}
 .ratio{font:500 10.5px var(--font-data);background:var(--chip-bg);color:var(--chip-fg);border-radius:4px;padding:2px 6px;white-space:nowrap;flex:none}
-.status{font-size:12.5px;color:var(--muted)} .status.bad{color:var(--bad)} .status.ok{color:var(--ok)}
-.status:empty{display:none}
 .checker{background-color:var(--check-2);background-image:linear-gradient(45deg,var(--check) 25%,transparent 25%),linear-gradient(-45deg,var(--check) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--check) 75%),linear-gradient(-45deg,transparent 75%,var(--check) 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0}
 
-/* 01 image */
-.drop{border:var(--sw) dashed var(--stroke);border-radius:10px;padding:22px 14px 18px;text-align:center;display:grid;gap:9px;justify-items:center;transition:background .15s}
+.drop{border:var(--sw) dashed var(--stroke);border-radius:10px;padding:20px 14px 16px;text-align:center;display:grid;gap:9px;justify-items:center;transition:background .15s;cursor:pointer}
 .drop.over{background:var(--accent-soft)}
-.drop svg{width:34px;height:34px}
+.drop svg{width:32px;height:32px}
 .drop small{color:var(--muted);font-size:12px;line-height:1.5}
+.master{display:grid;gap:8px}
+.master img{display:block;max-width:100%;max-height:200px;margin:0 auto;border:var(--sw) solid var(--stroke)}
 .minfo{display:flex;align-items:center;gap:8px;min-width:0}
 .minfo .name{flex:1;min-width:0;font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.minfo .dim{font:11.5px var(--font-data);color:var(--muted);white-space:nowrap}
+.minfo .dim{font:11.5px var(--font-data);color:var(--muted)}
 
-/* 02 editor */
-.roles{display:flex;flex-wrap:wrap;gap:6px}
-.role{display:inline-flex;align-items:center;gap:6px;border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:99px;padding:4px 11px 4px 8px;cursor:pointer;font-size:13px;font-weight:500}
-.role:hover{background:var(--hover)}
-.role .dot{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--stroke);flex:none}
-.role .ok{font-size:11px;color:var(--ok);font-weight:700}
-.role[aria-pressed="true"]{box-shadow:3px 3px 0 var(--stroke);background:var(--accent-soft)}
-.edwrap{display:grid;place-items:center;border-radius:10px;border:var(--sw) solid var(--line);padding:12px;min-height:200px}
-.edwrap canvas{display:block;touch-action:none;outline:var(--sw) solid var(--stroke);cursor:crosshair}
-.edbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.edbar .hint{flex:1;min-width:180px}
-.aibar{display:flex;align-items:center;gap:10px;border:var(--sw) solid var(--stroke);border-radius:9px;padding:8px 10px;background:var(--accent-soft)}
-.aibar .progress{flex:none;width:160px}
-.aibar .status{font-size:12.5px;color:var(--fg)}
-.empty-state{display:grid;gap:10px;justify-items:center;color:var(--muted);text-align:center;padding:40px 20px}
-.empty-state strong{color:var(--fg);font:600 15px var(--font-display)}
-.empty-state svg{width:44px;height:44px;opacity:.6}
-
-/* 03 sizes */
-.group{border:var(--sw) solid var(--line);border-radius:9px;overflow:hidden}
-.group>summary{list-style:none;display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;font:600 13px var(--font-display);background:var(--hover)}
-.group>summary::-webkit-details-marker{display:none}
-.group>summary .chev{width:12px;height:12px;transition:transform .15s;flex:none}
-.group:not([open])>summary .chev{transform:rotate(-90deg)}
-.group>summary .gc{margin-left:auto;font:11.5px var(--font-data);color:var(--muted);font-weight:400}
-.szlist{display:grid;padding:4px}
-.szrow{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:7px;cursor:pointer;font-size:13px;min-height:34px}
+.szrow{display:flex;align-items:center;gap:8px;padding:6px 6px;border-radius:7px;cursor:pointer;font-size:13px}
 .szrow:hover{background:var(--hover)}
 .szrow input{width:16px;height:16px;accent-color:var(--accent);margin:0;flex:none}
 .shape{width:24px;height:24px;display:grid;place-items:center;flex:none}
 .shape i{display:block;border:1.5px solid var(--fg);border-radius:2px;background:var(--accent-soft)}
-.szrow .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.szrow .px{font:11.5px var(--font-data);color:var(--muted);white-space:nowrap}
-.szrow .x{border:0;background:none;color:var(--muted);cursor:pointer;padding:2px 5px;border-radius:4px}
-.szrow .x:hover{color:var(--bad);background:var(--line)}
-.addrow{display:flex;gap:6px;align-items:center;padding:6px}
-.addrow input{width:0;flex:1;min-width:0;border:var(--sw) solid var(--stroke);border-radius:7px;padding:5px 7px;background:var(--panel);font:12.5px var(--font-data)}
-.addrow input.nm{flex:1.6;font-family:var(--font-ui)}
-.addrow span{color:var(--muted)}
-.selbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.szrow .nm{flex:1;min-width:0}
+.szrow .px{font:11.5px var(--font-data);color:var(--muted)}
 
-/* 04 settings */
-.field{display:grid;gap:7px}
-.field>label,.field>.lbl{font:600 13px var(--font-display)}
-.field select{width:100%;border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:8px;padding:8px 10px}
-.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:var(--sw) solid var(--stroke);border-radius:8px;overflow:hidden}
-.seg label{position:relative;text-align:center;font-size:12.5px;padding:7px 4px;cursor:pointer;border-left:var(--sw) solid var(--stroke)}
-.seg label:first-child{border-left:0}
-.seg input{position:absolute;opacity:0;pointer-events:none}
-.seg label:has(input:checked){background:var(--accent);color:var(--accent-ink);font-weight:600}
-.seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:-3px}
-.checkrow{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer}
-.checkrow input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;margin:0;flex:none}
-.checkrow .num{width:52px;border:var(--sw) solid var(--stroke);border-radius:6px;padding:2px 6px;background:var(--panel);font:12px var(--font-data)}
-.checks{display:grid;gap:8px}
+.steps{display:grid;gap:10px;counter-reset:s}
+.srow{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start}
+.srow::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:var(--sw) solid var(--stroke);font:700 13px var(--font-display);background:var(--panel)}
+.srow .t{display:grid;gap:6px}
+.srow .t>b{font:600 13.5px var(--font-display)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+textarea.prompt{width:100%;min-height:96px;border:var(--sw) solid var(--line);border-radius:8px;padding:8px 10px;background:var(--hover);font:12px/1.5 var(--font-data);resize:vertical}
+.tpl{border:var(--sw) solid var(--line);border-radius:10px;padding:10px;display:grid;place-items:center}
+.tpl canvas{display:block;max-width:100%;height:auto;border:var(--sw) solid var(--stroke)}
 
-/* 05 results */
-#results{min-height:300px}
-.rhead-actions{margin-left:auto;display:flex;gap:6px;align-items:center}
-.rbody{padding:16px;display:grid;gap:20px}
-.rgroup h3{font:600 14px var(--font-display);margin:0 0 10px;display:flex;align-items:center;gap:8px}
-.rgroup h3 .count{font:11.5px var(--font-data);color:var(--muted);font-weight:400}
+.paste{border:2px dashed var(--accent);border-radius:12px;padding:26px 16px;text-align:center;display:grid;gap:8px;justify-items:center;background:var(--accent-soft);cursor:pointer}
+.paste strong{font:600 15px var(--font-display)}
+.paste kbd{font:600 12px var(--font-data);border:var(--sw) solid var(--stroke);border-bottom-width:3px;border-radius:5px;padding:1px 6px;background:var(--panel)}
+.paste.over{filter:brightness(.96)}
+.rbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rbar .status{flex:1}
 .cards{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
-.card{border:var(--sw) solid var(--stroke);border-radius:10px;overflow:hidden;background:var(--panel);display:flex;flex-direction:column;max-width:100%;min-width:220px}
+.card{border:var(--sw) solid var(--stroke);border-radius:10px;overflow:hidden;background:var(--panel);display:flex;flex-direction:column;max-width:100%}
 .card .pic{position:relative;padding:12px;display:grid;place-items:center;border-bottom:var(--sw) solid var(--stroke);background:var(--hover)}
 .card canvas{display:block;outline:var(--sw) solid var(--stroke)}
 .card.editing canvas{cursor:grab;touch-action:none;outline:2px solid var(--accent);outline-offset:2px}
-.card .pic .ratio{position:absolute;left:6px;top:6px;z-index:1}
-.card .edithint{position:absolute;right:6px;top:6px;font:600 10.5px var(--font-ui);background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:1px 6px}
-.card .cap{padding:8px 10px 4px;display:grid;gap:3px;min-width:0}
-.card .fn{font:600 13px var(--font-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .pic .ratio{position:absolute;left:6px;top:6px}
+.card .cap{padding:8px 10px 2px;display:grid;gap:2px}
+.card .fn{font:600 13px var(--font-ui)}
 .card .dim{font:11.5px var(--font-data);color:var(--muted)}
-.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
-.tag{font:500 11px var(--font-ui);border-radius:4px;padding:1px 6px;background:var(--hover)}
-.tag.gap{background:var(--alert-bg);color:var(--alert);font-weight:600}
-.tag.warn{background:var(--warn-bg);color:var(--warn);font-weight:600}
-.cact{display:flex;gap:6px;align-items:center;padding:6px 10px 10px;flex-wrap:wrap}
-.cact .sel{flex:1;min-width:0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cact{display:flex;gap:6px;align-items:center;padding:6px 10px 10px}
+.cact .sp{flex:1}
 .progress{height:8px;border-radius:99px;border:var(--sw) solid var(--stroke);background:var(--panel);overflow:hidden;width:120px}
 .progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
-@media (max-width:560px){.rhead-actions .lbl{display:none}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.sheetview{border:var(--sw) solid var(--line);border-radius:10px;padding:10px}
+.sheetview canvas{display:block;max-width:100%;height:auto}
+details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-weight:600}
 </style>
 </head><body>
 
 <header class="top">
   <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1" opacity=".75"/><rect x="5" y="16" width="8" height="5" rx="1" opacity=".55"/></svg></div>
   <div><h1>Layout Guide</h1></div>
-  <p class="disclaimer">ไกด์จัดวางหลายไซส์จากภาพต้นแบบภาพเดียว · ลากกรอบบอกตำแหน่งโลโก้ ข้อความ และพรีเซนเตอร์ แล้วแอปจัดวางใหม่ให้ทุกไซส์ · ภาพประมวลผลในเบราว์เซอร์ ไม่ถูกส่งออกจากเครื่อง · ใช้ฟรี · สำหรับคอมพิวเตอร์ แนะนำ Chrome หรือ Edge</p>
-  <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden>
+  <p class="disclaimer">ไกด์จัดวาง 7 ไซส์จากภาพต้นแบบภาพเดียว ด้วย Gemini (ฟรี) · ใช้ Gemini แค่ 1 ครั้งต่อ 7 ไซส์ · ภาพไม่ถูกส่งไปที่อื่นนอกจาก Gemini ที่คุณเปิดเอง</p>
+  <div class="quota" id="quota" title="นับเฉพาะครั้งที่ใช้ผ่านเว็บนี้ · รีเซ็ตเที่ยงคืน">
+    <div><b id="qLeft">20</b></div>
+    <small>ครั้งที่เหลือวันนี้<br>ใช้ไป <span id="qUsed">0</span> / <input id="qLimit" type="number" min="1" max="1000" value="20" aria-label="โควตาต่อวัน"></small>
+  </div>
 </header>
 
 <main class="app">
 <div class="col">
-  <section class="panel n-blue" id="pImg" aria-label="ภาพต้นแบบ">
+  <section class="panel n-blue" aria-label="ภาพต้นแบบ">
     <div class="phead"><span class="step">01</span><h2>ภาพต้นแบบ</h2></div>
     <div class="pbody">
-      <div class="drop" id="drop">
+      <div class="drop" id="drop" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4 4 0 0 1-.5 9.5"/><path d="M12 12v8M8.5 15.5 12 12l3.5 3.5"/></svg>
-        <button class="btn primary" id="browseBtn" type="button">เลือกภาพ</button>
-        <small>JPG, PNG, WebP · ลากมาวาง หรือวางจากคลิปบอร์ด</small>
+        <span class="btn primary">เลือกภาพ</span>
+        <small>JPG, PNG, WebP · หรือลากมาวาง</small>
       </div>
-      <div class="minfo" id="minfo" hidden><span class="name" id="mName"></span><span class="dim" id="mDim"></span><span class="ratio" id="mRatio"></span><button class="btn small" id="changeBtn" type="button">เปลี่ยน</button></div>
-      <div class="status" id="status" role="status"></div>
+      <div class="master" id="master" hidden>
+        <img id="mImg" alt="ภาพต้นแบบ">
+        <div class="minfo"><span class="name" id="mName"></span><span class="dim" id="mDim"></span><button class="btn small" id="changeBtn" type="button">เปลี่ยน</button></div>
+      </div>
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden>
     </div>
   </section>
 
-  <section class="panel n-yellow" id="pSizes" aria-label="เลือกไซส์">
-    <div class="phead"><span class="step">03</span><h2>เลือกไซส์</h2><span class="count" id="selCount">0 ไซส์</span></div>
-    <div class="pbody">
-      <div class="selbar">
-        <button class="btn ghost" id="selAll" type="button">เลือกทั้งหมด</button>
-        <button class="btn ghost" id="selNone" type="button">ล้าง</button>
-        <button class="btn ghost" id="selDefault" type="button">ค่าเริ่มต้น</button>
-      </div>
-      <div id="groups" style="display:grid;gap:10px"></div>
-    </div>
-  </section>
-
-  <section class="panel n-pink" id="pSet" aria-label="ตั้งค่า">
-    <div class="phead"><span class="step">04</span><h2>ตั้งค่า</h2></div>
-    <div class="pbody">
-      <div class="field">
-        <label class="checkrow"><input type="checkbox" id="useAI" checked><span><b>ตัดชิ้นส่วนด้วย AI</b></span></label>
-        <div class="hint">ตัดพรีเซนเตอร์ตามรูปร่าง ตัดตัวหนังสือแบบโปร่งใส และเติมพื้นหลังตรงที่ชิ้นถูกย้ายออก · ครั้งแรกโหลดโมเดล ~180MB แล้วเครื่องจำไว้ · ทำงานในเครื่องทั้งหมด</div>
-      </div>
-      <div class="field">
-        <span class="lbl">พื้นหลัง</span>
-        <div class="seg" role="radiogroup" aria-label="ขนาดพื้นหลัง">
-          <label><input type="radio" name="bg" value="height" checked>ยึดความสูง</label>
-          <label><input type="radio" name="bg" value="cover">เต็มกรอบ</label>
-        </div>
-        <div class="hint" id="bgHint">ไซส์ที่กว้างกว่าต้นแบบจะเห็นพื้นหลังแหว่งด้านข้าง (ไว้ต่อฉากทีหลัง)</div>
-      </div>
-      <div class="field">
-        <span class="lbl">ตำแหน่งเดิมของชิ้นที่ย้าย</span>
-        <div class="seg" role="radiogroup" aria-label="ตำแหน่งเดิมของชิ้นที่ย้าย">
-          <label><input type="radio" name="holes" value="fill" checked>เติมพื้นหลัง</label>
-          <label><input type="radio" name="holes" value="cut">เจาะออก</label>
-          <label><input type="radio" name="holes" value="keep">คงไว้</label>
-        </div>
-      </div>
-      <div class="field">
-        <span class="lbl">เส้นไกด์</span>
-        <div class="checks">
-          <label class="checkrow"><input type="checkbox" id="gSafe" checked>Safe zone <input type="number" class="num" id="safePct" value="5" min="0" max="25" step="1" aria-label="ระยะ safe zone เปอร์เซ็นต์">%</label>
-          <label class="checkrow"><input type="checkbox" id="gBox" checked>กรอบชิ้นส่วน + ชื่อ</label>
-          <label class="checkrow"><input type="checkbox" id="gThirds">กริด 1/3</label>
-        </div>
-      </div>
-      <div class="field">
-        <span class="lbl">ไฟล์ที่เซฟ</span>
-        <label class="checkrow"><input type="checkbox" id="exGuides" checked>ใส่เส้นไกด์ในไฟล์ด้วย</label>
-        <select id="fmt" aria-label="รูปแบบไฟล์"><option value="png">PNG (ส่วนแหว่งโปร่งใส)</option><option value="jpg">JPG (ส่วนแหว่งสีขาว)</option></select>
-      </div>
-      <button class="btn primary block" id="genBtn" type="button" disabled>สร้างไกด์</button>
-    </div>
+  <section class="panel n-yellow" aria-label="เลือกไซส์">
+    <div class="phead"><span class="step">02</span><h2>เลือกไซส์</h2><span class="count" id="selCount"></span></div>
+    <div class="pbody" id="sizes" style="gap:2px"></div>
   </section>
 </div>
 
 <div class="col">
-  <section class="panel n-lilac" id="pEdit" aria-label="กำหนดชิ้นส่วน">
-    <div class="phead"><span class="step">02</span><h2>กำหนดชิ้นส่วน</h2><span class="count" id="boxCount"></span></div>
+  <section class="panel n-pink" aria-label="ส่งไป Gemini">
+    <div class="phead"><span class="step">03</span><h2>ส่งไป Gemini</h2></div>
     <div class="pbody">
-      <div class="roles" id="roles" role="group" aria-label="เลือกชิ้นส่วน"></div>
-      <div class="edbar"><span class="hint" id="edHint">เลือกชิ้นส่วนด้านบน แล้วลากกรอบรอบชิ้นนั้นบนภาพ · ลากในกรอบเพื่อย้าย ลากมุมเพื่อปรับขนาด</span>
-        <button class="btn small" id="delBox" type="button" hidden>ลบกรอบนี้</button>
-        <button class="btn ghost" id="clearBoxes" type="button" hidden>ล้างทั้งหมด</button></div>
-      <div class="aibar" id="aiBar" hidden><div class="progress" id="aiProg"><i></i></div><span class="status" id="aiStatus" role="status"></span></div>
-      <div class="edwrap checker" id="edwrap">
-        <div class="empty-state" id="edEmpty"><strong>ยังไม่มีภาพ</strong><span>ใส่ภาพต้นแบบในช่อง 01</span></div>
-        <canvas id="ed" hidden></canvas>
+      <div class="steps">
+        <div class="srow"><div class="t"><b>ก๊อปแผ่นงาน แล้วเปิด Gemini</b>
+          <div class="btnrow"><button class="btn primary" id="sendBtn" type="button" disabled>ก๊อปแผ่นงาน + เปิด Gemini</button>
+          <button class="btn small" id="dlSheet" type="button" disabled>ดาวน์โหลดแผ่นงานแทน</button></div>
+          <span class="hint">แผ่นงานคือภาพเดียวที่มีภาพต้นแบบ + กรอบชมพูตามไซส์ที่เลือก ให้ Gemini เติมงานลงในกรอบ</span></div></div>
+        <div class="srow"><div class="t"><b>ใน Gemini: กด Ctrl+V วางแผ่นงาน แล้ววางคำสั่งนี้ แล้วส่ง</b>
+          <div class="btnrow"><button class="btn small" id="copyPrompt" type="button">ก๊อปคำสั่ง</button><span class="status" id="copyStatus"></span></div>
+          <textarea class="prompt" id="prompt" readonly aria-label="คำสั่งสำหรับ Gemini"></textarea></div></div>
+        <div class="srow"><div class="t"><b>ได้ภาพแล้ว: คลิกขวาที่ภาพใน Gemini → Copy image แล้วกลับมาวางในช่อง 04</b>
+          <span class="hint">ใช้รุ่นที่สร้างภาพได้ (เช่น เลือก "Create image" / Nano Banana) · ถ้าภาพออกมาเป็นสัดส่วนอื่น ให้บอก Gemini ว่า "ให้ผลลัพธ์เป็นภาพ 16:9 ขนาดเท่าแผ่นงาน"</span></div></div>
       </div>
+      <details class="more"><summary>ดูแผ่นงานที่จะส่ง</summary><div class="tpl checker" style="margin-top:8px"><canvas id="tplView"></canvas></div></details>
     </div>
   </section>
 
   <section class="panel n-green" id="results" aria-label="ผลลัพธ์">
-    <div class="phead"><span class="step">05</span><h2>ผลลัพธ์</h2>
-      <div class="rhead-actions">
-        <div class="progress" id="prog" hidden><i></i></div>
-        <span class="count" id="resCount"></span>
-        <button class="btn small" id="zipBtn" type="button" disabled><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span class="lbl">เซฟทั้งหมด</span> ZIP</button>
+    <div class="phead"><span class="step">04</span><h2>วางผลจาก Gemini</h2>
+      <div style="margin-left:auto;display:flex;gap:6px;align-items:center"><div class="progress" id="prog" hidden><i></i></div>
+      <button class="btn small" id="zipBtn" type="button" disabled>เซฟทั้งหมด ZIP</button></div></div>
+    <div class="pbody">
+      <div class="paste" id="paste" role="button" tabindex="0">
+        <strong>กด <kbd>Ctrl</kbd>+<kbd>V</kbd> ที่หน้านี้ เพื่อวางภาพจาก Gemini</strong>
+        <span class="hint">หรือลากไฟล์ภาพที่ดาวน์โหลดจาก Gemini มาวาง / คลิกเพื่อเลือกไฟล์</span>
       </div>
-    </div>
-    <div class="rbody" id="rbody">
-      <div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/><rect x="5" y="16" width="8" height="5" rx="1"/></svg><strong>ยังไม่มีผลลัพธ์</strong><span>ใส่ภาพ ลากกรอบชิ้นส่วน เลือกไซส์ แล้วกด "สร้างไกด์"</span></div>
+      <input type="file" id="resInput" accept="image/*" hidden>
+      <div class="rbar"><span class="status" id="resStatus" role="status"></span><button class="btn ghost" id="showSheet" type="button" hidden>ดูภาพที่วาง + กรอบตัด</button></div>
+      <div class="sheetview checker" id="sheetView" hidden><canvas id="sheetCanvas"></canvas></div>
+      <div class="cards" id="cards"></div>
     </div>
   </section>
 </div>
@@ -292,538 +209,190 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
-const ACCENT='#9747ff', ALERT='#f25c05';
-
-/* ---------- roles: each is one box on the master image ---------- */
-const ROLES=[
- {id:'logo',  name:'โลโก้',        color:'#2f80ed'},
- {id:'head',  name:'หัวข้อ',       color:'#e0457b'},
- {id:'sub',   name:'ข้อความล่าง',  color:'#d99a00'},
- {id:'talent',name:'พรีเซนเตอร์',  color:'#1d9a5b'},
- {id:'other', name:'อื่นๆ / CTA',  color:'#9747ff'},
-];
-const ROLE=Object.fromEntries(ROLES.map(r=>[r.id,r]));
-const DRAW_ORDER=['talent','other','sub','head','logo']; // back to front
-
-/* ---------- size presets ---------- */
-const GROUPS=[
- {id:'social',name:'โซเชียล / วิดีโอ',sizes:[
-  ['แนวนอน 16:9',1920,1080,1],['Story / Reels 9:16',1080,1920,1],['สี่เหลี่ยม 1:1',1080,1080,1],['Feed แนวตั้ง 4:5',1080,1350,1],
-  ['ลิงก์แชร์ 1.91:1',1200,628,0],['Pinterest 2:3',1000,1500,0],['Cinema 21:9',2560,1080,0]]},
- {id:'web',name:'แบนเนอร์เว็บ (IAB)',sizes:[
-  ['Super Leaderboard',970,90,0],['Leaderboard',728,90,1],['Mobile Banner',320,50,0],['Large Mobile Banner',320,100,0],
-  ['Billboard',970,250,0],['Medium Rectangle',300,250,0],['Large Rectangle',336,280,0],
-  ['Half Page',300,600,1],['Skyscraper',160,600,0],['Portrait',300,1050,0]]},
- {id:'dooh',name:'DOOH / จอ LED',sizes:[
-  ['Ultra-wide 32:9',3840,1080,0],['Billboard ริมทาง',1400,400,0],['Poster 2.1:1',840,400,0],['จอแนวนอน 2:1',1920,960,0],
-  ['จอ LED 2.5:1',1920,768,0],['Sari wall 5:1',1920,384,0],['Sari wall 8:1',3840,480,1],['แถบ Place-based',560,160,0],
-  ['จอ 4:3',1280,960,1],['จอห้าง แนวตั้ง',800,1280,0],['เสาแนวตั้งสูง',720,3840,1]]},
-];
-const ALL=[];
-GROUPS.forEach(g=>g.sizes.forEach(([n,w,h,d])=>ALL.push({id:g.id+'-'+w+'x'+h,g:g.id,name:n,w,h,def:!!d})));
-const store={get(k,d){try{const v=localStorage.getItem('lg.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('lg.'+k,JSON.stringify(v))}catch(e){}}};
-let custom=store.get('custom',[]).filter(c=>c&&c.w>0&&c.h>0);
-let sel=new Set(store.get('sel',ALL.filter(s=>s.def).map(s=>s.id)));
-function sizesAll(){return ALL.concat(custom.map(c=>({id:c.id,g:'custom',name:c.name||'กำหนดเอง',w:c.w,h:c.h})))}
-function selectedSizes(){return sizesAll().filter(s=>sel.has(s.id))}
-
-/* ---------- utils ---------- */
-const gcd=(a,b)=>b?gcd(b,a%b):a;
-function ratioText(w,h){const g=gcd(w,h),a=w/g,b=h/g;if(a<=32&&b<=32)return a+':'+b;return w>=h?(Math.round(w/h*100)/100)+':1':'1:'+(Math.round(h/w*100)/100)}
-function mk(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function setStatus(t,cls){const s=$('status');s.textContent=t||'';s.className='status'+(cls?' '+cls:'')}
+const mk=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const store={get(k,d){try{const v=localStorage.getItem('lg.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('lg.'+k,JSON.stringify(v))}catch(e){}}};
 
-/* ---------- state ---------- */
-const S={src:null,W:0,H:0,name:'',boxes:{},generated:false,bgCut:null};
-const over={}; // over[sizeId][role|'bg'] = {dx,dy,ds}
+/* ---------- the 7 sizes and where each sits on the sheet ----------
+   Sheet is 2400×1350 (16:9). Frames keep the exact ratio of their size. */
+const SW=2400,SH=1350,FRAME='#ff00c8',STROKE=8;
+const SIZES=[
+  {id:'16x9', name:'แนวนอน 16:9',  r:'16:9', w:1920,h:1080, f:{x:850, y:150,w:800, h:450}},
+  {id:'1x1',  name:'สี่เหลี่ยม 1:1', r:'1:1',  w:1080,h:1080, f:{x:1680,y:150,w:450, h:450}},
+  {id:'9x16', name:'แนวตั้ง 9:16',  r:'9:16', w:1080,h:1920, f:{x:30,  y:660,w:371, h:660}},
+  {id:'4x5',  name:'Feed 4:5',     r:'4:5',  w:1080,h:1350, f:{x:431, y:660,w:528, h:660}},
+  {id:'2x1',  name:'แนวนอนยาว 2:1', r:'2:1',  w:1920,h:960,  f:{x:989, y:660,w:980, h:490}},
+  {id:'8x1',  name:'แถบยาว 8:1',    r:'8:1',  w:3840,h:480,  f:{x:989, y:1190,w:1120,h:140}},
+  {id:'3x16', name:'เสาสูง 3:16',   r:'3:16', w:720, h:3840, f:{x:2160,y:150,w:210, h:1120}},
+];
+const SRC_BOX={x:30,y:150,w:790,h:450};
+let sel=new Set(store.get('sel7',SIZES.map(s=>s.id)).filter(id=>SIZES.some(s=>s.id===id)));
 
-/* ---------- loading ---------- */
-async function loadFile(f){
-  if(!f)return;
-  if(!/^image\/(jpeg|png|webp)$/.test(f.type)&&!/\.(jpe?g|png|webp)$/i.test(f.name)){setStatus('รองรับเฉพาะ JPG, PNG, WebP','bad');return}
-  setStatus('กำลังเปิดภาพ…');
-  try{
-    const src=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(new Error('เปิดภาพนี้ไม่ได้'));im.src=URL.createObjectURL(f)});
-    S.src=src;S.W=src.naturalWidth;S.H=src.naturalHeight;S.name=f.name.replace(/\.[^.]+$/,'')||'image';S.boxes={};S.bgCut=null;S.src_ctx=null;aiReset();
-    for(const k in over)delete over[k];
-    $('drop').hidden=true;$('minfo').hidden=false;$('mName').textContent=S.name;$('mDim').textContent=S.W+'×'+S.H;$('mRatio').textContent=ratioText(S.W,S.H);
-    setStatus('');setActive('logo');layoutEditor();drawEditor();buildRoles();updateGen();
-    if(S.generated)buildResults();
-    $('pEdit').scrollIntoView({behavior:'smooth',block:'start'});
-  }catch(e){setStatus(e.message||'เปิดภาพไม่สำเร็จ','bad')}
-}
+/* ---------- daily counter (this site only; Gemini does not expose its quota) ---------- */
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+function quota(){let q=store.get('quota',{day:today(),used:0,limit:20});if(q.day!==today())q={day:today(),used:0,limit:q.limit||20};return q}
+function renderQuota(){const q=quota(),left=Math.max(0,q.limit-q.used);$('qLeft').textContent=left;$('qUsed').textContent=q.used;if(document.activeElement!==$('qLimit'))$('qLimit').value=q.limit;$('quota').classList.toggle('low',left<=3)}
+function bumpQuota(n){const q=quota();q.used=Math.max(0,q.used+n);store.set('quota',q);renderQuota()}
+$('qLimit').addEventListener('change',()=>{const q=quota();q.limit=clamp(Math.round(+$('qLimit').value)||20,1,1000);store.set('quota',q);renderQuota()});
+setInterval(renderQuota,60000);
 
-/* ---------- 02 editor ---------- */
-let active='logo',edScale=1;
-function setActive(id){active=id;buildRoles();drawEditor()}
-function buildRoles(){
-  const box=$('roles');box.innerHTML='';
-  for(const r of ROLES){
-    const b=mk('button','role');b.type='button';b.setAttribute('aria-pressed',String(active===r.id));
-    b.innerHTML=`<span class="dot" style="background:${r.color}"></span>${r.name}${S.boxes[r.id]?'<span class="ok">✓</span>':''}`;
-    b.onclick=()=>setActive(r.id);box.appendChild(b);
-  }
-  const n=Object.keys(S.boxes).length;$('boxCount').textContent=n?n+'/'+ROLES.length+' ชิ้น':'';
-  $('delBox').hidden=!S.boxes[active];$('clearBoxes').hidden=!n;
-}
-function layoutEditor(){
-  if(!S.src)return;const c=$('ed'),wrap=$('edwrap');$('edEmpty').hidden=true;c.hidden=false;
-  const maxW=Math.max(200,wrap.clientWidth-26),maxH=Math.max(260,Math.min(620,window.innerHeight*.62)),r=S.W/S.H;
-  let w=maxW,h=w/r;if(h>maxH){h=maxH;w=h*r}
-  const dpr=Math.min(2,window.devicePixelRatio||1);c.style.width=w+'px';c.style.height=h+'px';c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);
-  edScale=c.width/S.W;
-}
-function drawEditor(){
-  if(!S.src)return;const c=$('ed'),x=c.getContext('2d'),k=edScale,dpr=c.width/parseFloat(c.style.width);
-  x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,c.width,c.height);x.imageSmoothingQuality='high';x.drawImage(S.src,0,0,c.width,c.height);
-  const anyBox=Object.keys(S.boxes).length;
-  if(anyBox){x.fillStyle='rgba(10,12,20,.28)';x.beginPath();x.rect(0,0,c.width,c.height);for(const id in S.boxes){const b=S.boxes[id];x.rect(b.x*k,b.y*k,b.w*k,b.h*k)}x.fill('evenodd')}
-  for(const r of ROLES){const b=S.boxes[r.id];if(!b)continue;const on=r.id===active;
-    const X=b.x*k,Y=b.y*k,W=b.w*k,H=b.h*k;
-    x.lineWidth=(on?3:2)*dpr;x.strokeStyle='#fff';x.strokeRect(X,Y,W,H);
-    x.lineWidth=(on?2:1.5)*dpr;x.strokeStyle=r.color;x.setLineDash(on?[]:[6*dpr,4*dpr]);x.strokeRect(X,Y,W,H);x.setLineDash([]);
-    label(x,r.name,r.color,X,Y,dpr,H);
-    if(on){x.fillStyle='#fff';x.strokeStyle=r.color;x.lineWidth=1.5*dpr;for(const [hx,hy] of corners(b)){x.beginPath();x.rect(hx*k-5*dpr,hy*k-5*dpr,10*dpr,10*dpr);x.fill();x.stroke()}}
-  }
-}
-function label(x,text,color,X,Y,u,H){
-  x.save();x.font=`600 ${11*u}px "IBM Plex Sans Thai",system-ui,sans-serif`;const tw=x.measureText(text).width+10*u,th=16*u;
-  const ly=Y-th>=0?Y-th:(H&&Y+H+th<=x.canvas.height/(x.getTransform().d||1)?Y+H:Y);x.fillStyle=color;x.fillRect(X,ly,tw,th);x.fillStyle='#fff';x.textBaseline='middle';x.fillText(text,X+5*u,ly+th/2+u*.5);x.restore();
-}
-const corners=b=>[[b.x,b.y],[b.x+b.w,b.y],[b.x,b.y+b.h],[b.x+b.w,b.y+b.h]];
-(function editorPointer(){
-  const c=$('ed');let drag=null;
-  const pt=e=>{const r=c.getBoundingClientRect();return{x:clamp((e.clientX-r.left)/r.width*S.W,0,S.W),y:clamp((e.clientY-r.top)/r.height*S.H,0,S.H)}};
-  c.addEventListener('pointerdown',e=>{
-    if(!S.src)return;const p=pt(e),tol=12/(c.getBoundingClientRect().width/S.W);
-    // a corner handle of any box?
-    for(const r of [...ROLES].reverse()){const b=S.boxes[r.id];if(!b)continue;
-      const ci=corners(b).findIndex(([hx,hy])=>Math.abs(hx-p.x)<=tol&&Math.abs(hy-p.y)<=tol);
-      if(ci>=0){active=r.id;const ax=ci%2?b.x:b.x+b.w,ay=ci<2?b.y+b.h:b.y;drag={mode:'draw',id:r.id,ax,ay};break}}
-    // inside a box: move it
-    if(!drag)for(const r of [...ROLES].reverse()){const b=S.boxes[r.id];if(b&&p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h){active=r.id;drag={mode:'move',id:r.id,ox:p.x-b.x,oy:p.y-b.y};break}}
-    // otherwise draw a new box for the active role
-    if(!drag){drag={mode:'draw',id:active,ax:p.x,ay:p.y};S.boxes[active]={x:p.x,y:p.y,w:0,h:0}}
-    c.setPointerCapture(e.pointerId);buildRoles();drawEditor();e.preventDefault();
-  });
-  c.addEventListener('pointermove',e=>{
-    if(!drag){if(S.src){const p=pt(e),tol=12/(c.getBoundingClientRect().width/S.W);let cur='crosshair';
-      for(const id in S.boxes){const b=S.boxes[id];if(corners(b).some(([hx,hy])=>Math.abs(hx-p.x)<=tol&&Math.abs(hy-p.y)<=tol)){cur='nwse-resize';break}if(p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h)cur='move'}c.style.cursor=cur}return}
-    const p=pt(e),b=S.boxes[drag.id];
-    if(drag.mode==='move'){b.x=clamp(p.x-drag.ox,0,S.W-b.w);b.y=clamp(p.y-drag.oy,0,S.H-b.h)}
-    else{b.x=Math.min(drag.ax,p.x);b.y=Math.min(drag.ay,p.y);b.w=Math.abs(p.x-drag.ax);b.h=Math.abs(p.y-drag.ay)}
-    S.bgCut=null;drawEditor();scheduleAll();
-  });
-  const end=()=>{if(!drag)return;const b=S.boxes[drag.id];
-    if(b&&(b.w<S.W*.01||b.h<S.H*.01))delete S.boxes[drag.id];
-    else if(drag.mode==='draw'&&!S.generated){ // jump to the next role still missing a box
-      const next=ROLES.find(r=>!S.boxes[r.id]&&r.id!=='other');if(next)active=next.id}
-    drag=null;S.bgCut=null;buildRoles();drawEditor();scheduleAll();aiSchedule()};
-  c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
-})();
-$('delBox').onclick=()=>{delete S.boxes[active];S.bgCut=null;buildRoles();drawEditor();scheduleAll();aiSchedule()};
-$('clearBoxes').onclick=()=>{S.boxes={};S.bgCut=null;setActive('logo');scheduleAll();aiSchedule()};
+/* ---------- 01 master ---------- */
+const S={src:null,name:'',sheet:null,result:null,crops:{},cards:new Map()};
+function openPicker(){$('fileInput').click()}
+$('drop').onclick=openPicker;$('drop').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')openPicker()};$('changeBtn').onclick=openPicker;
+$('fileInput').onchange=e=>{loadMaster(e.target.files[0]);e.target.value=''};
+function loadImg(f){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(new Error('เปิดภาพนี้ไม่ได้'));im.src=URL.createObjectURL(f)})}
+async function loadMaster(f){if(!f)return;try{const im=await loadImg(f);S.src=im;S.name=(f.name||'image').replace(/\.[^.]+$/,'')||'image';
+  $('drop').hidden=true;$('master').hidden=false;$('mImg').src=im.src;$('mName').textContent=S.name;$('mDim').textContent=im.naturalWidth+'×'+im.naturalHeight;
+  buildSheet();}catch(e){alert(e.message)}}
 
-/* ---------- layout rules ---------- */
-function aspectClass(r){return r>=3?'strip':r>=1.2?'land':r>.83?'square':r>=.4?'port':'tall'}
-const CLASS_NAME={strip:'แถบยาว',land:'แนวนอน',square:'สี่เหลี่ยม',port:'แนวตั้ง',tall:'เสาสูง'};
-function settings(){return{
-  bg:document.querySelector('input[name=bg]:checked').value,holes:document.querySelector('input[name=holes]:checked').value,
-  safe:$('gSafe').checked?clamp(+$('safePct').value||0,0,25)/100:-1,boxes:$('gBox').checked,thirds:$('gThirds').checked,
-  exGuides:$('exGuides').checked,fmt:$('fmt').value}}
-
-function layoutFor(sz,st){
-  const tw=sz.w,th=sz.h,W=S.W,H=S.H,B=S.boxes,o=over[sz.id]||{},c=aspectClass(tw/th);
-  const Sd=Math.min(tw,th),Ssrc=Math.min(W,H),m=.045*Sd,k0=Sd/Ssrc;
-  // background
-  let sb=st.bg==='cover'?Math.max(tw/W,th/H):th/H;
-  if(c==='tall'&&st.bg!=='cover')sb=Math.max(sb,tw/W); // a tall column never gets side gaps
-  const bw=W*sb,bh=H*sb,anchorX=B.talent?B.talent.x+B.talent.w/2:W/2;
-  let bx=bw>=tw?clamp(tw/2-anchorX*sb,tw-bw,0):(tw-bw)/2,by=bh>=th?(th-bh)/2:(th-bh)/2;
-  const base={x:bx,s:sb}; // the talent lines up with the un-nudged background
-  if(o.bg){bx+=(o.bg.dx||0)*tw;by+=(o.bg.dy||0)*th;const d=o.bg.ds||1;bx-= (bw*d-bw)/2;by-=(bh*d-bh)/2;sb*=d}
-  const bg={x:bx,y:by,w:W*sb,h:H*sb,s:sb};
-  const items={},notes=[];
-  const place=(id,s,x,y)=>{const b=B[id];items[id]={id,src:b,s,x,y,w:b.w*s,h:b.h*s}};
-  // talent: same scale as the background so it lines up with its own hole; bigger in squares (crop at knees)
-  if(B.talent){const b=B.talent;
-    let s;
-    if(c==='strip')s=.92*th/b.h;
-    else if(c==='tall')s=Math.min(.94*tw/b.w,.55*th/b.h);
-    else s=(th/H)*({land:1,square:1.35,port:1}[c]);
-    if(b.w*s>.94*tw)s=.94*tw/b.w;
-    let cx=base.x+(b.x+b.w/2)*base.s,y;
-    if(c==='strip')y=(th-b.h*s)/2;
-    else if(c==='tall')y=(th-b.h*s)/2;
-    else y=(b.y/H)*th;
-    let x=cx-b.w*s/2;if(b.w*s<=tw)x=clamp(x,0,tw-b.w*s);
-    place('talent',s,x,y);
-  }
-  // logo: top-left, size kept relative to the short side
-  if(B.logo){const b=B.logo;let s=k0*(c==='square'?.9:1);if(b.w*s>.32*tw)s=.32*tw/b.w;if(c==='strip'&&b.h*s>.55*th)s=.55*th/b.h;
-    const lm=clamp(Math.min(b.x,b.y)/Ssrc*Sd,.02*Sd,.08*Sd);
-    place('logo',s,lm,c==='strip'?(th-b.h*s)/2:lm)}
-  const logoB=items.logo?items.logo.y+items.logo.h:0,logoR=items.logo?items.logo.x+items.logo.w:0;
-  // headline + sub (capped by width below)
-  const textScale=(b,maxW,maxH)=>{let s=c==='strip'?Infinity:th/H;/* strips fill their text slot; otherwise text keeps its share of the frame height, as in the reference layouts */if(b.w*s>maxW)s=maxW/b.w;if(maxH&&b.h*s>maxH)s=maxH/b.h;return s};
-  if(c==='strip'){
-    const cx=tw*.68,maxW=tw*.36,both=B.head&&B.sub;
-    if(B.head){const b=B.head,s=textScale(b,maxW,th*(both?.38:.6));place('head',s,cx-b.w*s/2,(both?th*.34:th/2)-b.h*s/2)}
-    if(B.sub){const b=B.sub,s=textScale(b,maxW,th*(both?.32:.6));place('sub',s,cx-b.w*s/2,(both?th*.72:th/2)-b.h*s/2)}
-  }else{
-    const maxW=tw-2*m;
-    if(B.head){const b=B.head;let s=textScale(b,maxW*.9);let w=b.w*s,h=b.h*s,x=(tw-w)/2,y=(b.y+b.h/2)/H*th-h/2;
-      if(logoB&&x<logoR+m*.3&&y<logoB+m*.3)y=logoB+m*.3; // never under the logo
-      y=Math.max(y,m);
-      const t=items.talent;if(t){const face=t.y+t.h*.04;if(y+h>face&&x<t.x+t.w&&x+w>t.x){ // keep the headline off the faces
-        const room=face-m*.3-Math.max(m,logoB&&x<logoR?logoB+m*.3:m);
-        if(room<h){const s2=s*Math.max(.55,room/h);if(s2<s*.98)notes.push('ย่อหัวข้อเพื่อไม่ให้ทับหน้า');s=s2;w=b.w*s;h=b.h*s;x=(tw-w)/2}
-        y=Math.max(m,Math.min(y,face-m*.3-h))}}
-      place('head',s,x,y)}
-    if(B.sub){const b=B.sub,s=textScale(b,maxW*.9),w=b.w*s,h=b.h*s;let y=(b.y+b.h/2)/H*th-h/2;y=clamp(y,m,th-m-h);place('sub',s,(tw-w)/2,y)}
-  }
-  // other / CTA: keep its relative position
-  if(B.other){const b=B.other;let s=k0;if(b.w*s>.5*tw)s=.5*tw/b.w;if(b.h*s>.5*th)s=.5*th/b.h;
-    const cx=(b.x+b.w/2)/W*tw,cy=(b.y+b.h/2)/H*th,w=b.w*s,h=b.h*s;place('other',s,clamp(cx-w/2,m,Math.max(m,tw-m-w)),clamp(cy-h/2,m,Math.max(m,th-m-h)))}
-  // manual nudges
-  for(const id in items){const ov=o[id];if(!ov)continue;const it=items[id],d=ov.ds||1;
-    it.x-=(it.w*d-it.w)/2;it.y-=(it.h*d-it.h)/2;it.s*=d;it.w*=d;it.h*=d;it.x+=(ov.dx||0)*tw;it.y+=(ov.dy||0)*th}
-  // gaps: frame area the background image does not reach
-  const vis=Math.max(0,Math.min(tw,bg.x+bg.w)-Math.max(0,bg.x))*Math.max(0,Math.min(th,bg.y+bg.h)-Math.max(0,bg.y));
-  const gap=1-vis/(tw*th);
-  const up=Math.max(bg.s,...Object.values(items).map(i=>i.s));
-  return{c,bg,items,gap,up,notes};
-}
-
-/* ---------- drawing ---------- */
-function bgSource(st){
-  if(st.holes==='keep'||!Object.keys(S.boxes).length)return S.src;
-  if(aiOK()){if(st.holes==='fill')return S.ai.bg;
-    if(S.bgCut&&S.bgCut.mode==='aicut')return S.bgCut.c;
-    const c=document.createElement('canvas');c.width=S.W;c.height=S.H;const x=c.getContext('2d');x.drawImage(S.src,0,0);x.globalCompositeOperation='destination-out';x.drawImage(S.ai.hole,0,0);
-    S.bgCut={mode:'aicut',c};return c}
-  if(S.bgCut&&S.bgCut.mode===st.holes)return S.bgCut.c;
-  const c=document.createElement('canvas');c.width=S.W;c.height=S.H;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(S.src,0,0);
-  if(st.holes==='cut'){x.globalCompositeOperation='destination-out';for(const id in S.boxes){const b=padBox(S.boxes[id]);x.fillRect(b.x,b.y,b.w,b.h)}}
-  else for(const id in S.boxes)fillHole(x,padBox(S.boxes[id]));
-  S.bgCut={mode:st.holes,c};return c;
-}
-/* boxes are drawn by hand, so grow the hole a little to catch anti-aliased edges */
-function padBox(b){const p=Math.max(3,.08*Math.min(b.w,b.h)),x=Math.max(0,b.x-p),y=Math.max(0,b.y-p);return{x,y,w:Math.min(S.W,b.x+b.w+p)-x,h:Math.min(S.H,b.y+b.h+p)-y}}
-/* fill a box from the pixels around its edge (transfinite interpolation), then soften it */
-function fillHole(x,b){
-  const pad=2,x0=Math.max(0,Math.floor(b.x)-pad),y0=Math.max(0,Math.floor(b.y)-pad),x1=Math.min(S.W-1,Math.ceil(b.x+b.w)+pad),y1=Math.min(S.H-1,Math.ceil(b.y+b.h)+pad);
-  const w=x1-x0+1,h=y1-y0+1;if(w<3||h<3)return;
-  const img=x.getImageData(x0,y0,w,h),d=img.data,at=(i,j)=>(j*w+i)*4;
-  const T=new Float32Array(w*3),Bt=new Float32Array(w*3),L=new Float32Array(h*3),R=new Float32Array(h*3);
-  for(let i=0;i<w;i++)for(let k=0;k<3;k++){T[i*3+k]=d[at(i,0)+k];Bt[i*3+k]=d[at(i,h-1)+k]}
-  for(let j=0;j<h;j++)for(let k=0;k<3;k++){L[j*3+k]=d[at(0,j)+k];R[j*3+k]=d[at(w-1,j)+k]}
-  for(let j=1;j<h-1;j++){const v=j/(h-1);for(let i=1;i<w-1;i++){const u=i/(w-1),p=at(i,j);
-    for(let k=0;k<3;k++){
-      const val=(1-v)*T[i*3+k]+v*Bt[i*3+k]+(1-u)*L[j*3+k]+u*R[j*3+k]
-        -((1-u)*(1-v)*T[k]+u*(1-v)*T[(w-1)*3+k]+(1-u)*v*Bt[k]+u*v*Bt[(w-1)*3+k]);
-      d[p+k]=val}d[p+3]=255}}
-  const t=document.createElement('canvas');t.width=w;t.height=h;t.getContext('2d').putImageData(img,0,0);
-  const sm=document.createElement('canvas');sm.width=Math.max(2,Math.round(w/8));sm.height=Math.max(2,Math.round(h/8));
-  const sx=sm.getContext('2d');sx.imageSmoothingQuality='high';sx.drawImage(t,0,0,sm.width,sm.height);
-  x.save();x.beginPath();x.rect(b.x,b.y,b.w,b.h);x.clip();x.imageSmoothingQuality='high';x.drawImage(sm,x0,y0,w,h);x.restore();
-}
-
-function render(c,sz,k,st,guides,u,selId){
-  const tw=sz.w,th=sz.h;c.width=Math.max(1,Math.round(tw*k));c.height=Math.max(1,Math.round(th*k));
-  const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
-  const L=layoutFor(sz,st);
-  x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,c.width,c.height);
-  if(st.fmt==='jpg'&&!guides){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}
-  x.setTransform(k,0,0,k,0,0);
-  x.drawImage(bgSource(st),L.bg.x,L.bg.y,L.bg.w,L.bg.h);
-  const ai=aiOK();
-  for(const id of DRAW_ORDER){const it=L.items[id];if(!it)continue;const b=it.src,lay=ai&&S.ai.layers[id];
-    if(lay){const s=it.s;x.drawImage(lay.c,it.x+(lay.r.x-b.x)*s,it.y+(lay.r.y-b.y)*s,lay.r.w*s,lay.r.h*s)}
-    else x.drawImage(S.src,b.x,b.y,b.w,b.h,it.x,it.y,it.w,it.h)}
-  if(guides)drawGuides(x,L,tw,th,u,st,selId);
-  return L;
-}
-function drawGuides(x,L,tw,th,u,st,selId){
-  if(L.gap>.002){x.save();x.setLineDash([5*u,4*u]);x.lineWidth=1.5*u;x.strokeStyle=ALERT;x.strokeRect(L.bg.x,L.bg.y,L.bg.w,L.bg.h);x.restore()}
-  if(st.thirds){x.save();for(const [col,off] of [['rgba(0,0,0,.35)',u*.8],['rgba(255,255,255,.85)',0]]){x.strokeStyle=col;x.lineWidth=u;x.beginPath();
-    for(const t of [1/3,2/3]){x.moveTo(tw*t+off,0);x.lineTo(tw*t+off,th);x.moveTo(0,th*t+off);x.lineTo(tw,th*t+off)}x.stroke()}x.restore()}
-  if(st.safe>=0){const mx=tw*st.safe,my=th*st.safe;x.save();x.setLineDash([6*u,4*u]);
-    x.lineWidth=2.2*u;x.strokeStyle='rgba(255,255,255,.75)';x.strokeRect(mx,my,tw-2*mx,th-2*my);
-    x.lineWidth=1.5*u;x.strokeStyle=ACCENT;x.strokeRect(mx,my,tw-2*mx,th-2*my);x.restore()}
-  if(st.boxes||selId){for(const id of DRAW_ORDER){const it=L.items[id];if(!it)continue;if(!st.boxes&&id!==selId)continue;const r=ROLE[id],on=id===selId;
-    x.save();x.lineWidth=(on?3:1.6)*u;x.strokeStyle=r.color;if(!on)x.setLineDash([4*u,3*u]);x.strokeRect(it.x,it.y,it.w,it.h);x.restore();
-    if(st.boxes||on)label(x,r.name,r.color,Math.max(0,it.x),Math.max(0,it.y),u*.9,it.h)}}
-}
-
-
-/* ---------- AI cut-outs (runs locally with ONNX Runtime Web) ----------
-   ISNet (Apache-2.0) gives the talent/object matte, LaMa (Apache-2.0) fills the holes.
-   Text and logos are lifted LayerD-style: inpaint the box first, then the difference
-   between the original and the clean background becomes the text's alpha. */
-const ORT_CDN='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/';
-const MODELS={seg:{url:'models/isnet_fp16.onnx',mb:91,name:'โมเดลตัดคน'},lama:{url:'models/lama.onnx',mb:93,name:'โมเดลเติมพื้นหลัง'}};
-const SEG_ROLES=['talent','other'];
-S.ai={busy:false,again:false,ready:false,key:null,layers:{},bg:null,hole:null,segCache:{}};
-const sessions={},modelBufs={};let ortP=null,aiTimer=0;
-function aiReset(){S.ai={busy:false,again:false,ready:false,key:null,layers:{},bg:null,hole:null,segCache:{}};$('aiBar').hidden=true}
-function boxKey(){return JSON.stringify(Object.keys(S.boxes).sort().map(k=>{const b=S.boxes[k];return[k,Math.round(b.x),Math.round(b.y),Math.round(b.w),Math.round(b.h)]}))}
-function aiOK(){return $('useAI').checked&&S.ai.ready&&S.ai.key===boxKey()}
-function aiSchedule(){if(!S.generated||!$('useAI').checked)return;clearTimeout(aiTimer);aiTimer=setTimeout(aiRun,600)}
-function aiStatus(t,p,cls){$('aiBar').hidden=false;const s=$('aiStatus');s.textContent=t;s.className='status'+(cls?' '+cls:'');const pr=$('aiProg');pr.hidden=p==null;if(p!=null)pr.firstElementChild.style.width=Math.round(p*100)+'%'}
-const tick=()=>new Promise(r=>setTimeout(r,0));
-function loadOrt(){if(window.ort)return Promise.resolve();if(ortP)return ortP;
-  ortP=new Promise((res,rej)=>{const s=document.createElement('script');s.src=ORT_CDN+'ort.all.min.js';
-    s.onload=()=>{ort.env.wasm.wasmPaths=ORT_CDN;ort.env.logLevel='error';res()};s.onerror=()=>{ortP=null;rej(new Error('โหลด ONNX Runtime ไม่สำเร็จ'))};document.head.appendChild(s)});return ortP}
-async function fetchModel(key,onProg){
-  if(modelBufs[key])return modelBufs[key];
-  const m=MODELS[key],url=new URL(m.url,location.href).href;let cache=null;
-  try{cache=await caches.open('layoutguide-models-v1');const hit=await cache.match(url);if(hit)return modelBufs[key]=new Uint8Array(await hit.arrayBuffer())}catch(e){cache=null}
-  const r=await fetch(url);if(!r.ok)throw new Error(m.name+' โหลดไม่สำเร็จ ('+r.status+')');
-  const total=+r.headers.get('content-length')||m.mb*1e6,reader=r.body.getReader(),chunks=[];let got=0;
-  for(;;){const {done,value}=await reader.read();if(done)break;chunks.push(value);got+=value.length;onProg(Math.min(1,got/total))}
-  const buf=new Uint8Array(got);let o=0;for(const c of chunks){buf.set(c,o);o+=c.length}
-  try{if(cache)await cache.put(url,new Response(buf,{headers:{'content-type':'application/octet-stream'}}))}catch(e){}
-  return modelBufs[key]=buf;
-}
-async function makeSession(key,eps){let err;for(const ep of eps){try{const s=await ort.InferenceSession.create(modelBufs[key],{executionProviders:[ep],graphOptimizationLevel:'all'});s.ep=ep;return s}catch(e){err=e}}throw err||new Error('เปิดโมเดลไม่สำเร็จ')}
-async function getSession(key,label){
-  if(sessions[key])return sessions[key];
-  await loadOrt();await fetchModel(key,p=>aiStatus('กำลังโหลด'+MODELS[key].name+' (ครั้งแรกเท่านั้น) '+Math.round(p*100)+'%',p));
-  aiStatus('กำลังเตรียม'+MODELS[key].name+'…',null);await tick();
-  return sessions[key]=await makeSession(key,navigator.gpu?['webgpu','wasm']:['wasm']);
-}
-async function runModel(key,feeds){
-  try{return await sessions[key].run(feeds)}
-  catch(e){if(sessions[key].ep!=='webgpu')throw e;sessions[key]=await makeSession(key,['wasm']);return await sessions[key].run(feeds)} // GPU hiccup: retry on CPU
-}
-function cropTo(src,x,y,w,h,ow,oh){const c=document.createElement('canvas');c.width=ow;c.height=oh;const g=c.getContext('2d',{willReadFrequently:true});g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';g.drawImage(src,x,y,w,h,0,0,ow,oh);return c}
-function toCHW(c,f){const d=c.getContext('2d',{willReadFrequently:true}).getImageData(0,0,c.width,c.height).data,n=c.width*c.height,o=new Float32Array(3*n);
-  for(let i=0;i<n;i++){o[i]=f(d[i*4]);o[n+i]=f(d[i*4+1]);o[2*n+i]=f(d[i*4+2])}return o}
-function intRect(b,pad){const p=pad*Math.max(b.w,b.h),x=Math.max(0,Math.floor(b.x-p)),y=Math.max(0,Math.floor(b.y-p));return{x,y,w:Math.min(S.W,Math.ceil(b.x+b.w+p))-x,h:Math.min(S.H,Math.ceil(b.y+b.h+p))-y}}
-/* matte for one region -> canvas (w×h) whose alpha is the object */
-async function segment(r){
-  const c=cropTo(S.src,r.x,r.y,r.w,r.h,1024,1024);
-  const out=(await runModel('seg',{input_image:new ort.Tensor('float32',toCHW(c,v=>v/255-.5),[1,3,1024,1024])})).output_image.data;
-  let mn=Infinity,mx=-Infinity;for(const v of out){if(v<mn)mn=v;if(v>mx)mx=v}
-  const m=document.createElement('canvas');m.width=m.height=1024;const g=m.getContext('2d'),id=g.createImageData(1024,1024),d=id.data,k=1/Math.max(1e-6,mx-mn);
-  for(let i=0;i<out.length;i++){const a=clamp(((out[i]-mn)*k-.06)/.86,0,1);d[i*4]=d[i*4+1]=d[i*4+2]=255;d[i*4+3]=a*255}
-  g.putImageData(id,0,0);return cropTo(m,0,0,1024,1024,r.w,r.h);
-}
-/* LaMa: fill the hole inside region r of bg (in place) */
-async function inpaint(bg,hole,r){
-  const cw=Math.round(Math.min(S.W,Math.max(r.w*1.7,Math.min(S.W,384),r.h*.8))),ch=Math.round(Math.min(S.H,Math.max(r.h*1.7,Math.min(S.H,384),r.w*.8)));
-  const cx=Math.round(clamp(r.x+r.w/2-cw/2,0,S.W-cw)),cy=Math.round(clamp(r.y+r.h/2-ch/2,0,S.H-ch));
-  const ic=cropTo(bg,cx,cy,cw,ch,512,512),mc=cropTo(hole,cx,cy,cw,ch,512,512);
-  const md=mc.getContext('2d').getImageData(0,0,512,512).data,mask=new Float32Array(512*512);let any=0;
-  for(let i=0;i<mask.length;i++)if(md[i*4+3]>12){mask[i]=1;any++}
-  if(!any)return;
-  const out=(await runModel('lama',{image:new ort.Tensor('float32',toCHW(ic,v=>v/255),[1,3,512,512]),mask:new ort.Tensor('float32',mask,[1,1,512,512])})).output.data;
-  const o=document.createElement('canvas');o.width=o.height=512;const g=o.getContext('2d'),id=g.createImageData(512,512),d=id.data,n=512*512;
-  for(let i=0;i<n;i++){d[i*4]=out[i];d[i*4+1]=out[n+i];d[i*4+2]=out[2*n+i];d[i*4+3]=255}
-  g.putImageData(id,0,0);
-  const back=cropTo(o,0,0,512,512,cw,ch),bx=back.getContext('2d');bx.globalCompositeOperation='destination-in';bx.drawImage(hole,cx,cy,cw,ch,0,0,cw,ch);
-  bg.getContext('2d').drawImage(back,cx,cy);
-}
-/* text/logo: alpha from |original - clean background| */
-function liftText(r,bg){
-  const I=S.src_ctx.getImageData(r.x,r.y,r.w,r.h).data,B=bg.getContext('2d').getImageData(r.x,r.y,r.w,r.h).data,n=r.w*r.h,dist=new Float32Array(n),big=[];
-  for(let i=0;i<n;i++){const a=I[i*4]-B[i*4],b=I[i*4+1]-B[i*4+1],c=I[i*4+2]-B[i*4+2],v=Math.sqrt(a*a+b*b+c*c);dist[i]=v;if(v>28&&(i%3===0))big.push(v)}
-  if(big.length<n*.003)return null;
-  big.sort((a,b)=>a-b);const D=Math.max(40,big[Math.floor(big.length*.85)]*.85);
-  const c=document.createElement('canvas');c.width=r.w;c.height=r.h;const g=c.getContext('2d'),id=g.createImageData(r.w,r.h),d=id.data;
-  for(let i=0;i<n;i++){let a=clamp(dist[i]/D,0,1);if(a<.12)a=0;const ia=1/Math.max(a,.25);
-    for(let k=0;k<3;k++)d[i*4+k]=clamp(B[i*4+k]+(I[i*4+k]-B[i*4+k])*ia,0,255);d[i*4+3]=a*255}
-  g.putImageData(id,0,0);return c;
-}
-function dilate(m,rad){const c=document.createElement('canvas');c.width=m.width;c.height=m.height;const g=c.getContext('2d');
-  for(let a=0;a<16;a++){const t=a/16*Math.PI*2;for(const f of [1,.5])g.drawImage(m,Math.cos(t)*rad*f,Math.sin(t)*rad*f)}g.drawImage(m,0,0);return c}
-async function aiRun(){
-  if(!S.src||!$('useAI').checked||!S.generated)return;
-  const key=boxKey();if(S.ai.ready&&S.ai.key===key)return;
-  if(S.ai.busy){S.ai.again=true;return}
-  const ids=Object.keys(S.boxes);if(!ids.length){$('aiBar').hidden=true;return}
-  S.ai.busy=true;const t0=performance.now();
-  try{
-    if(!S.src_ctx){const c=document.createElement('canvas');c.width=S.W;c.height=S.H;S.src_ctx=c.getContext('2d',{willReadFrequently:true});S.src_ctx.drawImage(S.src,0,0)}
-    const seg=ids.filter(id=>SEG_ROLES.includes(id)),rect={};
-    for(const id of ids)rect[id]=intRect(S.boxes[id],SEG_ROLES.includes(id)?.03:.06);
-    if(seg.length)await getSession('seg');
-    await getSession('lama');
-    const mattes={};
-    for(const id of seg){const r=rect[id],k=JSON.stringify(r),hit=S.ai.segCache[id];
-      if(hit&&hit.k===k){mattes[id]=hit.m;continue}
-      aiStatus('กำลังตัด'+ROLE[id].name+'…',null);await tick();mattes[id]=await segment(r);S.ai.segCache[id]={k,m:mattes[id]}}
-    // hole = mattes (grown a little) + text boxes
-    const hole=document.createElement('canvas');hole.width=S.W;hole.height=S.H;const hg=hole.getContext('2d');hg.fillStyle='#fff';
-    for(const id of ids){const r=rect[id];if(mattes[id]){const big=document.createElement('canvas');big.width=S.W;big.height=S.H;big.getContext('2d').drawImage(mattes[id],r.x,r.y);
-        hg.drawImage(dilate(big,Math.max(3,.015*Math.max(r.w,r.h))),0,0)}
-      else hg.fillRect(r.x,r.y,r.w,r.h)}
-    const bg=document.createElement('canvas');bg.width=S.W;bg.height=S.H;bg.getContext('2d').drawImage(S.src,0,0);
-    const order=[...seg,...ids.filter(id=>!seg.includes(id))];
-    for(let i=0;i<order.length;i++){aiStatus(`กำลังเติมพื้นหลัง ${i+1}/${order.length}…`,i/order.length);await tick();
-      const r=rect[order[i]];await inpaint(bg,hole,{x:r.x-4,y:r.y-4,w:r.w+8,h:r.h+8})}
-    const layers={};
-    for(const id of ids){const r=rect[id];
-      if(mattes[id]){const c=cropTo(S.src,r.x,r.y,r.w,r.h,r.w,r.h),g=c.getContext('2d');g.globalCompositeOperation='destination-in';g.drawImage(mattes[id],0,0);layers[id]={c,r}}
-      else{const c=liftText(r,bg);if(c)layers[id]={c,r}}}
-    if(boxKey()!==key){S.ai.again=true}
-    else{Object.assign(S.ai,{ready:true,key,layers,bg,hole});
-      const sec=((performance.now()-t0)/1000).toFixed(1);aiStatus(`ตัดชิ้นส่วนด้วย AI แล้ว · ${sec} วินาที · ${(sessions.lama||{}).ep==='webgpu'?'GPU':'CPU'}`,null,'ok')}
-  }catch(e){console.error(e);aiStatus('ใช้ AI ไม่ได้ ('+(e.message||e)+') ตอนนี้ใช้การตัดแบบสี่เหลี่ยมแทน',null,'bad')}
-  finally{S.ai.busy=false;S.bgCut=null;redrawAll();if(S.ai.again){S.ai.again=false;aiRun()}}
-}
-
-/* ---------- size picker ---------- */
-const chev='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>';
+/* ---------- 02 sizes ---------- */
 function shapeIcon(w,h){const m=18,r=w/h;let a=m,b=m/r;if(b>m){b=m;a=m*r}return `<span class="shape"><i style="width:${Math.max(3,a).toFixed(1)}px;height:${Math.max(3,b).toFixed(1)}px"></i></span>`}
-const GROUP_LIST=()=>GROUPS.map(g=>({id:g.id,name:g.name})).concat([{id:'custom',name:'กำหนดเอง'}]);
-function buildGroups(){
-  const box=$('groups'),open={};box.querySelectorAll('details').forEach(d=>open[d.dataset.g]=d.open);box.innerHTML='';
-  const all=sizesAll();
-  for(const g of GROUP_LIST()){
-    const items=all.filter(s=>s.g===g.id),on=items.filter(s=>sel.has(s.id)).length;
-    const d=mk('details','group');d.dataset.g=g.id;d.open=open[g.id]!=null?open[g.id]:true;
-    d.innerHTML=`<summary>${chev}<span>${g.name}</span><span class="gc">${on}/${items.length}</span></summary>`;
-    const list=mk('div','szlist');
-    if(items.length){const tg=mk('button','btn ghost',on===items.length?'ไม่เลือกกลุ่มนี้':'เลือกทั้งกลุ่ม');tg.type='button';tg.style.justifySelf='start';
-      tg.onclick=()=>{const allOn=items.every(s=>sel.has(s.id));items.forEach(s=>allOn?sel.delete(s.id):sel.add(s.id));selChanged()};list.appendChild(tg)}
-    for(const s of items){
-      const row=mk('label','szrow');
-      row.innerHTML=`<input type="checkbox" ${sel.has(s.id)?'checked':''}>${shapeIcon(s.w,s.h)}<span class="nm" title="${esc(s.name)}">${esc(s.name)}</span><span class="px">${s.w}×${s.h}</span>`;
-      row.querySelector('input').onchange=e=>{e.target.checked?sel.add(s.id):sel.delete(s.id);selChanged()};
-      if(g.id==='custom'){const x=mk('button','x','✕');x.type='button';x.setAttribute('aria-label','ลบ '+s.name);
-        x.onclick=e=>{e.preventDefault();custom=custom.filter(c=>c.id!==s.id);sel.delete(s.id);store.set('custom',custom);selChanged()};row.appendChild(x)}
-      list.appendChild(row);
-    }
-    if(g.id==='custom'){
-      const add=mk('div','addrow');
-      add.innerHTML='<input class="nm" placeholder="ชื่อ (ไม่บังคับ)" aria-label="ชื่อไซส์"><input inputmode="numeric" placeholder="กว้าง" aria-label="กว้าง px"><span>×</span><input inputmode="numeric" placeholder="สูง" aria-label="สูง px"><button class="btn small" type="button">เพิ่ม</button>';
-      const [n,w,h]=add.querySelectorAll('input');
-      const go=()=>{const W=Math.round(+w.value),H=Math.round(+h.value);
-        if(!(W>=8&&H>=8&&W<=16384&&H<=16384)){w.focus();setStatus('ใส่ขนาด 8–16384 px','bad');return}
-        const c={id:'c-'+W+'x'+H+'-'+Date.now().toString(36),name:n.value.trim()||('กำหนดเอง '+ratioText(W,H)),w:W,h:H};
-        custom.push(c);sel.add(c.id);store.set('custom',custom);setStatus('');selChanged()};
-      add.querySelector('button').onclick=go;[n,w,h].forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')go()}));
-      list.appendChild(add);
-    }
-    d.appendChild(list);box.appendChild(d);
-  }
-  $('selCount').textContent=selectedSizes().length+' ไซส์';
-}
-function selChanged(){store.set('sel',[...sel]);buildGroups();updateGen();if(S.generated)buildResults()}
-$('selAll').onclick=()=>{sizesAll().forEach(s=>sel.add(s.id));selChanged()};
-$('selNone').onclick=()=>{sel.clear();selChanged()};
-$('selDefault').onclick=()=>{sel=new Set(ALL.filter(s=>s.def).map(s=>s.id));selChanged()};
-function updateGen(){const n=selectedSizes().length;$('genBtn').disabled=!S.src||!n;$('genBtn').textContent=(S.generated?'สร้างใหม่':'สร้างไกด์')+` (${n} ไซส์)`}
+function buildSizes(){const box=$('sizes');box.innerHTML='';
+  for(const s of SIZES){const row=mk('label','szrow',`<input type="checkbox" ${sel.has(s.id)?'checked':''}>${shapeIcon(s.w,s.h)}<span class="nm">${s.name}</span><span class="px">${s.w}×${s.h}</span>`);
+    row.querySelector('input').onchange=e=>{e.target.checked?sel.add(s.id):sel.delete(s.id);store.set('sel7',[...sel]);$('selCount').textContent=sel.size+' ไซส์';buildSheet();if(S.result)buildCards()};box.appendChild(row)}
+  $('selCount').textContent=sel.size+' ไซส์'}
 
-/* ---------- results ---------- */
-const cards=new Map();
-function dispSize(sz){const box=$('rbody').clientWidth-32-26,maxW=Math.max(194,Math.min(460,box)),maxH=280,r=sz.w/sz.h;let w=maxW,h=w/r;if(h>maxH){h=maxH;w=h*r}return{w,h}}
+/* ---------- 03 sheet + prompt ---------- */
+const PROMPT=()=>`Edit this image. It is a layout sheet: the box labeled SOURCE (green border) contains an advertisement. Each magenta frame has a size label.
+Fill every magenta frame with the SAME advertisement, re-designed by a professional designer for that frame's shape:
+- keep the logo, the headline and every piece of text with exactly the same wording, spelling and font style
+- reposition and rescale the elements so they fit that shape nicely (logo in a corner, headline and text fully inside, people/product as the hero)
+- extend or crop the background naturally so it fills the whole frame edge to edge, no empty or white areas inside a frame
+Do not change anything outside the frames: keep the white sheet, the magenta frame lines, the labels and the SOURCE box exactly where they are.
+Return the full sheet at the same 16:9 size.`;
+function wrapText(x,text,maxW){const words=text.split(' '),lines=[];let cur='';for(const w of words){const t=cur?cur+' '+w:w;if(x.measureText(t).width>maxW&&cur){lines.push(cur);cur=w}else cur=t}if(cur)lines.push(cur);return lines}
+function buildSheet(){
+  const c=document.createElement('canvas');c.width=SW;c.height=SH;const x=c.getContext('2d');
+  x.fillStyle='#fff';x.fillRect(0,0,SW,SH);
+  x.fillStyle='#111';x.font='600 30px "IBM Plex Sans Thai",Arial,sans-serif';x.textBaseline='top';
+  x.fillText('LAYOUT SHEET — fill each magenta frame with the SOURCE ad re-laid-out for that shape. Keep all text identical. Keep frames & labels.',30,22);
+  x.font='500 22px "IBM Plex Mono",monospace';x.fillStyle='#666';x.fillText('Do not draw outside the frames · background must fill each frame edge to edge',30,64);
+  // source
+  x.fillStyle='#111';x.font='700 24px "IBM Plex Mono",monospace';x.fillText('SOURCE',SRC_BOX.x,SRC_BOX.y-34);
+  if(S.src){const r=Math.min(SRC_BOX.w/S.src.naturalWidth,SRC_BOX.h/S.src.naturalHeight),w=S.src.naturalWidth*r,h=S.src.naturalHeight*r,px=SRC_BOX.x+(SRC_BOX.w-w)/2,py=SRC_BOX.y+(SRC_BOX.h-h)/2;
+    x.imageSmoothingQuality='high';x.drawImage(S.src,px,py,w,h);x.lineWidth=6;x.strokeStyle='#16a34a';x.strokeRect(px-3,py-3,w+6,h+6)}
+  else{x.strokeStyle='#16a34a';x.lineWidth=6;x.setLineDash([12,10]);x.strokeRect(SRC_BOX.x,SRC_BOX.y,SRC_BOX.w,SRC_BOX.h);x.setLineDash([])}
+  // frames
+  for(const s of SIZES){if(!sel.has(s.id))continue;const f=s.f;
+    x.fillStyle='#f3f3f3';x.fillRect(f.x,f.y,f.w,f.h);
+    x.lineWidth=STROKE;x.strokeStyle=FRAME;x.strokeRect(f.x-STROKE/2,f.y-STROKE/2,f.w+STROKE,f.h+STROKE);
+    x.fillStyle='#111';x.font='700 24px "IBM Plex Mono",monospace';x.textBaseline='bottom';x.fillText(s.r,f.x,f.y-10);
+    x.fillStyle='#bbb';x.font=`700 ${Math.round(Math.min(f.w,f.h)*.3)}px Archivo,Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText(s.r,f.x+f.w/2,f.y+f.h/2);x.textAlign='left';x.textBaseline='top'}
+  S.sheet=c;
+  const v=$('tplView');v.width=SW/2;v.height=SH/2;v.getContext('2d').drawImage(c,0,0,SW/2,SH/2);
+  $('sendBtn').disabled=$('dlSheet').disabled=!S.src||!sel.size;
+}
+$('prompt').value=PROMPT();
+const sheetBlob=()=>new Promise(r=>S.sheet.toBlob(r,'image/png'));
+$('sendBtn').onclick=async()=>{
+  let ok=false;
+  try{await navigator.clipboard.write([new ClipboardItem({'image/png':sheetBlob()})]);ok=true}catch(e){}
+  window.open('https://gemini.google.com/app','_blank','noopener');
+  $('copyStatus').className='status '+(ok?'ok':'bad');
+  $('copyStatus').textContent=ok?'ก๊อปแผ่นงานแล้ว — วางใน Gemini ด้วย Ctrl+V แล้วกด "ก๊อปคำสั่ง"':'ก๊อปภาพอัตโนมัติไม่ได้ในเบราว์เซอร์นี้ ใช้ "ดาวน์โหลดแผ่นงานแทน" แล้วลากไฟล์ไปที่ Gemini';
+};
+$('dlSheet').onclick=async()=>saveBlob(await sheetBlob(),S.name+'_layout-sheet.png');
+$('copyPrompt').onclick=async()=>{try{await navigator.clipboard.writeText($('prompt').value);$('copyStatus').className='status ok';$('copyStatus').textContent='ก๊อปคำสั่งแล้ว — วางใน Gemini แล้วกดส่ง'}catch(e){$('prompt').select();document.execCommand('copy')}};
+
+/* ---------- 04 result: paste, find frames, cut ---------- */
+async function loadResult(f){
+  if(!f)return;if(!sel.size){setRes('ยังไม่ได้เลือกไซส์','bad');return}
+  try{const im=await loadImg(f);
+    // bring the result onto sheet coordinates (Gemini may return a different pixel size)
+    const c=document.createElement('canvas');c.width=SW;c.height=SH;const x=c.getContext('2d',{willReadFrequently:true});x.imageSmoothingQuality='high';x.drawImage(im,0,0,SW,SH);
+    const ar=im.naturalWidth/im.naturalHeight;
+    S.result=c;S.crops={};const found=detectFrames(x);
+    for(const s of SIZES)S.crops[s.id]=found[s.id];
+    bumpQuota(1);buildCards();drawSheetView();
+    const miss=SIZES.filter(s=>sel.has(s.id)&&!found[s.id].hit).length;
+    setRes(`ตัดแยก ${sel.size} ไซส์แล้ว`+(Math.abs(ar-16/9)>.04?` · ภาพที่วางไม่ใช่ 16:9 (${im.naturalWidth}×${im.naturalHeight}) กรอบอาจเพี้ยน`:'')+(miss?` · หาเส้นกรอบไม่เจอ ${miss} ไซส์ ใช้ตำแหน่งตามแผ่นงานแทน ตรวจได้ที่ปุ่มเลื่อน`:''),miss||Math.abs(ar-16/9)>.04?'bad':'ok');
+    $('showSheet').hidden=false;$('zipBtn').disabled=false;
+  }catch(e){setRes(e.message,'bad')}
+}
+function setRes(t,c){const s=$('resStatus');s.textContent=t;s.className='status'+(c?' '+c:'')}
+/* look for the magenta frame lines near where we drew them, so small shifts by Gemini are absorbed */
+function detectFrames(x){
+  const d=x.getImageData(0,0,SW,SH).data,mag=(i)=>{const r=d[i],g=d[i+1],b=d[i+2];return r>170&&b>120&&g<110&&r-g>90&&b-g>50};
+  const out={};
+  for(const s of SIZES){const f=s.f,sr=Math.round(Math.max(24,Math.min(f.w,f.h)*.12));
+    const colScore=(X,y0,y1)=>{let n=0;for(let y=y0;y<y1;y+=2)if(mag((y*SW+X)*4))n++;return n/((y1-y0)/2)};
+    const rowScore=(Y,x0,x1)=>{let n=0;for(let X=x0;X<x1;X+=2)if(mag((Y*SW+X)*4))n++;return n/((x1-x0)/2)};
+    const best=(fn,c0,lo,hi)=>{let bv=0,bp=c0;for(let p=lo;p<=hi;p++){const v=fn(p);if(v>bv+1e-6||(Math.abs(v-bv)<1e-6&&Math.abs(p-c0)<Math.abs(bp-c0))){bv=v;bp=p}}return{p:bp,v:bv}};
+    const y0=Math.round(f.y+f.h*.15),y1=Math.round(f.y+f.h*.85),x0=Math.round(f.x+f.w*.15),x1=Math.round(f.x+f.w*.85);
+    const cl=v=>clamp(v,0,SW-1),rl=v=>clamp(v,0,SH-1);
+    const L=best(X=>colScore(X,y0,y1),f.x-STROKE/2,cl(f.x-sr),cl(f.x+sr)),R=best(X=>colScore(X,y0,y1),f.x+f.w+STROKE/2,cl(f.x+f.w-sr),cl(f.x+f.w+sr));
+    const T=best(Y=>rowScore(Y,x0,x1),f.y-STROKE/2,rl(f.y-sr),rl(f.y+sr)),B=best(Y=>rowScore(Y,x0,x1),f.y+f.h+STROKE/2,rl(f.y+f.h-sr),rl(f.y+f.h+sr));
+    const hits=[L,R,T,B].filter(e=>e.v>.35).length;
+    let r={x:f.x,y:f.y,w:f.w,h:f.h,hit:false};
+    if(hits>=3){ // inner edge of the detected lines, then trim the anti-aliased stroke
+      // walk inward past the (possibly blurred) line until no pinkish pixels are left, then a small margin
+      const pink=i=>{const r=d[i],g=d[i+1],b=d[i+2];return r-g>45&&b-g>25};
+      const colP=(X)=>{let n=0;for(let y=y0;y<y1;y+=3)if(pink((y*SW+X)*4))n++;return n/((y1-y0)/3)},rowP=(Y)=>{let n=0;for(let X=x0;X<x1;X+=3)if(pink((Y*SW+X)*4))n++;return n/((x1-x0)/3)};
+      const walk=(p,dir,fn,lim)=>{let k=0;while(k<lim&&fn(p)>.12){p+=dir;k++}return p+dir*3};
+      const lim=Math.round(sr);
+      const il=walk(L.v>.35?L.p:f.x-STROKE/2,1,colP,lim),ir=walk(R.v>.35?R.p:f.x+f.w+STROKE/2,-1,colP,lim),it=walk(T.v>.35?T.p:f.y-STROKE/2,1,rowP,lim),ib=walk(B.v>.35?B.p:f.y+f.h+STROKE/2,-1,rowP,lim);
+      if(ir-il>f.w*.7&&ib-it>f.h*.7)r={x:il,y:it,w:ir-il,h:ib-it,hit:true}}
+    else r={x:f.x+3,y:f.y+3,w:f.w-6,h:f.h-6,hit:false};
+    out[s.id]=fitRatio(r,s.w/s.h);
+  }
+  return out;
+}
+/* crop window with the exact output ratio, centred on the detected frame */
+function fitRatio(r,ar){let w=r.w,h=w/ar;if(h>r.h){h=r.h;w=h*ar}return{x:r.x+(r.w-w)/2,y:r.y+(r.h-h)/2,w,h,hit:r.hit}}
+function drawSheetView(){const c=$('sheetCanvas');c.width=SW/2;c.height=SH/2;const x=c.getContext('2d');x.drawImage(S.result,0,0,SW/2,SH/2);
+  x.lineWidth=2;for(const s of SIZES){if(!sel.has(s.id))continue;const r=S.crops[s.id];x.strokeStyle=r.hit?'#16a34a':'#f25c05';x.setLineDash(r.hit?[]:[6,4]);x.strokeRect(r.x/2,r.y/2,r.w/2,r.h/2)}x.setLineDash([])}
+$('showSheet').onclick=()=>{$('sheetView').hidden=!$('sheetView').hidden};
+
 const ICON_MOVE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M12 2 9 5M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/></svg>';
 const ICON_DL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
-const ICON_RESET='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
 const ICON_MINUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>';
 const ICON_PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
-function buildResults(){
-  S.generated=true;updateGen();cards.clear();
-  const rb=$('rbody');rb.innerHTML='';if(!S.src)return;
-  const list=selectedSizes();
-  for(const g of GROUP_LIST()){
-    const items=list.filter(s=>s.g===g.id);if(!items.length)continue;
-    const sec=mk('section','rgroup');sec.innerHTML=`<h3>${g.name}<span class="count">${items.length}</span></h3>`;
-    const wrap=mk('div','cards');for(const sz of items)wrap.appendChild(makeCard(sz));sec.appendChild(wrap);rb.appendChild(sec);
-  }
-  if(!list.length)rb.innerHTML='<div class="empty-state"><strong>ยังไม่ได้เลือกไซส์</strong><span>เลือกไซส์ในช่อง 03</span></div>';
-  if(list.length&&!Object.keys(S.boxes).length)rb.prepend(mk('div','hint','ยังไม่ได้ลากกรอบชิ้นส่วนในช่อง 02 ตอนนี้จึงแสดงแค่พื้นหลัง'));
-  $('resCount').textContent=list.length?list.length+' ไซส์':'';$('zipBtn').disabled=!list.length;
-  redrawAll();
-}
-function makeCard(sz){
-  const el=mk('article','card'),d=dispSize(sz);el.style.width=(d.w+26)+'px';
-  el.innerHTML=`<div class="pic checker"><span class="ratio">${ratioText(sz.w,sz.h)}</span><span class="edithint" hidden>แตะชิ้นแล้วลาก</span><canvas></canvas></div>
-  <div class="cap"><span class="fn" title="${esc(sz.name)}">${esc(sz.name)}</span><span class="dim">${sz.w}×${sz.h}px</span><div class="tags"></div></div>
-  <div class="cact"><button class="btn icon mv" type="button" title="ปรับตำแหน่งชิ้นส่วน" aria-label="ปรับตำแหน่งชิ้นส่วน">${ICON_MOVE}</button>
-  <span class="sel"></span>
-  <button class="btn icon zm" type="button" title="ย่อชิ้นที่เลือก" aria-label="ย่อชิ้นที่เลือก" hidden>${ICON_MINUS}</button>
-  <button class="btn icon zp" type="button" title="ขยายชิ้นที่เลือก" aria-label="ขยายชิ้นที่เลือก" hidden>${ICON_PLUS}</button>
-  <button class="btn icon rs" type="button" title="รีเซ็ตไซส์นี้" aria-label="รีเซ็ตไซส์นี้" hidden>${ICON_RESET}</button>
-  <button class="btn icon dl" type="button" title="เซฟไซส์นี้" aria-label="เซฟไซส์นี้">${ICON_DL}</button></div>`;
-  const c=el.querySelector('canvas'),it={sz,el,canvas:c,sel:null,L:null};
-  const selLabel=()=>{const on=el.classList.contains('editing');el.querySelector('.sel').textContent=on?(it.sel?(it.sel==='bg'?'พื้นหลัง':ROLE[it.sel].name):'แตะเลือกชิ้นบนภาพ'):'';
-    el.querySelector('.zm').hidden=el.querySelector('.zp').hidden=!(on&&it.sel)};
-  el.querySelector('.mv').onclick=e=>{const on=el.classList.toggle('editing');e.currentTarget.classList.toggle('on',on);el.querySelector('.edithint').hidden=!on;if(!on)it.sel=null;selLabel();redraw(sz.id)};
-  const zoom=f=>{if(!it.sel)return;const o=((over[sz.id]=over[sz.id]||{})[it.sel]=over[sz.id][it.sel]||{});o.ds=(o.ds||1)*f;redraw(sz.id)};
-  el.querySelector('.zm').onclick=()=>zoom(1/1.1);el.querySelector('.zp').onclick=()=>zoom(1.1);
-  el.querySelector('.rs').onclick=()=>{delete over[sz.id];redraw(sz.id)};
-  el.querySelector('.dl').onclick=()=>downloadOne(sz);
-  let drag=null;
-  c.addEventListener('pointerdown',e=>{if(!el.classList.contains('editing')||!it.L)return;
-    const r=c.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*sz.w,py=(e.clientY-r.top)/r.height*sz.h;
-    let hit='bg';for(const id of [...DRAW_ORDER].reverse()){const i=it.L.items[id];if(i&&px>=i.x&&px<=i.x+i.w&&py>=i.y&&py<=i.y+i.h){hit=id;break}}
-    it.sel=hit;selLabel();drag={x:e.clientX,y:e.clientY};c.setPointerCapture(e.pointerId);e.preventDefault();redraw(sz.id)});
-  c.addEventListener('pointermove',e=>{if(!drag)return;const r=c.getBoundingClientRect(),o=((over[sz.id]=over[sz.id]||{})[it.sel]=over[sz.id][it.sel]||{});
-    o.dx=(o.dx||0)+(e.clientX-drag.x)/r.width;o.dy=(o.dy||0)+(e.clientY-drag.y)/r.height;drag={x:e.clientX,y:e.clientY};schedule(sz.id)});
-  const end=()=>{drag=null};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
-  cards.set(sz.id,it);return el;
-}
-const pending=new Set();let raf=0;
-function schedule(id){pending.add(id);if(!raf)raf=requestAnimationFrame(()=>{raf=0;const ids=[...pending];pending.clear();ids.forEach(redraw)})}
-function scheduleAll(){if(S.generated)cards.forEach((_,id)=>schedule(id))}
-function redraw(id){
-  const it=cards.get(id);if(!it||!S.src)return;const st=settings(),sz=it.sz,d=dispSize(sz),dpr=Math.min(2,window.devicePixelRatio||1);
-  it.el.style.width=(d.w+26)+'px';it.canvas.style.width=d.w+'px';it.canvas.style.height=d.h+'px';
-  const k=d.w*dpr/sz.w,editing=it.el.classList.contains('editing');
-  const L=it.L=render(it.canvas,sz,k,st,true,dpr/k,editing?it.sel:null);
-  const t=[`<span class="tag">${CLASS_NAME[L.c]}</span>`];
-  if(L.gap>.005)t.push(`<span class="tag gap">พื้นหลังแหว่ง ${Math.round(L.gap*100)}%</span>`);
-  for(const n of L.notes)t.push(`<span class="tag warn">${n}</span>`);
-  if(L.up>1.15)t.push(`<span class="tag warn">ขยาย ×${L.up.toFixed(1)} อาจไม่คม</span>`);
-  it.el.querySelector('.tags').innerHTML=t.join('');
-  const o=over[sz.id];it.el.querySelector('.rs').hidden=!(o&&Object.keys(o).length);
-}
-function redrawAll(){if(S.generated)cards.forEach((_,id)=>redraw(id))}
+function dispSize(s){const maxW=Math.min(420,Math.max(200,$('cards').clientWidth-26)),maxH=300,r=s.w/s.h;let w=maxW,h=w/r;if(h>maxH){h=maxH;w=h*r}return{w,h}}
+function buildCards(){const box=$('cards');box.innerHTML='';S.cards.clear();
+  for(const s of SIZES){if(!sel.has(s.id))continue;const d=dispSize(s);
+    const el=mk('article','card',`<div class="pic"><span class="ratio">${s.r}</span><canvas></canvas></div>
+      <div class="cap"><span class="fn">${s.name}</span><span class="dim">${s.w}×${s.h}px</span></div>
+      <div class="cact"><button class="btn icon mv" type="button" title="เลื่อน/ขยายกรอบตัด" aria-label="เลื่อนกรอบตัด">${ICON_MOVE}</button>
+      <button class="btn icon zm" type="button" title="ซูมออก" aria-label="ซูมออก" hidden>${ICON_MINUS}</button><button class="btn icon zp" type="button" title="ซูมเข้า" aria-label="ซูมเข้า" hidden>${ICON_PLUS}</button>
+      <span class="sp"></span><button class="btn icon dl" type="button" title="เซฟไซส์นี้" aria-label="เซฟไซส์นี้">${ICON_DL}</button></div>`);
+    el.style.width=(d.w+26)+'px';const c=el.querySelector('canvas');c.style.width=d.w+'px';c.style.height=d.h+'px';
+    el.querySelector('.mv').onclick=e=>{const on=el.classList.toggle('editing');e.currentTarget.classList.toggle('on',on);el.querySelector('.zm').hidden=el.querySelector('.zp').hidden=!on};
+    const zoom=f=>{const r=S.crops[s.id],cx=r.x+r.w/2,cy=r.y+r.h/2;r.w*=f;r.h*=f;r.x=cx-r.w/2;r.y=cy-r.h/2;drawCard(s);drawSheetView()};
+    el.querySelector('.zm').onclick=()=>zoom(1.06);el.querySelector('.zp').onclick=()=>zoom(1/1.06);
+    el.querySelector('.dl').onclick=async()=>saveBlob(await exportBlob(s),fileName(s));
+    let drag=null;
+    c.addEventListener('pointerdown',e=>{if(!el.classList.contains('editing'))return;drag={x:e.clientX,y:e.clientY};c.setPointerCapture(e.pointerId);e.preventDefault()});
+    c.addEventListener('pointermove',e=>{if(!drag)return;const r=S.crops[s.id],k=r.w/d.w;r.x-=(e.clientX-drag.x)*k;r.y-=(e.clientY-drag.y)*k;drag={x:e.clientX,y:e.clientY};drawCard(s)});
+    const end=()=>{if(drag){drag=null;drawSheetView()}};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
+    S.cards.set(s.id,{el,c,d});box.appendChild(el);drawCard(s)}}
+function drawCard(s){const it=S.cards.get(s.id);if(!it)return;const dpr=Math.min(2,devicePixelRatio||1);it.c.width=Math.round(it.d.w*dpr);it.c.height=Math.round(it.d.h*dpr);
+  const x=it.c.getContext('2d');x.imageSmoothingQuality='high';const r=S.crops[s.id];x.fillStyle='#fff';x.fillRect(0,0,it.c.width,it.c.height);x.drawImage(S.result,r.x,r.y,r.w,r.h,0,0,it.c.width,it.c.height)}
 
 /* ---------- export ---------- */
-function fileName(sz,st){return `${S.name}_${sz.w}x${sz.h}_${ratioText(sz.w,sz.h).replace(':','-')}.${st.fmt}`}
-function exportBlob(sz,st){
-  const c=document.createElement('canvas'),u=Math.max(2,Math.min(sz.w,sz.h)/260);
-  render(c,sz,1,st,st.exGuides,u,null);
-  if(st.fmt==='jpg'){const j=document.createElement('canvas');j.width=c.width;j.height=c.height;const x=j.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,j.width,j.height);x.drawImage(c,0,0);return toBlob(j,'image/jpeg')}
-  return toBlob(c,'image/png');
-}
-const toBlob=(c,t)=>new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('สร้างไฟล์ไม่สำเร็จ')),t,.92));
+const fileName=s=>`${S.name}_${s.w}x${s.h}_${s.r.replace(':','-')}.png`;
+function exportBlob(s){const c=document.createElement('canvas');c.width=s.w;c.height=s.h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.fillStyle='#fff';x.fillRect(0,0,s.w,s.h);
+  const r=S.crops[s.id];x.drawImage(S.result,r.x,r.y,r.w,r.h,0,0,s.w,s.h);return new Promise(res=>c.toBlob(res,'image/png'))}
 function saveBlob(b,name){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
-async function downloadOne(sz){try{const st=settings();saveBlob(await exportBlob(sz,st),fileName(sz,st))}catch(e){setStatus(e.message,'bad')}}
 let zipP=null;
 function loadZip(){if(window.JSZip)return Promise.resolve();if(zipP)return zipP;zipP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';s.onload=res;s.onerror=()=>{zipP=null;rej(new Error('โหลดตัวทำ ZIP ไม่สำเร็จ'))};document.head.appendChild(s)});return zipP}
-$('zipBtn').onclick=async()=>{
-  const btn=$('zipBtn'),prog=$('prog'),bar=prog.firstElementChild;btn.disabled=true;prog.hidden=false;bar.style.width='0';
-  try{
-    await loadZip();const st=settings(),zip=new JSZip(),list=[...cards.values()].map(c=>c.sz);
-    for(let i=0;i<list.length;i++){zip.file(fileName(list[i],st),await exportBlob(list[i],st));bar.style.width=((i+1)/list.length*90)+'%';await new Promise(r=>setTimeout(r))}
-    saveBlob(await zip.generateAsync({type:'blob'}),S.name+'_layout-guide.zip');bar.style.width='100%';
-  }catch(e){setStatus(e.message,'bad')}
-  finally{btn.disabled=false;setTimeout(()=>{prog.hidden=true},600)}
-};
+$('zipBtn').onclick=async()=>{const btn=$('zipBtn'),prog=$('prog'),bar=prog.firstElementChild;btn.disabled=true;prog.hidden=false;
+  try{await loadZip();const zip=new JSZip(),list=SIZES.filter(s=>sel.has(s.id));
+    for(let i=0;i<list.length;i++){zip.file(fileName(list[i]),await exportBlob(list[i]));bar.style.width=((i+1)/list.length*100)+'%'}
+    saveBlob(await zip.generateAsync({type:'blob'}),S.name+'_layout-guide.zip')}
+  catch(e){setRes(e.message,'bad')}finally{btn.disabled=false;setTimeout(()=>{prog.hidden=true;bar.style.width='0'},600)}};
 
-/* ---------- wiring ---------- */
-$('browseBtn').onclick=$('changeBtn').onclick=()=>$('fileInput').click();
-$('fileInput').onchange=e=>{loadFile(e.target.files[0]);e.target.value=''};
-const drop=$('drop');
-['dragenter','dragover'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
-['dragleave','drop'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();if(t==='drop'||e.target===document.documentElement)drop.classList.remove('over')}));
-document.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadFile(f)});
-document.addEventListener('paste',e=>{const it=[...((e.clipboardData||{}).items||[])].find(i=>i.type.startsWith('image/'));if(it){const f=it.getAsFile();loadFile(new File([f],'pasted.png',{type:f.type}))}});
-$('genBtn').onclick=()=>{buildResults();$('results').scrollIntoView({behavior:'smooth',block:'start'});aiRun()};
-$('useAI').addEventListener('change',()=>{S.bgCut=null;if($('useAI').checked&&S.generated)aiRun();scheduleAll()});
-function onSetting(){$('bgHint').hidden=settings().bg!=='height';S.bgCut=null;scheduleAll()}
-['gSafe','safePct','gBox','gThirds','fmt','exGuides'].forEach(id=>$(id).addEventListener('input',onSetting));
-document.querySelectorAll('input[name=bg],input[name=holes]').forEach(r=>r.addEventListener('change',onSetting));
-let rw=0;window.addEventListener('resize',()=>{clearTimeout(rw);rw=setTimeout(()=>{if(S.src){layoutEditor();drawEditor()}redrawAll()},150)});
-buildRoles();buildGroups();updateGen();
+/* ---------- paste / drop wiring ---------- */
+$('paste').onclick=()=>$('resInput').click();$('paste').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('resInput').click()};
+$('resInput').onchange=e=>{loadResult(e.target.files[0]);e.target.value=''};
+document.addEventListener('paste',e=>{const it=[...((e.clipboardData||{}).items||[])].find(i=>i.type.startsWith('image/'));if(!it)return;e.preventDefault();
+  const f=it.getAsFile();if(!S.src)loadMaster(f);else loadResult(f)}); // first paste = master, later pastes = Gemini results
+['dragenter','dragover'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();(S.src?$('paste'):$('drop')).classList.add('over')}));
+['dragleave','drop'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();if(t==='drop'||e.target===document.documentElement){$('paste').classList.remove('over');$('drop').classList.remove('over')}}));
+document.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(!f)return;
+  if(e.target.closest&&e.target.closest('#drop')||!S.src)loadMaster(f);else loadResult(f)});
+let rt=0;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(S.result)buildCards()},200)});
+buildSizes();buildSheet();renderQuota();
 })();
 </script>
 </body></html>
