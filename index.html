@@ -108,6 +108,9 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
 .edwrap canvas{display:block;touch-action:none;outline:var(--sw) solid var(--stroke);cursor:crosshair}
 .edbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .edbar .hint{flex:1;min-width:180px}
+.aibar{display:flex;align-items:center;gap:10px;border:var(--sw) solid var(--stroke);border-radius:9px;padding:8px 10px;background:var(--accent-soft)}
+.aibar .progress{flex:none;width:160px}
+.aibar .status{font-size:12.5px;color:var(--fg)}
 .empty-state{display:grid;gap:10px;justify-items:center;color:var(--muted);text-align:center;padding:40px 20px}
 .empty-state strong{color:var(--fg);font:600 15px var(--font-display)}
 .empty-state svg{width:44px;height:44px;opacity:.6}
@@ -182,7 +185,7 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
 <header class="top">
   <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1" opacity=".75"/><rect x="5" y="16" width="8" height="5" rx="1" opacity=".55"/></svg></div>
   <div><h1>Layout Guide</h1></div>
-  <p class="disclaimer">ไกด์จัดวางหลายไซส์จากภาพต้นแบบภาพเดียว · ลากกรอบบอกตำแหน่งโลโก้ ข้อความ และพรีเซนเตอร์ แล้วแอปจัดวางใหม่ให้ทุกไซส์ · ภาพประมวลผลในเบราว์เซอร์ ไม่ถูกส่งออกจากเครื่อง · ใช้ฟรี</p>
+  <p class="disclaimer">ไกด์จัดวางหลายไซส์จากภาพต้นแบบภาพเดียว · ลากกรอบบอกตำแหน่งโลโก้ ข้อความ และพรีเซนเตอร์ แล้วแอปจัดวางใหม่ให้ทุกไซส์ · ภาพประมวลผลในเบราว์เซอร์ ไม่ถูกส่งออกจากเครื่อง · ใช้ฟรี · สำหรับคอมพิวเตอร์ แนะนำ Chrome หรือ Edge</p>
   <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden>
 </header>
 
@@ -217,6 +220,10 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
     <div class="phead"><span class="step">04</span><h2>ตั้งค่า</h2></div>
     <div class="pbody">
       <div class="field">
+        <label class="checkrow"><input type="checkbox" id="useAI" checked><span><b>ตัดชิ้นส่วนด้วย AI</b></span></label>
+        <div class="hint">ตัดพรีเซนเตอร์ตามรูปร่าง ตัดตัวหนังสือแบบโปร่งใส และเติมพื้นหลังตรงที่ชิ้นถูกย้ายออก · ครั้งแรกโหลดโมเดล ~180MB แล้วเครื่องจำไว้ · ทำงานในเครื่องทั้งหมด</div>
+      </div>
+      <div class="field">
         <span class="lbl">พื้นหลัง</span>
         <div class="seg" role="radiogroup" aria-label="ขนาดพื้นหลัง">
           <label><input type="radio" name="bg" value="height" checked>ยึดความสูง</label>
@@ -227,7 +234,7 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
       <div class="field">
         <span class="lbl">ตำแหน่งเดิมของชิ้นที่ย้าย</span>
         <div class="seg" role="radiogroup" aria-label="ตำแหน่งเดิมของชิ้นที่ย้าย">
-          <label><input type="radio" name="holes" value="fill" checked>เติมสีรอบๆ</label>
+          <label><input type="radio" name="holes" value="fill" checked>เติมพื้นหลัง</label>
           <label><input type="radio" name="holes" value="cut">เจาะออก</label>
           <label><input type="radio" name="holes" value="keep">คงไว้</label>
         </div>
@@ -258,6 +265,7 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
       <div class="edbar"><span class="hint" id="edHint">เลือกชิ้นส่วนด้านบน แล้วลากกรอบรอบชิ้นนั้นบนภาพ · ลากในกรอบเพื่อย้าย ลากมุมเพื่อปรับขนาด</span>
         <button class="btn small" id="delBox" type="button" hidden>ลบกรอบนี้</button>
         <button class="btn ghost" id="clearBoxes" type="button" hidden>ล้างทั้งหมด</button></div>
+      <div class="aibar" id="aiBar" hidden><div class="progress" id="aiProg"><i></i></div><span class="status" id="aiStatus" role="status"></span></div>
       <div class="edwrap checker" id="edwrap">
         <div class="empty-state" id="edEmpty"><strong>ยังไม่มีภาพ</strong><span>ใส่ภาพต้นแบบในช่อง 01</span></div>
         <canvas id="ed" hidden></canvas>
@@ -338,7 +346,7 @@ async function loadFile(f){
   setStatus('กำลังเปิดภาพ…');
   try{
     const src=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(new Error('เปิดภาพนี้ไม่ได้'));im.src=URL.createObjectURL(f)});
-    S.src=src;S.W=src.naturalWidth;S.H=src.naturalHeight;S.name=f.name.replace(/\.[^.]+$/,'')||'image';S.boxes={};S.bgCut=null;
+    S.src=src;S.W=src.naturalWidth;S.H=src.naturalHeight;S.name=f.name.replace(/\.[^.]+$/,'')||'image';S.boxes={};S.bgCut=null;S.src_ctx=null;aiReset();
     for(const k in over)delete over[k];
     $('drop').hidden=true;$('minfo').hidden=false;$('mName').textContent=S.name;$('mDim').textContent=S.W+'×'+S.H;$('mRatio').textContent=ratioText(S.W,S.H);
     setStatus('');setActive('logo');layoutEditor();drawEditor();buildRoles();updateGen();
@@ -382,7 +390,7 @@ function drawEditor(){
 }
 function label(x,text,color,X,Y,u,H){
   x.save();x.font=`600 ${11*u}px "IBM Plex Sans Thai",system-ui,sans-serif`;const tw=x.measureText(text).width+10*u,th=16*u;
-  const ly=Y-th>=0?Y-th:Y;x.fillStyle=color;x.fillRect(X,ly,tw,th);x.fillStyle='#fff';x.textBaseline='middle';x.fillText(text,X+5*u,ly+th/2+u*.5);x.restore();
+  const ly=Y-th>=0?Y-th:(H&&Y+H+th<=x.canvas.height/(x.getTransform().d||1)?Y+H:Y);x.fillStyle=color;x.fillRect(X,ly,tw,th);x.fillStyle='#fff';x.textBaseline='middle';x.fillText(text,X+5*u,ly+th/2+u*.5);x.restore();
 }
 const corners=b=>[[b.x,b.y],[b.x+b.w,b.y],[b.x,b.y+b.h],[b.x+b.w,b.y+b.h]];
 (function editorPointer(){
@@ -412,11 +420,11 @@ const corners=b=>[[b.x,b.y],[b.x+b.w,b.y],[b.x,b.y+b.h],[b.x+b.w,b.y+b.h]];
     if(b&&(b.w<S.W*.01||b.h<S.H*.01))delete S.boxes[drag.id];
     else if(drag.mode==='draw'&&!S.generated){ // jump to the next role still missing a box
       const next=ROLES.find(r=>!S.boxes[r.id]&&r.id!=='other');if(next)active=next.id}
-    drag=null;S.bgCut=null;buildRoles();drawEditor();scheduleAll()};
+    drag=null;S.bgCut=null;buildRoles();drawEditor();scheduleAll();aiSchedule()};
   c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
 })();
-$('delBox').onclick=()=>{delete S.boxes[active];S.bgCut=null;buildRoles();drawEditor();scheduleAll()};
-$('clearBoxes').onclick=()=>{S.boxes={};S.bgCut=null;setActive('logo');scheduleAll()};
+$('delBox').onclick=()=>{delete S.boxes[active];S.bgCut=null;buildRoles();drawEditor();scheduleAll();aiSchedule()};
+$('clearBoxes').onclick=()=>{S.boxes={};S.bgCut=null;setActive('logo');scheduleAll();aiSchedule()};
 
 /* ---------- layout rules ---------- */
 function aspectClass(r){return r>=3?'strip':r>=1.2?'land':r>.83?'square':r>=.4?'port':'tall'}
@@ -492,6 +500,10 @@ function layoutFor(sz,st){
 /* ---------- drawing ---------- */
 function bgSource(st){
   if(st.holes==='keep'||!Object.keys(S.boxes).length)return S.src;
+  if(aiOK()){if(st.holes==='fill')return S.ai.bg;
+    if(S.bgCut&&S.bgCut.mode==='aicut')return S.bgCut.c;
+    const c=document.createElement('canvas');c.width=S.W;c.height=S.H;const x=c.getContext('2d');x.drawImage(S.src,0,0);x.globalCompositeOperation='destination-out';x.drawImage(S.ai.hole,0,0);
+    S.bgCut={mode:'aicut',c};return c}
   if(S.bgCut&&S.bgCut.mode===st.holes)return S.bgCut.c;
   const c=document.createElement('canvas');c.width=S.W;c.height=S.H;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(S.src,0,0);
   if(st.holes==='cut'){x.globalCompositeOperation='destination-out';for(const id in S.boxes){const b=padBox(S.boxes[id]);x.fillRect(b.x,b.y,b.w,b.h)}}
@@ -527,7 +539,10 @@ function render(c,sz,k,st,guides,u,selId){
   if(st.fmt==='jpg'&&!guides){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}
   x.setTransform(k,0,0,k,0,0);
   x.drawImage(bgSource(st),L.bg.x,L.bg.y,L.bg.w,L.bg.h);
-  for(const id of DRAW_ORDER){const it=L.items[id];if(!it)continue;const b=it.src;x.drawImage(S.src,b.x,b.y,b.w,b.h,it.x,it.y,it.w,it.h)}
+  const ai=aiOK();
+  for(const id of DRAW_ORDER){const it=L.items[id];if(!it)continue;const b=it.src,lay=ai&&S.ai.layers[id];
+    if(lay){const s=it.s;x.drawImage(lay.c,it.x+(lay.r.x-b.x)*s,it.y+(lay.r.y-b.y)*s,lay.r.w*s,lay.r.h*s)}
+    else x.drawImage(S.src,b.x,b.y,b.w,b.h,it.x,it.y,it.w,it.h)}
   if(guides)drawGuides(x,L,tw,th,u,st,selId);
   return L;
 }
@@ -541,6 +556,124 @@ function drawGuides(x,L,tw,th,u,st,selId){
   if(st.boxes||selId){for(const id of DRAW_ORDER){const it=L.items[id];if(!it)continue;if(!st.boxes&&id!==selId)continue;const r=ROLE[id],on=id===selId;
     x.save();x.lineWidth=(on?3:1.6)*u;x.strokeStyle=r.color;if(!on)x.setLineDash([4*u,3*u]);x.strokeRect(it.x,it.y,it.w,it.h);x.restore();
     if(st.boxes||on)label(x,r.name,r.color,Math.max(0,it.x),Math.max(0,it.y),u*.9,it.h)}}
+}
+
+
+/* ---------- AI cut-outs (runs locally with ONNX Runtime Web) ----------
+   ISNet (Apache-2.0) gives the talent/object matte, LaMa (Apache-2.0) fills the holes.
+   Text and logos are lifted LayerD-style: inpaint the box first, then the difference
+   between the original and the clean background becomes the text's alpha. */
+const ORT_CDN='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/';
+const MODELS={seg:{url:'models/isnet_fp16.onnx',mb:91,name:'โมเดลตัดคน'},lama:{url:'models/lama.onnx',mb:93,name:'โมเดลเติมพื้นหลัง'}};
+const SEG_ROLES=['talent','other'];
+S.ai={busy:false,again:false,ready:false,key:null,layers:{},bg:null,hole:null,segCache:{}};
+const sessions={},modelBufs={};let ortP=null,aiTimer=0;
+function aiReset(){S.ai={busy:false,again:false,ready:false,key:null,layers:{},bg:null,hole:null,segCache:{}};$('aiBar').hidden=true}
+function boxKey(){return JSON.stringify(Object.keys(S.boxes).sort().map(k=>{const b=S.boxes[k];return[k,Math.round(b.x),Math.round(b.y),Math.round(b.w),Math.round(b.h)]}))}
+function aiOK(){return $('useAI').checked&&S.ai.ready&&S.ai.key===boxKey()}
+function aiSchedule(){if(!S.generated||!$('useAI').checked)return;clearTimeout(aiTimer);aiTimer=setTimeout(aiRun,600)}
+function aiStatus(t,p,cls){$('aiBar').hidden=false;const s=$('aiStatus');s.textContent=t;s.className='status'+(cls?' '+cls:'');const pr=$('aiProg');pr.hidden=p==null;if(p!=null)pr.firstElementChild.style.width=Math.round(p*100)+'%'}
+const tick=()=>new Promise(r=>setTimeout(r,0));
+function loadOrt(){if(window.ort)return Promise.resolve();if(ortP)return ortP;
+  ortP=new Promise((res,rej)=>{const s=document.createElement('script');s.src=ORT_CDN+'ort.all.min.js';
+    s.onload=()=>{ort.env.wasm.wasmPaths=ORT_CDN;ort.env.logLevel='error';res()};s.onerror=()=>{ortP=null;rej(new Error('โหลด ONNX Runtime ไม่สำเร็จ'))};document.head.appendChild(s)});return ortP}
+async function fetchModel(key,onProg){
+  if(modelBufs[key])return modelBufs[key];
+  const m=MODELS[key],url=new URL(m.url,location.href).href;let cache=null;
+  try{cache=await caches.open('layoutguide-models-v1');const hit=await cache.match(url);if(hit)return modelBufs[key]=new Uint8Array(await hit.arrayBuffer())}catch(e){cache=null}
+  const r=await fetch(url);if(!r.ok)throw new Error(m.name+' โหลดไม่สำเร็จ ('+r.status+')');
+  const total=+r.headers.get('content-length')||m.mb*1e6,reader=r.body.getReader(),chunks=[];let got=0;
+  for(;;){const {done,value}=await reader.read();if(done)break;chunks.push(value);got+=value.length;onProg(Math.min(1,got/total))}
+  const buf=new Uint8Array(got);let o=0;for(const c of chunks){buf.set(c,o);o+=c.length}
+  try{if(cache)await cache.put(url,new Response(buf,{headers:{'content-type':'application/octet-stream'}}))}catch(e){}
+  return modelBufs[key]=buf;
+}
+async function makeSession(key,eps){let err;for(const ep of eps){try{const s=await ort.InferenceSession.create(modelBufs[key],{executionProviders:[ep],graphOptimizationLevel:'all'});s.ep=ep;return s}catch(e){err=e}}throw err||new Error('เปิดโมเดลไม่สำเร็จ')}
+async function getSession(key,label){
+  if(sessions[key])return sessions[key];
+  await loadOrt();await fetchModel(key,p=>aiStatus('กำลังโหลด'+MODELS[key].name+' (ครั้งแรกเท่านั้น) '+Math.round(p*100)+'%',p));
+  aiStatus('กำลังเตรียม'+MODELS[key].name+'…',null);await tick();
+  return sessions[key]=await makeSession(key,navigator.gpu?['webgpu','wasm']:['wasm']);
+}
+async function runModel(key,feeds){
+  try{return await sessions[key].run(feeds)}
+  catch(e){if(sessions[key].ep!=='webgpu')throw e;sessions[key]=await makeSession(key,['wasm']);return await sessions[key].run(feeds)} // GPU hiccup: retry on CPU
+}
+function cropTo(src,x,y,w,h,ow,oh){const c=document.createElement('canvas');c.width=ow;c.height=oh;const g=c.getContext('2d',{willReadFrequently:true});g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';g.drawImage(src,x,y,w,h,0,0,ow,oh);return c}
+function toCHW(c,f){const d=c.getContext('2d',{willReadFrequently:true}).getImageData(0,0,c.width,c.height).data,n=c.width*c.height,o=new Float32Array(3*n);
+  for(let i=0;i<n;i++){o[i]=f(d[i*4]);o[n+i]=f(d[i*4+1]);o[2*n+i]=f(d[i*4+2])}return o}
+function intRect(b,pad){const p=pad*Math.max(b.w,b.h),x=Math.max(0,Math.floor(b.x-p)),y=Math.max(0,Math.floor(b.y-p));return{x,y,w:Math.min(S.W,Math.ceil(b.x+b.w+p))-x,h:Math.min(S.H,Math.ceil(b.y+b.h+p))-y}}
+/* matte for one region -> canvas (w×h) whose alpha is the object */
+async function segment(r){
+  const c=cropTo(S.src,r.x,r.y,r.w,r.h,1024,1024);
+  const out=(await runModel('seg',{input_image:new ort.Tensor('float32',toCHW(c,v=>v/255-.5),[1,3,1024,1024])})).output_image.data;
+  let mn=Infinity,mx=-Infinity;for(const v of out){if(v<mn)mn=v;if(v>mx)mx=v}
+  const m=document.createElement('canvas');m.width=m.height=1024;const g=m.getContext('2d'),id=g.createImageData(1024,1024),d=id.data,k=1/Math.max(1e-6,mx-mn);
+  for(let i=0;i<out.length;i++){const a=clamp(((out[i]-mn)*k-.06)/.86,0,1);d[i*4]=d[i*4+1]=d[i*4+2]=255;d[i*4+3]=a*255}
+  g.putImageData(id,0,0);return cropTo(m,0,0,1024,1024,r.w,r.h);
+}
+/* LaMa: fill the hole inside region r of bg (in place) */
+async function inpaint(bg,hole,r){
+  const cw=Math.round(Math.min(S.W,Math.max(r.w*1.7,Math.min(S.W,384),r.h*.8))),ch=Math.round(Math.min(S.H,Math.max(r.h*1.7,Math.min(S.H,384),r.w*.8)));
+  const cx=Math.round(clamp(r.x+r.w/2-cw/2,0,S.W-cw)),cy=Math.round(clamp(r.y+r.h/2-ch/2,0,S.H-ch));
+  const ic=cropTo(bg,cx,cy,cw,ch,512,512),mc=cropTo(hole,cx,cy,cw,ch,512,512);
+  const md=mc.getContext('2d').getImageData(0,0,512,512).data,mask=new Float32Array(512*512);let any=0;
+  for(let i=0;i<mask.length;i++)if(md[i*4+3]>12){mask[i]=1;any++}
+  if(!any)return;
+  const out=(await runModel('lama',{image:new ort.Tensor('float32',toCHW(ic,v=>v/255),[1,3,512,512]),mask:new ort.Tensor('float32',mask,[1,1,512,512])})).output.data;
+  const o=document.createElement('canvas');o.width=o.height=512;const g=o.getContext('2d'),id=g.createImageData(512,512),d=id.data,n=512*512;
+  for(let i=0;i<n;i++){d[i*4]=out[i];d[i*4+1]=out[n+i];d[i*4+2]=out[2*n+i];d[i*4+3]=255}
+  g.putImageData(id,0,0);
+  const back=cropTo(o,0,0,512,512,cw,ch),bx=back.getContext('2d');bx.globalCompositeOperation='destination-in';bx.drawImage(hole,cx,cy,cw,ch,0,0,cw,ch);
+  bg.getContext('2d').drawImage(back,cx,cy);
+}
+/* text/logo: alpha from |original - clean background| */
+function liftText(r,bg){
+  const I=S.src_ctx.getImageData(r.x,r.y,r.w,r.h).data,B=bg.getContext('2d').getImageData(r.x,r.y,r.w,r.h).data,n=r.w*r.h,dist=new Float32Array(n),big=[];
+  for(let i=0;i<n;i++){const a=I[i*4]-B[i*4],b=I[i*4+1]-B[i*4+1],c=I[i*4+2]-B[i*4+2],v=Math.sqrt(a*a+b*b+c*c);dist[i]=v;if(v>28&&(i%3===0))big.push(v)}
+  if(big.length<n*.003)return null;
+  big.sort((a,b)=>a-b);const D=Math.max(40,big[Math.floor(big.length*.85)]*.85);
+  const c=document.createElement('canvas');c.width=r.w;c.height=r.h;const g=c.getContext('2d'),id=g.createImageData(r.w,r.h),d=id.data;
+  for(let i=0;i<n;i++){let a=clamp(dist[i]/D,0,1);if(a<.12)a=0;const ia=1/Math.max(a,.25);
+    for(let k=0;k<3;k++)d[i*4+k]=clamp(B[i*4+k]+(I[i*4+k]-B[i*4+k])*ia,0,255);d[i*4+3]=a*255}
+  g.putImageData(id,0,0);return c;
+}
+function dilate(m,rad){const c=document.createElement('canvas');c.width=m.width;c.height=m.height;const g=c.getContext('2d');
+  for(let a=0;a<16;a++){const t=a/16*Math.PI*2;for(const f of [1,.5])g.drawImage(m,Math.cos(t)*rad*f,Math.sin(t)*rad*f)}g.drawImage(m,0,0);return c}
+async function aiRun(){
+  if(!S.src||!$('useAI').checked||!S.generated)return;
+  const key=boxKey();if(S.ai.ready&&S.ai.key===key)return;
+  if(S.ai.busy){S.ai.again=true;return}
+  const ids=Object.keys(S.boxes);if(!ids.length){$('aiBar').hidden=true;return}
+  S.ai.busy=true;const t0=performance.now();
+  try{
+    if(!S.src_ctx){const c=document.createElement('canvas');c.width=S.W;c.height=S.H;S.src_ctx=c.getContext('2d',{willReadFrequently:true});S.src_ctx.drawImage(S.src,0,0)}
+    const seg=ids.filter(id=>SEG_ROLES.includes(id)),rect={};
+    for(const id of ids)rect[id]=intRect(S.boxes[id],SEG_ROLES.includes(id)?.03:.06);
+    if(seg.length)await getSession('seg');
+    await getSession('lama');
+    const mattes={};
+    for(const id of seg){const r=rect[id],k=JSON.stringify(r),hit=S.ai.segCache[id];
+      if(hit&&hit.k===k){mattes[id]=hit.m;continue}
+      aiStatus('กำลังตัด'+ROLE[id].name+'…',null);await tick();mattes[id]=await segment(r);S.ai.segCache[id]={k,m:mattes[id]}}
+    // hole = mattes (grown a little) + text boxes
+    const hole=document.createElement('canvas');hole.width=S.W;hole.height=S.H;const hg=hole.getContext('2d');hg.fillStyle='#fff';
+    for(const id of ids){const r=rect[id];if(mattes[id]){const big=document.createElement('canvas');big.width=S.W;big.height=S.H;big.getContext('2d').drawImage(mattes[id],r.x,r.y);
+        hg.drawImage(dilate(big,Math.max(3,.015*Math.max(r.w,r.h))),0,0)}
+      else hg.fillRect(r.x,r.y,r.w,r.h)}
+    const bg=document.createElement('canvas');bg.width=S.W;bg.height=S.H;bg.getContext('2d').drawImage(S.src,0,0);
+    const order=[...seg,...ids.filter(id=>!seg.includes(id))];
+    for(let i=0;i<order.length;i++){aiStatus(`กำลังเติมพื้นหลัง ${i+1}/${order.length}…`,i/order.length);await tick();
+      const r=rect[order[i]];await inpaint(bg,hole,{x:r.x-4,y:r.y-4,w:r.w+8,h:r.h+8})}
+    const layers={};
+    for(const id of ids){const r=rect[id];
+      if(mattes[id]){const c=cropTo(S.src,r.x,r.y,r.w,r.h,r.w,r.h),g=c.getContext('2d');g.globalCompositeOperation='destination-in';g.drawImage(mattes[id],0,0);layers[id]={c,r}}
+      else{const c=liftText(r,bg);if(c)layers[id]={c,r}}}
+    if(boxKey()!==key){S.ai.again=true}
+    else{Object.assign(S.ai,{ready:true,key,layers,bg,hole});
+      const sec=((performance.now()-t0)/1000).toFixed(1);aiStatus(`ตัดชิ้นส่วนด้วย AI แล้ว · ${sec} วินาที · ${(sessions.lama||{}).ep==='webgpu'?'GPU':'CPU'}`,null,'ok')}
+  }catch(e){console.error(e);aiStatus('ใช้ AI ไม่ได้ ('+(e.message||e)+') ตอนนี้ใช้การตัดแบบสี่เหลี่ยมแทน',null,'bad')}
+  finally{S.ai.busy=false;S.bgCut=null;redrawAll();if(S.ai.again){S.ai.again=false;aiRun()}}
 }
 
 /* ---------- size picker ---------- */
@@ -684,7 +817,8 @@ const drop=$('drop');
 ['dragleave','drop'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();if(t==='drop'||e.target===document.documentElement)drop.classList.remove('over')}));
 document.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadFile(f)});
 document.addEventListener('paste',e=>{const it=[...((e.clipboardData||{}).items||[])].find(i=>i.type.startsWith('image/'));if(it){const f=it.getAsFile();loadFile(new File([f],'pasted.png',{type:f.type}))}});
-$('genBtn').onclick=()=>{buildResults();$('results').scrollIntoView({behavior:'smooth',block:'start'})};
+$('genBtn').onclick=()=>{buildResults();$('results').scrollIntoView({behavior:'smooth',block:'start'});aiRun()};
+$('useAI').addEventListener('change',()=>{S.bgCut=null;if($('useAI').checked&&S.generated)aiRun();scheduleAll()});
 function onSetting(){$('bgHint').hidden=settings().bg!=='height';S.bgCut=null;scheduleAll()}
 ['gSafe','safePct','gBox','gThirds','fmt','exGuides'].forEach(id=>$(id).addEventListener('input',onSetting));
 document.querySelectorAll('input[name=bg],input[name=holes]').forEach(r=>r.addEventListener('change',onSetting));
