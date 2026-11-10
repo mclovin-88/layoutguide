@@ -143,6 +143,9 @@ textarea.prompt{width:100%;min-height:96px;border:var(--sw) solid var(--line);bo
 .auto{display:grid;gap:8px;padding-bottom:4px}
 .autobar{display:flex;align-items:center;gap:10px}.autobar:has(.status:empty):has(.progress[hidden]){display:none}
 #autoBtn{font-size:15px;padding:13px 12px}
+.mrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px}
+.mrow label{font:600 12.5px var(--font-display)}
+.mrow select{border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:7px;padding:3px 6px;font-size:12.5px}
 .board{border:var(--sw) solid var(--line);border-radius:10px;overflow:hidden;background:var(--hover)}
 .board canvas{display:block;width:100%;height:auto}
 .empty-state{display:grid;gap:8px;justify-items:center;color:var(--muted);text-align:center;padding:70px 20px}
@@ -193,7 +196,13 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
       <div class="auto">
         <button class="btn primary block" id="autoBtn" type="button" disabled>✨ Click</button>
         <div class="autobar"><div class="progress" id="autoProg" hidden><i></i></div><span class="status" id="autoStatus" role="status"></span></div>
-        <span class="hint">ใช้เวลาประมาณ 20–60 วินาที</span>
+        <div class="mrow"><label for="modelSel">โมเดล</label><select id="modelSel">
+          <option value="nb21-1k">Nano Banana 2.1 · 1K (แนะนำ)</option>
+          <option value="nb25">Nano Banana รุ่นแรก (2.5 Flash)</option>
+          <option value="gpt-low">GPT Image 2 · low (ประหยัด)</option>
+          <option value="flux-klein">FLUX.2 Klein (ถูกสุด)</option>
+          <option value="nb21-512">Nano Banana 2.1 · 512 (เล็กสุด)</option>
+        </select><span class="hint">ใช้เวลาประมาณ 20–60 วินาที</span></div>
       </div>
     </div>
   </section>
@@ -400,7 +409,16 @@ $('switchAcc').onclick=async()=>{
   try{await loadPuter();if(puter.auth.isSignedIn()){try{localStorage.removeItem('puter.auth.token')}catch(e){};await puter.auth.signOut()}
     await puter.auth.signIn();await refreshCredits()}
   catch(e){console.error(e);refreshAccount()}};
-const MODELS_TRY=['google/gemini-nano-banana-2.1','gemini-3.1-flash-image','google/gemini-2.5-flash-image'];
+/* model presets (so we can compare quality vs credits); each tries its own fallbacks on "unknown model" errors */
+const PRESETS={
+  'nb21-1k':  [['google/gemini-nano-banana-2.1',{aspect_ratio:'16:9',quality:'1K'}],['gemini-3.1-flash-image',{aspect_ratio:'16:9',quality:'1K'}]],
+  'nb21-512': [['google/gemini-nano-banana-2.1',{aspect_ratio:'16:9',quality:'512'}],['gemini-3.1-flash-image',{aspect_ratio:'16:9',quality:'512'}]],
+  'nb25':     [['google/gemini-2.5-flash-image',{aspect_ratio:'16:9'}],['gemini-2.5-flash-image',{aspect_ratio:'16:9'}]],
+  'gpt-low':  [['openai/gpt-image-2',{quality:'low',ratio:{w:1536,h:1024}}],['gpt-image-2',{quality:'low',ratio:{w:1536,h:1024}}]],
+  'flux-klein':[['black-forest-labs/flux-2-klein-4b',{width:1280,height:720}],['flux-2-klein-4b',{width:1280,height:720}]],
+};
+try{const m=localStorage.getItem('lg.model');if(m&&PRESETS[m])$('modelSel').value=m}catch(e){}
+$('modelSel').onchange=()=>{try{localStorage.setItem('lg.model',$('modelSel').value)}catch(e){}};
 $('autoBtn').onclick=async()=>{
   const btn=$('autoBtn');if(!S.src||!S.sheet)return;btn.disabled=true;
   try{
@@ -411,10 +429,10 @@ $('autoBtn').onclick=async()=>{
     const before=await refreshCredits();
     const blob=await sheetBlobSmall(),t0=performance.now();
     let img=null,lastErr=null,used='';
-    for(const model of MODELS_TRY){
+    for(const [model,opt] of PRESETS[$('modelSel').value]||PRESETS['nb21-1k']){
       autoStatus('Nano Banana กำลังจัดวาง 7 ไซส์… (ประมาณ 20–60 วินาที)',null,.1);
       const tick=setInterval(()=>{const p=Math.min(.92,.1+(performance.now()-t0)/60000*.8);$('autoProg').firstElementChild.style.width=Math.round(p*100)+'%'},500);
-      try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/jpeg',aspect_ratio:'16:9',quality:'512'});used=model;clearInterval(tick);break}
+      try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/jpeg',...opt});used=$('modelSel').selectedOptions[0].textContent;clearInterval(tick);break}
       catch(e){clearInterval(tick);lastErr=e;const m=String((e&&(e.message||e.error&&e.error.message))||e);
         if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว รอเดือนถัดไปนะคะ');
         if(/401|unauthori|token|auth/i.test(m)&&SHARED_TOKEN)throw new Error('บัญชีส่วนกลางใช้ไม่ได้ (token หมดอายุ) แจ้งเจ้าของเว็บ');
