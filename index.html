@@ -130,6 +130,7 @@ textarea.prompt{width:100%;min-height:96px;border:var(--sw) solid var(--line);bo
 .progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
 .sheetview{border:var(--sw) solid var(--line);border-radius:10px;padding:10px}
 .sheetview canvas{display:block;max-width:100%;height:auto}
+.ownerbox{display:grid;gap:6px;border:2px dashed var(--alert);border-radius:10px;padding:10px;background:var(--alert-bg)}
 .auto{display:grid;gap:8px;padding-bottom:4px}
 .autobar{display:flex;align-items:center;gap:10px}.autobar:has(.status:empty):has(.progress[hidden]){display:none}
 #autoBtn{font-size:15px;padding:13px 12px}
@@ -398,9 +399,14 @@ $('zipBtn').onclick=async()=>{const btn=$('zipBtn'),prog=$('prog'),bar=prog.firs
 
 
 /* ---------- one-click: Nano Banana through Puter.js (user-pays: each user spends their own free monthly credits) ---------- */
+/* Shared account: everyone spends the site owner's free monthly credits. Leave empty to make each user sign in. */
+const SHARED_TOKEN='';
+const OWNER=location.hash==='#owner';
 let puterP=null;
+function useShared(){if(!SHARED_TOKEN||OWNER)return;try{localStorage.setItem('puter.auth.token',SHARED_TOKEN)}catch(e){};if(window.puter&&puter.setAuthToken)try{puter.setAuthToken(SHARED_TOKEN)}catch(e){}}
 function loadPuter(){if(window.puter)return Promise.resolve();if(puterP)return puterP;
-  puterP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://js.puter.com/v2/';s.onload=()=>res();s.onerror=()=>{puterP=null;rej(new Error('โหลด Puter ไม่สำเร็จ'))};document.head.appendChild(s)});return puterP}
+  useShared();
+  puterP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://js.puter.com/v2/';s.onload=()=>{useShared();res()};s.onerror=()=>{puterP=null;rej(new Error('โหลด Puter ไม่สำเร็จ'))};document.head.appendChild(s)});return puterP}
 loadPuter().then(refreshCredits).catch(()=>{}); // warm up so the sign-in popup can open straight from the click
 function autoStatus(t,cls,p){const s=$('autoStatus');s.textContent=t||'';s.className='status'+(cls?' '+cls:'');const pr=$('autoProg');pr.hidden=p==null;if(p!=null)pr.firstElementChild.style.width=Math.round(p*100)+'%'}
 function pickNum(o,keys){for(const k of keys){const v=k.split('.').reduce((a,b)=>a&&a[b],o);if(typeof v==='number')return v}return null}
@@ -419,7 +425,9 @@ $('autoBtn').onclick=async()=>{
   const btn=$('autoBtn');if(!S.src||!S.sheet)return;btn.disabled=true;
   try{
     if(!window.puter){autoStatus('กำลังโหลด Puter…');await loadPuter()}
-    if(!puter.auth.isSignedIn()){autoStatus('ล็อกอินบัญชี Puter ในหน้าต่างที่เด้งขึ้นมา (ครั้งแรกครั้งเดียว)…');await puter.auth.signIn()}
+    useShared();
+    if(!puter.auth.isSignedIn()){if(SHARED_TOKEN&&!OWNER)throw new Error('บัญชีส่วนกลางใช้ไม่ได้ (token หมดอายุ) แจ้งเจ้าของเว็บ');
+      autoStatus('ล็อกอินบัญชี Puter ในหน้าต่างที่เด้งขึ้นมา (ครั้งแรกครั้งเดียว)…');await puter.auth.signIn()}
     const before=await refreshCredits();
     const blob=await sheetBlob(),t0=performance.now();
     let img=null,lastErr=null,used='';
@@ -428,7 +436,8 @@ $('autoBtn').onclick=async()=>{
       const tick=setInterval(()=>{const p=Math.min(.92,.1+(performance.now()-t0)/60000*.8);$('autoProg').firstElementChild.style.width=Math.round(p*100)+'%'},500);
       try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/png',aspect_ratio:'16:9',quality:'2K'});used=model;clearInterval(tick);break}
       catch(e){clearInterval(tick);lastErr=e;const m=String((e&&(e.message||e.error&&e.error.message))||e);
-        if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว');
+        if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว รอเดือนถัดไป หรือใช้แบบก๊อป-วางผ่านแอป Gemini ด้านล่าง');
+        if(/401|unauthori|token|auth/i.test(m)&&SHARED_TOKEN)throw new Error('บัญชีส่วนกลางใช้ไม่ได้ (token หมดอายุ) แจ้งเจ้าของเว็บ');
         if(!/model|not found|unsupported|invalid/i.test(m))throw e}}
     if(!img)throw lastErr||new Error('ไม่ได้ภาพกลับมา');
     autoStatus('ได้ภาพแล้ว กำลังตัดแยก…',null,.96);
@@ -441,6 +450,14 @@ $('autoBtn').onclick=async()=>{
   }catch(e){console.error(e);autoStatus('ไม่สำเร็จ: '+((e&&(e.message||e.error&&e.error.message))||e),'bad')}
   finally{btn.disabled=!S.src||!sel.size}
 };
+
+if(OWNER){const box=mk('div','ownerbox',`<b>โหมดเจ้าของเว็บ</b><span class="hint">ล็อกอินบัญชี Puter ของคุณ แล้วคัดลอก token ส่งให้ผู้พัฒนาใส่ในเว็บ · อย่ากดล็อกเอาต์ Puter ในเบราว์เซอร์นี้หลังคัดลอก</span><div class="btnrow"><button class="btn primary" type="button" id="ownerCopy">ล็อกอิน + คัดลอก token</button><span class="status" id="ownerStatus"></span></div>`);
+  document.querySelector('.auto').before(box);
+  $('ownerCopy').onclick=async()=>{const st=$('ownerStatus');try{await loadPuter();if(!puter.auth.isSignedIn())await puter.auth.signIn();
+    const t=puter.authToken||localStorage.getItem('puter.auth.token');if(!t)throw new Error('ไม่พบ token');
+    await navigator.clipboard.writeText(t);st.className='status ok';st.textContent='คัดลอกแล้ว ('+t.length+' ตัวอักษร) — วางส่งให้ผู้พัฒนาได้เลย';refreshCredits()}
+    catch(e){st.className='status bad';st.textContent='ไม่สำเร็จ: '+(e.message||e)}}}
+if(SHARED_TOKEN&&!OWNER)document.querySelector('.auto .hint').textContent='ใช้ Nano Banana (Gemini) ผ่านบัญชีส่วนกลาง · ไม่ต้องล็อกอิน · เครดิตใช้ร่วมกันทุกคน รีเซ็ตทุกเดือน';
 
 /* ---------- paste / drop wiring ---------- */
 $('paste').onclick=()=>$('resInput').click();$('paste').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('resInput').click()};
