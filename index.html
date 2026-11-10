@@ -134,6 +134,10 @@ textarea.prompt{width:100%;min-height:96px;border:var(--sw) solid var(--line);bo
 .auto{display:grid;gap:8px;padding-bottom:4px}
 .autobar{display:flex;align-items:center;gap:10px}.autobar:has(.status:empty):has(.progress[hidden]){display:none}
 #autoBtn{font-size:15px;padding:13px 12px}
+.board{border:var(--sw) solid var(--line);border-radius:10px;overflow:hidden;background:var(--hover)}
+.board canvas{display:block;width:100%;height:auto}
+.empty-state{display:grid;gap:8px;justify-items:center;color:var(--muted);text-align:center;padding:70px 20px}
+.empty-state strong{color:var(--fg);font:600 15px var(--font-display)}
 details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-weight:600}
 </style>
 </head><body>
@@ -141,14 +145,10 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
 <header class="top">
   <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1" opacity=".75"/><rect x="5" y="16" width="8" height="5" rx="1" opacity=".55"/></svg></div>
   <div><h1>Layout Guide</h1></div>
-  <p class="disclaimer">ไกด์จัดวาง 7 ไซส์จากภาพต้นแบบภาพเดียว ด้วย Gemini (ฟรี) · ใช้ Gemini แค่ 1 ครั้งต่อ 7 ไซส์ · ภาพไม่ถูกส่งไปที่อื่นนอกจาก Gemini ที่คุณเปิดเอง</p>
+  <p class="disclaimer">ใส่ภาพต้นแบบ กดปุ่มเดียว ได้ไกด์จัดวาง 7 ไซส์ในแผ่นเดียว · ใช้ Nano Banana (Gemini)</p>
   <div class="quota" id="pquota" hidden title="เครดิตฟรีรายเดือนของบัญชี Puter · รีเซ็ตทุกเดือน">
     <div><b id="pLeft">–</b></div>
-    <small>เครดิต Puter เหลือ<br><span id="pSub">เดือนนี้</span></small>
-  </div>
-  <div class="quota" id="quota" title="นับเฉพาะครั้งที่ใช้ผ่านเว็บนี้ · รีเซ็ตเที่ยงคืน">
-    <div><b id="qLeft">20</b></div>
-    <small>ครั้งที่เหลือวันนี้<br>ใช้ไป <span id="qUsed">0</span> / <input id="qLimit" type="number" min="1" max="1000" value="20" aria-label="โควตาต่อวัน"></small>
+    <small>เครดิตเหลือ<br><span id="pSub">เดือนนี้</span></small>
   </div>
 </header>
 
@@ -160,7 +160,7 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
       <div class="drop" id="drop" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4 4 0 0 1-.5 9.5"/><path d="M12 12v8M8.5 15.5 12 12l3.5 3.5"/></svg>
         <span class="btn primary">เลือกภาพ</span>
-        <small>JPG, PNG, WebP · หรือลากมาวาง</small>
+        <small>JPG, PNG, WebP · ลากมาวาง หรือ Ctrl+V</small>
       </div>
       <div class="master" id="master" hidden>
         <img id="mImg" alt="ภาพต้นแบบ">
@@ -170,51 +170,30 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
     </div>
   </section>
 
-  <section class="panel n-yellow" aria-label="เลือกไซส์">
-    <div class="phead"><span class="step">02</span><h2>เลือกไซส์</h2><span class="count" id="selCount"></span></div>
+  <section class="panel n-yellow" aria-label="ไซส์ที่จะได้">
+    <div class="phead"><span class="step">02</span><h2>ไซส์ที่จะได้</h2><span class="count">7 ไซส์</span></div>
     <div class="pbody" id="sizes" style="gap:2px"></div>
   </section>
 </div>
 
 <div class="col">
-  <section class="panel n-pink" aria-label="ส่งไป Gemini">
-    <div class="phead"><span class="step">03</span><h2>ส่งไป Gemini</h2></div>
+  <section class="panel n-pink" aria-label="สร้าง">
+    <div class="phead"><span class="step">03</span><h2>สร้าง</h2></div>
     <div class="pbody">
       <div class="auto">
-        <button class="btn primary block" id="autoBtn" type="button" disabled>✨ สร้าง 7 ไซส์อัตโนมัติ (คลิกเดียว)</button>
+        <button class="btn primary block" id="autoBtn" type="button" disabled>✨ Click</button>
         <div class="autobar"><div class="progress" id="autoProg" hidden><i></i></div><span class="status" id="autoStatus" role="status"></span></div>
-        <span class="hint">ใช้ Nano Banana (Gemini) ผ่าน Puter · ครั้งแรกให้ล็อกอินบัญชี Puter ฟรี · ใช้เครดิตฟรีรายเดือนของบัญชีคุณ</span>
+        <span class="hint">ใช้เวลาประมาณ 20–60 วินาที</span>
       </div>
-      <details class="more"><summary>หรือทำเองผ่านแอป Gemini (ก๊อป-วาง)</summary>
-      <div class="steps" style="margin-top:10px">
-        <div class="srow"><div class="t"><b>ก๊อปแผ่นงาน แล้วเปิด Gemini</b>
-          <div class="btnrow"><button class="btn primary" id="sendBtn" type="button" disabled>ก๊อปแผ่นงาน + เปิด Gemini</button>
-          <button class="btn small" id="dlSheet" type="button" disabled>ดาวน์โหลดแผ่นงานแทน</button></div>
-          <span class="hint">แผ่นงานคือภาพเดียวที่มีภาพต้นแบบ + กรอบชมพูตามไซส์ที่เลือก ให้ Gemini เติมงานลงในกรอบ</span></div></div>
-        <div class="srow"><div class="t"><b>ใน Gemini: กด Ctrl+V วางแผ่นงาน แล้ววางคำสั่งนี้ แล้วส่ง</b>
-          <div class="btnrow"><button class="btn small" id="copyPrompt" type="button">ก๊อปคำสั่ง</button><span class="status" id="copyStatus"></span></div>
-          <textarea class="prompt" id="prompt" readonly aria-label="คำสั่งสำหรับ Gemini"></textarea></div></div>
-        <div class="srow"><div class="t"><b>ได้ภาพแล้ว: คลิกขวาที่ภาพใน Gemini → Copy image แล้วกลับมาวางในช่อง 04</b>
-          <span class="hint">ใช้รุ่นที่สร้างภาพได้ (เช่น เลือก "Create image" / Nano Banana) · ถ้าภาพออกมาเป็นสัดส่วนอื่น ให้บอก Gemini ว่า "ให้ผลลัพธ์เป็นภาพ 16:9 ขนาดเท่าแผ่นงาน"</span></div></div>
-      </div>
-      </details>
-      <details class="more"><summary>ดูแผ่นงานที่จะส่ง</summary><div class="tpl checker" style="margin-top:8px"><canvas id="tplView"></canvas></div></details>
     </div>
   </section>
 
   <section class="panel n-green" id="results" aria-label="ผลลัพธ์">
-    <div class="phead"><span class="step">04</span><h2>วางผลจาก Gemini</h2>
-      <div style="margin-left:auto;display:flex;gap:6px;align-items:center"><div class="progress" id="prog" hidden><i></i></div>
-      <button class="btn small" id="zipBtn" type="button" disabled>เซฟทั้งหมด ZIP</button></div></div>
+    <div class="phead"><span class="step">04</span><h2>ผลลัพธ์</h2>
+      <button class="btn small" id="saveBtn" type="button" disabled style="margin-left:auto">เซฟภาพ</button></div>
     <div class="pbody">
-      <div class="paste" id="paste" role="button" tabindex="0">
-        <strong>กด <kbd>Ctrl</kbd>+<kbd>V</kbd> ที่หน้านี้ เพื่อวางภาพจาก Gemini</strong>
-        <span class="hint">หรือลากไฟล์ภาพที่ดาวน์โหลดจาก Gemini มาวาง / คลิกเพื่อเลือกไฟล์</span>
-      </div>
-      <input type="file" id="resInput" accept="image/*" hidden>
-      <div class="rbar"><span class="status" id="resStatus" role="status"></span><button class="btn ghost" id="showSheet" type="button" hidden>ดูภาพที่วาง + กรอบตัด</button></div>
-      <div class="sheetview checker" id="sheetView" hidden><canvas id="sheetCanvas"></canvas></div>
-      <div class="cards" id="cards"></div>
+      <span class="status" id="resStatus" role="status"></span>
+      <div class="board" id="boardWrap"><div class="empty-state" id="boardEmpty"><strong>ยังไม่มีผลลัพธ์</strong><span>ใส่ภาพต้นแบบ แล้วกด ✨ Click</span></div><canvas id="board" hidden></canvas></div>
     </div>
   </section>
 </div>
@@ -241,15 +220,7 @@ const SIZES=[
   {id:'3x16', name:'เสาสูง 3:16',   r:'3:16', w:720, h:3840, f:{x:2160,y:150,w:210, h:1120}},
 ];
 const SRC_BOX={x:30,y:150,w:790,h:450};
-let sel=new Set(store.get('sel7',SIZES.map(s=>s.id)).filter(id=>SIZES.some(s=>s.id===id)));
-
-/* ---------- daily counter (this site only; Gemini does not expose its quota) ---------- */
-const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
-function quota(){let q=store.get('quota',{day:today(),used:0,limit:20});if(q.day!==today())q={day:today(),used:0,limit:q.limit||20};return q}
-function renderQuota(){const q=quota(),left=Math.max(0,q.limit-q.used);$('qLeft').textContent=left;$('qUsed').textContent=q.used;if(document.activeElement!==$('qLimit'))$('qLimit').value=q.limit;$('quota').classList.toggle('low',left<=3)}
-function bumpQuota(n){const q=quota();q.used=Math.max(0,q.used+n);store.set('quota',q);renderQuota()}
-$('qLimit').addEventListener('change',()=>{const q=quota();q.limit=clamp(Math.round(+$('qLimit').value)||20,1,1000);store.set('quota',q);renderQuota()});
-setInterval(renderQuota,60000);
+const sel=new Set(SIZES.map(s=>s.id));
 
 /* ---------- 01 master ---------- */
 const S={src:null,name:'',sheet:null,result:null,crops:{},cards:new Map()};
@@ -264,9 +235,7 @@ async function loadMaster(f){if(!f)return;try{const im=await loadImg(f);S.src=im
 /* ---------- 02 sizes ---------- */
 function shapeIcon(w,h){const m=18,r=w/h;let a=m,b=m/r;if(b>m){b=m;a=m*r}return `<span class="shape"><i style="width:${Math.max(3,a).toFixed(1)}px;height:${Math.max(3,b).toFixed(1)}px"></i></span>`}
 function buildSizes(){const box=$('sizes');box.innerHTML='';
-  for(const s of SIZES){const row=mk('label','szrow',`<input type="checkbox" ${sel.has(s.id)?'checked':''}>${shapeIcon(s.w,s.h)}<span class="nm">${s.name}</span><span class="px">${s.w}×${s.h}</span>`);
-    row.querySelector('input').onchange=e=>{e.target.checked?sel.add(s.id):sel.delete(s.id);store.set('sel7',[...sel]);$('selCount').textContent=sel.size+' ไซส์';buildSheet();if(S.result)buildCards()};box.appendChild(row)}
-  $('selCount').textContent=sel.size+' ไซส์'}
+  for(const s of SIZES)box.appendChild(mk('div','szrow',`${shapeIcon(s.w,s.h)}<span class="nm">${s.name}</span><span class="px">${s.w}×${s.h}</span>`))}
 
 /* ---------- 03 sheet + prompt ---------- */
 const PROMPT=()=>`Edit this image. It is a layout sheet: the box labeled SOURCE (green border) contains an advertisement. Each magenta frame has a size label.
@@ -295,20 +264,9 @@ function buildSheet(){
     x.fillStyle='#111';x.font='700 24px "IBM Plex Mono",monospace';x.textBaseline='bottom';x.fillText(s.r,f.x,f.y-10);
     x.fillStyle='#bbb';x.font=`700 ${Math.round(Math.min(f.w,f.h)*.3)}px Archivo,Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText(s.r,f.x+f.w/2,f.y+f.h/2);x.textAlign='left';x.textBaseline='top'}
   S.sheet=c;
-  const v=$('tplView');v.width=SW/2;v.height=SH/2;v.getContext('2d').drawImage(c,0,0,SW/2,SH/2);
-  $('sendBtn').disabled=$('dlSheet').disabled=$('autoBtn').disabled=!S.src||!sel.size;
+  $('autoBtn').disabled=!S.src;
 }
-$('prompt').value=PROMPT();
 const sheetBlob=()=>new Promise(r=>S.sheet.toBlob(r,'image/png'));
-$('sendBtn').onclick=async()=>{
-  let ok=false;
-  try{await navigator.clipboard.write([new ClipboardItem({'image/png':sheetBlob()})]);ok=true}catch(e){}
-  window.open('https://gemini.google.com/app','_blank','noopener');
-  $('copyStatus').className='status '+(ok?'ok':'bad');
-  $('copyStatus').textContent=ok?'ก๊อปแผ่นงานแล้ว — วางใน Gemini ด้วย Ctrl+V แล้วกด "ก๊อปคำสั่ง"':'ก๊อปภาพอัตโนมัติไม่ได้ในเบราว์เซอร์นี้ ใช้ "ดาวน์โหลดแผ่นงานแทน" แล้วลากไฟล์ไปที่ Gemini';
-};
-$('dlSheet').onclick=async()=>saveBlob(await sheetBlob(),S.name+'_layout-sheet.png');
-$('copyPrompt').onclick=async()=>{try{await navigator.clipboard.writeText($('prompt').value);$('copyStatus').className='status ok';$('copyStatus').textContent='ก๊อปคำสั่งแล้ว — วางใน Gemini แล้วกดส่ง'}catch(e){$('prompt').select();document.execCommand('copy')}};
 
 /* ---------- 04 result: paste, find frames, cut ---------- */
 async function loadResult(f,opts){
@@ -319,10 +277,9 @@ async function loadResult(f,opts){
     const ar=im.naturalWidth/im.naturalHeight;
     S.result=c;S.crops={};const found=detectFrames(x);
     for(const s of SIZES)S.crops[s.id]=found[s.id];
-    if(!opts||!opts.auto)bumpQuota(1);buildCards();drawSheetView();
-    const miss=SIZES.filter(s=>sel.has(s.id)&&!found[s.id].hit).length;
-    setRes(`ตัดแยก ${sel.size} ไซส์แล้ว`+(Math.abs(ar-16/9)>.04?` · ภาพที่วางไม่ใช่ 16:9 (${im.naturalWidth}×${im.naturalHeight}) กรอบอาจเพี้ยน`:'')+(miss?` · หาเส้นกรอบไม่เจอ ${miss} ไซส์ ใช้ตำแหน่งตามแผ่นงานแทน ตรวจได้ที่ปุ่มเลื่อน`:''),miss||Math.abs(ar-16/9)>.04?'bad':'ok');
-    $('showSheet').hidden=false;$('zipBtn').disabled=false;
+    buildBoard();
+    const miss=SIZES.filter(s=>!found[s.id].hit).length;
+    setRes(miss?`AI วาดกรอบเพี้ยน ${miss} ไซส์ ภาพในช่องนั้นอาจไม่ครบ ลองกด ✨ Click ใหม่`:'',miss?'bad':'');
   }catch(e){setRes(e.message,'bad')}
 }
 function setRes(t,c){const s=$('resStatus');s.textContent=t;s.className='status'+(c?' '+c:'')}
@@ -355,47 +312,36 @@ function detectFrames(x){
 }
 /* crop window with the exact output ratio, centred on the detected frame */
 function fitRatio(r,ar){let w=r.w,h=w/ar;if(h>r.h){h=r.h;w=h*ar}return{x:r.x+(r.w-w)/2,y:r.y+(r.h-h)/2,w,h,hit:r.hit}}
-function drawSheetView(){const c=$('sheetCanvas');c.width=SW/2;c.height=SH/2;const x=c.getContext('2d');x.drawImage(S.result,0,0,SW/2,SH/2);
-  x.lineWidth=2;for(const s of SIZES){if(!sel.has(s.id))continue;const r=S.crops[s.id];x.strokeStyle=r.hit?'#16a34a':'#f25c05';x.setLineDash(r.hit?[]:[6,4]);x.strokeRect(r.x/2,r.y/2,r.w/2,r.h/2)}x.setLineDash([])}
-$('showSheet').onclick=()=>{$('sheetView').hidden=!$('sheetView').hidden};
-
-const ICON_MOVE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M12 2 9 5M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/></svg>';
-const ICON_DL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
-const ICON_MINUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>';
-const ICON_PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
-function dispSize(s){const maxW=Math.min(420,Math.max(200,$('cards').clientWidth-26)),maxH=300,r=s.w/s.h;let w=maxW,h=w/r;if(h>maxH){h=maxH;w=h*r}return{w,h}}
-function buildCards(){const box=$('cards');box.innerHTML='';S.cards.clear();
-  for(const s of SIZES){if(!sel.has(s.id))continue;const d=dispSize(s);
-    const el=mk('article','card',`<div class="pic"><span class="ratio">${s.r}</span><canvas></canvas></div>
-      <div class="cap"><span class="fn">${s.name}</span><span class="dim">${s.w}×${s.h}px</span></div>
-      <div class="cact"><button class="btn icon mv" type="button" title="เลื่อน/ขยายกรอบตัด" aria-label="เลื่อนกรอบตัด">${ICON_MOVE}</button>
-      <button class="btn icon zm" type="button" title="ซูมออก" aria-label="ซูมออก" hidden>${ICON_MINUS}</button><button class="btn icon zp" type="button" title="ซูมเข้า" aria-label="ซูมเข้า" hidden>${ICON_PLUS}</button>
-      <span class="sp"></span><button class="btn icon dl" type="button" title="เซฟไซส์นี้" aria-label="เซฟไซส์นี้">${ICON_DL}</button></div>`);
-    el.style.width=(d.w+26)+'px';const c=el.querySelector('canvas');c.style.width=d.w+'px';c.style.height=d.h+'px';
-    el.querySelector('.mv').onclick=e=>{const on=el.classList.toggle('editing');e.currentTarget.classList.toggle('on',on);el.querySelector('.zm').hidden=el.querySelector('.zp').hidden=!on};
-    const zoom=f=>{const r=S.crops[s.id],cx=r.x+r.w/2,cy=r.y+r.h/2;r.w*=f;r.h*=f;r.x=cx-r.w/2;r.y=cy-r.h/2;drawCard(s);drawSheetView()};
-    el.querySelector('.zm').onclick=()=>zoom(1.06);el.querySelector('.zp').onclick=()=>zoom(1/1.06);
-    el.querySelector('.dl').onclick=async()=>saveBlob(await exportBlob(s),fileName(s));
-    let drag=null;
-    c.addEventListener('pointerdown',e=>{if(!el.classList.contains('editing'))return;drag={x:e.clientX,y:e.clientY};c.setPointerCapture(e.pointerId);e.preventDefault()});
-    c.addEventListener('pointermove',e=>{if(!drag)return;const r=S.crops[s.id],k=r.w/d.w;r.x-=(e.clientX-drag.x)*k;r.y-=(e.clientY-drag.y)*k;drag={x:e.clientX,y:e.clientY};drawCard(s)});
-    const end=()=>{if(drag){drag=null;drawSheetView()}};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
-    S.cards.set(s.id,{el,c,d});box.appendChild(el);drawCard(s)}}
-function drawCard(s){const it=S.cards.get(s.id);if(!it)return;const dpr=Math.min(2,devicePixelRatio||1);it.c.width=Math.round(it.d.w*dpr);it.c.height=Math.round(it.d.h*dpr);
-  const x=it.c.getContext('2d');x.imageSmoothingQuality='high';const r=S.crops[s.id];x.fillStyle='#fff';x.fillRect(0,0,it.c.width,it.c.height);x.drawImage(S.result,r.x,r.y,r.w,r.h,0,0,it.c.width,it.c.height)}
-
-/* ---------- export ---------- */
-const fileName=s=>`${S.name}_${s.w}x${s.h}_${s.r.replace(':','-')}.png`;
-function exportBlob(s){const c=document.createElement('canvas');c.width=s.w;c.height=s.h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.fillStyle='#fff';x.fillRect(0,0,s.w,s.h);
-  const r=S.crops[s.id];x.drawImage(S.result,r.x,r.y,r.w,r.h,0,0,s.w,s.h);return new Promise(res=>c.toBlob(res,'image/png'))}
+/* ---------- one board with all 7 sizes, nothing overlapping ----------
+   left: tall 3:16 column · right: row 16:9 + 1:1 + 9:16, row 4:5 + 2:1, full-width 8:1 strip */
+function boardLayout(){
+  const W=2400,pad=56,gap=44,lab=58,head=120;let t=320,L;
+  for(let k=0;k<12;k++){const R=W-2*pad-t-gap,h1=(R-2*gap)/(16/9+1+9/16),h2=(R-gap)/2.8,h3=R/8,Hc=(lab+h1)+gap+(lab+h2)+gap+(lab+h3);
+    L={W,pad,gap,lab,head,R,h1,h2,h3,Hc,t};t=(Hc-lab)*3/16}
+  const x0=L.pad+L.t+L.gap,y1=L.head,y2=y1+L.lab+L.h1+L.gap,y3=y2+L.lab+L.h2+L.gap,box={};
+  box['3x16']={x:L.pad,y:y1+L.lab,w:L.t,h:L.Hc-L.lab};
+  let x=x0;for(const [id,ar] of [['16x9',16/9],['1x1',1],['9x16',9/16]]){box[id]={x,y:y1+L.lab,w:L.h1*ar,h:L.h1};x+=L.h1*ar+L.gap}
+  x=x0;for(const [id,ar] of [['4x5',.8],['2x1',2]]){box[id]={x,y:y2+L.lab,w:L.h2*ar,h:L.h2};x+=L.h2*ar+L.gap}
+  box['8x1']={x:x0,y:y3+L.lab,w:L.R,h:L.h3};
+  return{W:L.W,H:Math.round(y3+L.lab+L.h3+L.pad),box,lab:L.lab,pad:L.pad}
+}
+function buildBoard(){
+  const B=boardLayout(),c=$('board');c.width=B.W;c.height=B.H;const x=c.getContext('2d');x.imageSmoothingQuality='high';
+  x.fillStyle='#f4f4f6';x.fillRect(0,0,B.W,B.H);
+  x.fillStyle='#18181f';x.textBaseline='middle';x.font='700 44px Archivo,"IBM Plex Sans Thai",sans-serif';x.fillText(S.name,B.pad,62);
+  const nw=x.measureText(S.name).width;x.font='500 26px "IBM Plex Sans Thai",sans-serif';x.fillStyle='#5f5f6e';x.fillText('Layout Guide · 7 ไซส์',B.pad+nw+24,64);
+  for(const s of SIZES){const b=B.box[s.id],r=S.crops[s.id];
+    // label: ratio chip + name + target pixels
+    x.font='600 24px "IBM Plex Mono",monospace';const cw=x.measureText(s.r).width+20,ly=b.y-B.lab/2-2;
+    x.fillStyle='#13233f';x.beginPath();x.roundRect(b.x,ly-17,cw,34,6);x.fill();x.fillStyle='#fff';x.fillText(s.r,b.x+10,ly+1);
+    x.fillStyle='#18181f';x.font='600 25px "IBM Plex Sans Thai",sans-serif';const name=s.name.replace(/\s*\d+:\d+$/,'');x.fillText(name,b.x+cw+12,ly);
+    if(b.w>300){const nw2=x.measureText(name).width;x.fillStyle='#5f5f6e';x.font='400 21px "IBM Plex Mono",monospace';x.fillText(s.w+'×'+s.h,b.x+cw+24+nw2,ly+1)}
+    x.fillStyle='#fff';x.fillRect(b.x,b.y,b.w,b.h);x.drawImage(S.result,r.x,r.y,r.w,r.h,b.x,b.y,b.w,b.h);
+    x.lineWidth=2;x.strokeStyle='#18181f';x.strokeRect(b.x-1,b.y-1,b.w+2,b.h+2)}
+  c.hidden=false;$('boardEmpty').hidden=true;$('saveBtn').disabled=false;
+}
 function saveBlob(b,name){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
-let zipP=null;
-function loadZip(){if(window.JSZip)return Promise.resolve();if(zipP)return zipP;zipP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';s.onload=res;s.onerror=()=>{zipP=null;rej(new Error('โหลดตัวทำ ZIP ไม่สำเร็จ'))};document.head.appendChild(s)});return zipP}
-$('zipBtn').onclick=async()=>{const btn=$('zipBtn'),prog=$('prog'),bar=prog.firstElementChild;btn.disabled=true;prog.hidden=false;
-  try{await loadZip();const zip=new JSZip(),list=SIZES.filter(s=>sel.has(s.id));
-    for(let i=0;i<list.length;i++){zip.file(fileName(list[i]),await exportBlob(list[i]));bar.style.width=((i+1)/list.length*100)+'%'}
-    saveBlob(await zip.generateAsync({type:'blob'}),S.name+'_layout-guide.zip')}
-  catch(e){setRes(e.message,'bad')}finally{btn.disabled=false;setTimeout(()=>{prog.hidden=true;bar.style.width='0'},600)}};
+$('saveBtn').onclick=()=>$('board').toBlob(b=>saveBlob(b,S.name+'_layout-7sizes.png'),'image/png');
 
 
 /* ---------- one-click: Nano Banana through Puter.js (user-pays: each user spends their own free monthly credits) ---------- */
@@ -436,11 +382,11 @@ $('autoBtn').onclick=async()=>{
       const tick=setInterval(()=>{const p=Math.min(.92,.1+(performance.now()-t0)/60000*.8);$('autoProg').firstElementChild.style.width=Math.round(p*100)+'%'},500);
       try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/png',aspect_ratio:'16:9',quality:'2K'});used=model;clearInterval(tick);break}
       catch(e){clearInterval(tick);lastErr=e;const m=String((e&&(e.message||e.error&&e.error.message))||e);
-        if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว รอเดือนถัดไป หรือใช้แบบก๊อป-วางผ่านแอป Gemini ด้านล่าง');
+        if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว รอเดือนถัดไปนะคะ');
         if(/401|unauthori|token|auth/i.test(m)&&SHARED_TOKEN)throw new Error('บัญชีส่วนกลางใช้ไม่ได้ (token หมดอายุ) แจ้งเจ้าของเว็บ');
         if(!/model|not found|unsupported|invalid/i.test(m))throw e}}
     if(!img)throw lastErr||new Error('ไม่ได้ภาพกลับมา');
-    autoStatus('ได้ภาพแล้ว กำลังตัดแยก…',null,.96);
+    autoStatus('ได้ภาพแล้ว กำลังจัดแผ่น…',null,.96);
     let rb;try{rb=await (await fetch(img.src)).blob()}catch(e){rb=await new Promise((res,rej)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);c.toBlob(res,'image/png')};im.onerror=()=>rej(new Error('ดึงภาพผลลัพธ์ไม่ได้'));im.src=img.src})}
     await loadResult(rb,{auto:true});
     const after=await refreshCredits(),sec=((performance.now()-t0)/1000).toFixed(0);
@@ -448,7 +394,7 @@ $('autoBtn').onclick=async()=>{
     autoStatus(`เสร็จใน ${sec} วินาที`+(cost!=null?` · ใช้ไป ${cost.toFixed(1)} เครดิต · เหลือทำได้อีก ~${cost>0?Math.floor(after.left/cost):'?'} ครั้งเดือนนี้`:'')+` · ${used}`,'ok');
     $('results').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){console.error(e);autoStatus('ไม่สำเร็จ: '+((e&&(e.message||e.error&&e.error.message))||e),'bad')}
-  finally{btn.disabled=!S.src||!sel.size}
+  finally{btn.disabled=!S.src}
 };
 
 if(OWNER){const box=mk('div','ownerbox',`<b>โหมดเจ้าของเว็บ</b><span class="hint">ล็อกอินบัญชี Puter ของคุณ แล้วคัดลอก token ส่งให้ผู้พัฒนาใส่ในเว็บ · อย่ากดล็อกเอาต์ Puter ในเบราว์เซอร์นี้หลังคัดลอก</span><div class="btnrow"><button class="btn primary" type="button" id="ownerCopy">ล็อกอิน + คัดลอก token</button><span class="status" id="ownerStatus"></span></div>`);
@@ -457,19 +403,13 @@ if(OWNER){const box=mk('div','ownerbox',`<b>โหมดเจ้าของเ
     const t=puter.authToken||localStorage.getItem('puter.auth.token');if(!t)throw new Error('ไม่พบ token');
     await navigator.clipboard.writeText(t);st.className='status ok';st.textContent='คัดลอกแล้ว ('+t.length+' ตัวอักษร) — วางส่งให้ผู้พัฒนาได้เลย';refreshCredits()}
     catch(e){st.className='status bad';st.textContent='ไม่สำเร็จ: '+(e.message||e)}}}
-if(SHARED_TOKEN&&!OWNER)document.querySelector('.auto .hint').textContent='ใช้ Nano Banana (Gemini) ผ่านบัญชีส่วนกลาง · ไม่ต้องล็อกอิน · เครดิตใช้ร่วมกันทุกคน รีเซ็ตทุกเดือน';
 
-/* ---------- paste / drop wiring ---------- */
-$('paste').onclick=()=>$('resInput').click();$('paste').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('resInput').click()};
-$('resInput').onchange=e=>{loadResult(e.target.files[0]);e.target.value=''};
-document.addEventListener('paste',e=>{const it=[...((e.clipboardData||{}).items||[])].find(i=>i.type.startsWith('image/'));if(!it)return;e.preventDefault();
-  const f=it.getAsFile();if(!S.src)loadMaster(f);else loadResult(f)}); // first paste = master, later pastes = Gemini results
-['dragenter','dragover'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();(S.src?$('paste'):$('drop')).classList.add('over')}));
-['dragleave','drop'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();if(t==='drop'||e.target===document.documentElement){$('paste').classList.remove('over');$('drop').classList.remove('over')}}));
-document.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(!f)return;
-  if(e.target.closest&&e.target.closest('#drop')||!S.src)loadMaster(f);else loadResult(f)});
-let rt=0;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(S.result)buildCards()},200)});
-buildSizes();buildSheet();renderQuota();
+/* ---------- master input: paste / drop ---------- */
+document.addEventListener('paste',e=>{const it=[...((e.clipboardData||{}).items||[])].find(i=>i.type.startsWith('image/'));if(!it)return;e.preventDefault();loadMaster(it.getAsFile())});
+['dragenter','dragover'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over')}));
+['dragleave','drop'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();if(t==='drop'||e.target===document.documentElement)$('drop').classList.remove('over')}));
+document.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadMaster(f)});
+buildSizes();buildSheet();
 })();
 </script>
 </body></html>
