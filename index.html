@@ -50,7 +50,16 @@ header h1{font:700 21px/1.1 var(--font-display);margin:0;letter-spacing:-.01em}
 .quota b{font:700 18px var(--font-display);font-variant-numeric:tabular-nums}
 .quota small{color:var(--muted);font-size:11.5px;line-height:1.25}
 .quota input{width:44px;border:var(--sw) solid var(--line);border-radius:6px;padding:1px 4px;background:var(--panel);font:12px var(--font-data)}
-.quota.low{background:var(--alert-bg)} .quota.low b{color:var(--alert)}
+.quota.low{background:var(--alert-bg)} .quota.low .qcred b{color:var(--alert)}
+.quota{gap:12px}
+.qacc{display:grid;grid-template-columns:auto auto;align-items:center;column-gap:6px;row-gap:0}
+.qacc small{grid-column:1/-1}
+.qname{font:600 13px var(--font-ui);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qacc .btn.ghost{padding:0 4px;font-size:12px}
+.qsep{width:1.5px;align-self:stretch;background:var(--line)}
+.qcred{display:grid;line-height:1.15}
+.qcred b{font:700 20px var(--font-display);font-variant-numeric:tabular-nums}
+.qtot{font:500 13px var(--font-data);color:var(--muted);margin-left:2px}
 
 .btn{border:var(--sw) solid var(--stroke);background:var(--panel);border-radius:8px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;font-weight:500}
 .btn:hover{background:var(--hover)}
@@ -146,9 +155,10 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
   <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1" opacity=".75"/><rect x="5" y="16" width="8" height="5" rx="1" opacity=".55"/></svg></div>
   <div><h1>Layout Guide</h1></div>
   <p class="disclaimer">ใส่ภาพต้นแบบ กดปุ่มเดียว ได้ไกด์จัดวาง 7 ไซส์ในแผ่นเดียว · ใช้ Nano Banana (Gemini)</p>
-  <div class="quota" id="pquota" hidden title="เครดิตฟรีรายเดือนของบัญชี Puter · รีเซ็ตทุกเดือน">
-    <div><b id="pLeft">–</b></div>
-    <small>เครดิตเหลือ<br><span id="pSub">เดือนนี้</span></small>
+  <div class="quota" id="pquota" title="บัญชี Puter ที่ใช้อยู่ และเครดิตฟรีรายเดือน">
+    <div class="qacc"><small>บัญชี</small><span class="qname" id="pUser">ยังไม่ล็อกอิน</span><button class="btn ghost" id="switchAcc" type="button">ล็อกอิน</button></div>
+    <div class="qsep" aria-hidden="true"></div>
+    <div class="qcred"><div><b id="pLeft">–</b><span class="qtot" id="pTotal"></span></div><small id="pSub">เครดิตเหลือ · ต่อเดือน</small></div>
   </div>
 </header>
 
@@ -214,7 +224,7 @@ const SIZES=[
   {id:'16x9', name:'แนวนอน 16:9',  r:'16:9', w:1920,h:1080, f:{x:850, y:150,w:800, h:450}},
   {id:'1x1',  name:'สี่เหลี่ยม 1:1', r:'1:1',  w:1080,h:1080, f:{x:1680,y:150,w:450, h:450}},
   {id:'9x16', name:'แนวตั้ง 9:16',  r:'9:16', w:1080,h:1920, f:{x:30,  y:660,w:371, h:660}},
-  {id:'4x5',  name:'Feed 4:5',     r:'4:5',  w:1080,h:1350, f:{x:431, y:660,w:528, h:660}},
+  {id:'4x3',  name:'จอ 4:3',       r:'4:3',  w:1440,h:1080, f:{x:431, y:660,w:528, h:396}},
   {id:'2x1',  name:'แนวนอนยาว 2:1', r:'2:1',  w:1920,h:960,  f:{x:989, y:660,w:980, h:490}},
   {id:'8x1',  name:'แถบยาว 8:1',    r:'8:1',  w:3840,h:480,  f:{x:989, y:1190,w:1120,h:140}},
   {id:'3x16', name:'เสาสูง 3:16',   r:'3:16', w:720, h:3840, f:{x:2160,y:150,w:210, h:1120}},
@@ -239,10 +249,16 @@ function buildSizes(){const box=$('sizes');box.innerHTML='';
 
 /* ---------- 03 sheet + prompt ---------- */
 const PROMPT=()=>`Edit this image. It is a layout sheet: the box labeled SOURCE (green border) contains an advertisement. Each magenta frame has a size label.
-Fill every magenta frame with the SAME advertisement, re-designed by a professional designer for that frame's shape:
-- keep the logo, the headline and every piece of text with exactly the same wording, spelling and font style
-- reposition and rescale the elements so they fit that shape nicely (logo in a corner, headline and text fully inside, people/product as the hero)
-- extend or crop the background naturally so it fills the whole frame edge to edge, no empty or white areas inside a frame
+Fill every magenta frame with the SAME advertisement, re-designed by a professional designer for that frame's shape.
+STRICT RULES for every frame:
+- Every logo, headline, line of text and the main person/product must be COMPLETELY inside the frame, with a clear empty margin of at least 8% of the frame size on all four sides. Nothing may touch or cross the magenta line. Make elements smaller if needed.
+- Keep the wording, spelling and font style of every text exactly the same. Drop tiny legal/fine-print text if it does not fit.
+- Extend or crop the background so it fills the frame edge to edge, no white or empty areas.
+Layout by shape:
+- 16:9, 4:3, 2:1: logo top corner, headline beside the hero, hero on the other side.
+- 1:1 and 9:16: logo top, headline upper area, hero in the middle/lower area.
+- 3:16 (very tall): stack top to bottom — logo, headline (split into short lines), hero, small text. Keep it narrow enough to fit the width.
+- 8:1 (very wide strip): one row left to right — logo, headline on one line, hero, small logo at the right. Everything vertically centred and well inside the strip height.
 Do not change anything outside the frames: keep the white sheet, the magenta frame lines, the labels and the SOURCE box exactly where they are.
 Return the full sheet at the same 16:9 size.`;
 function wrapText(x,text,maxW){const words=text.split(' '),lines=[];let cur='';for(const w of words){const t=cur?cur+' '+w:w;if(x.measureText(t).width>maxW&&cur){lines.push(cur);cur=w}else cur=t}if(cur)lines.push(cur);return lines}
@@ -313,15 +329,15 @@ function detectFrames(x){
 /* crop window with the exact output ratio, centred on the detected frame */
 function fitRatio(r,ar){let w=r.w,h=w/ar;if(h>r.h){h=r.h;w=h*ar}return{x:r.x+(r.w-w)/2,y:r.y+(r.h-h)/2,w,h,hit:r.hit}}
 /* ---------- one board with all 7 sizes, nothing overlapping ----------
-   left: tall 3:16 column · right: row 16:9 + 1:1 + 9:16, row 4:5 + 2:1, full-width 8:1 strip */
+   left: tall 3:16 column · right: row 16:9 + 1:1 + 9:16, row 4:3 + 2:1, full-width 8:1 strip */
 function boardLayout(){
   const W=2400,pad=56,gap=44,lab=58,head=120;let t=320,L;
-  for(let k=0;k<12;k++){const R=W-2*pad-t-gap,h1=(R-2*gap)/(16/9+1+9/16),h2=(R-gap)/2.8,h3=R/8,Hc=(lab+h1)+gap+(lab+h2)+gap+(lab+h3);
+  for(let k=0;k<12;k++){const R=W-2*pad-t-gap,h1=(R-2*gap)/(16/9+1+9/16),h2=(R-gap)/(4/3+2),h3=R/8,Hc=(lab+h1)+gap+(lab+h2)+gap+(lab+h3);
     L={W,pad,gap,lab,head,R,h1,h2,h3,Hc,t};t=(Hc-lab)*3/16}
   const x0=L.pad+L.t+L.gap,y1=L.head,y2=y1+L.lab+L.h1+L.gap,y3=y2+L.lab+L.h2+L.gap,box={};
   box['3x16']={x:L.pad,y:y1+L.lab,w:L.t,h:L.Hc-L.lab};
   let x=x0;for(const [id,ar] of [['16x9',16/9],['1x1',1],['9x16',9/16]]){box[id]={x,y:y1+L.lab,w:L.h1*ar,h:L.h1};x+=L.h1*ar+L.gap}
-  x=x0;for(const [id,ar] of [['4x5',.8],['2x1',2]]){box[id]={x,y:y2+L.lab,w:L.h2*ar,h:L.h2};x+=L.h2*ar+L.gap}
+  x=x0;for(const [id,ar] of [['4x3',4/3],['2x1',2]]){box[id]={x,y:y2+L.lab,w:L.h2*ar,h:L.h2};x+=L.h2*ar+L.gap}
   box['8x1']={x:x0,y:y3+L.lab,w:L.R,h:L.h3};
   return{W:L.W,H:Math.round(y3+L.lab+L.h3+L.pad),box,lab:L.lab,pad:L.pad}
 }
@@ -357,15 +373,31 @@ loadPuter().then(refreshCredits).catch(()=>{}); // warm up so the sign-in popup 
 function autoStatus(t,cls,p){const s=$('autoStatus');s.textContent=t||'';s.className='status'+(cls?' '+cls:'');const pr=$('autoProg');pr.hidden=p==null;if(p!=null)pr.firstElementChild.style.width=Math.round(p*100)+'%'}
 function pickNum(o,keys){for(const k of keys){const v=k.split('.').reduce((a,b)=>a&&a[b],o);if(typeof v==='number')return v}return null}
 let creditInfo=null;
+function pickStr(o,keys){for(const k of keys){const v=k.split('.').reduce((a,b)=>a&&a[b],o);if(v)return v}return null}
+async function refreshAccount(){
+  const signed=window.puter&&puter.auth.isSignedIn();
+  $('switchAcc').textContent=signed?'เปลี่ยน':'ล็อกอิน';
+  if(!signed){$('pUser').textContent='ยังไม่ล็อกอิน';$('pLeft').textContent='–';$('pTotal').textContent='';return}
+  try{const u=await puter.auth.getUser();$('pUser').textContent=u.username||u.email||'บัญชี Puter';$('pUser').title=u.email||u.username||''}catch(e){}
+}
 async function refreshCredits(){
+  await refreshAccount();
   try{if(!window.puter||!puter.auth.isSignedIn())return null;const u=await puter.auth.getMonthlyUsage();
     const left=pickNum(u,['allowanceInfo.remaining','remaining','allowance.remaining']),total=pickNum(u,['allowanceInfo.monthUsageAllowance','monthUsageAllowance','allowance.total']);
     if(left==null)return null;
     // Puter reports micro-units; the dashboard shows 1,000 credits for the free allowance, so scale to that
     const scale=total?1000/total:1;creditInfo={left:left*scale,total:(total||left)*scale,raw:u};
-    $('pquota').hidden=false;$('pLeft').textContent=Math.floor(creditInfo.left).toLocaleString();$('pSub').textContent='จาก '+Math.round(creditInfo.total).toLocaleString()+' ต่อเดือน';
+    $('pLeft').textContent=Math.floor(creditInfo.left).toLocaleString();$('pTotal').textContent='/'+Math.round(creditInfo.total).toLocaleString();
+    const rs=pickStr(u,['allowanceInfo.resetDate','allowanceInfo.resetsAt','allowanceInfo.periodEnd','resetDate','resetsAt','periodEnd','nextReset']);
+    let txt='เครดิตเหลือ · ต่อเดือน';
+    if(rs){const d=new Date(typeof rs==='number'&&rs<1e12?rs*1000:rs);if(!isNaN(d))txt+=' · รีเซ็ต '+d.toLocaleDateString('th-TH',{day:'numeric',month:'short'})}
+    $('pSub').textContent=txt;
     $('pquota').classList.toggle('low',creditInfo.left<creditInfo.total*.1);return creditInfo}
   catch(e){return null}}
+$('switchAcc').onclick=async()=>{
+  try{await loadPuter();if(puter.auth.isSignedIn()){try{localStorage.removeItem('puter.auth.token')}catch(e){};await puter.auth.signOut()}
+    await puter.auth.signIn();await refreshCredits()}
+  catch(e){console.error(e);refreshAccount()}};
 const MODELS_TRY=['google/gemini-nano-banana-2.1','gemini-3.1-flash-image','google/gemini-2.5-flash-image'];
 $('autoBtn').onclick=async()=>{
   const btn=$('autoBtn');if(!S.src||!S.sheet)return;btn.disabled=true;
@@ -380,7 +412,7 @@ $('autoBtn').onclick=async()=>{
     for(const model of MODELS_TRY){
       autoStatus('Nano Banana กำลังจัดวาง 7 ไซส์… (ประมาณ 20–60 วินาที)',null,.1);
       const tick=setInterval(()=>{const p=Math.min(.92,.1+(performance.now()-t0)/60000*.8);$('autoProg').firstElementChild.style.width=Math.round(p*100)+'%'},500);
-      try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/png',aspect_ratio:'16:9',quality:'2K'});used=model;clearInterval(tick);break}
+      try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/png',aspect_ratio:'16:9',quality:'1K'});used=model;clearInterval(tick);break}
       catch(e){clearInterval(tick);lastErr=e;const m=String((e&&(e.message||e.error&&e.error.message))||e);
         if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว รอเดือนถัดไปนะคะ');
         if(/401|unauthori|token|auth/i.test(m)&&SHARED_TOKEN)throw new Error('บัญชีส่วนกลางใช้ไม่ได้ (token หมดอายุ) แจ้งเจ้าของเว็บ');
