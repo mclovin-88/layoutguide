@@ -283,6 +283,8 @@ function buildSheet(){
   $('autoBtn').disabled=!S.src;
 }
 const sheetBlob=()=>new Promise(r=>S.sheet.toBlob(r,'image/png'));
+/* what we send to the AI: smaller JPEG = fewer input tokens = fewer credits (frames stay easy to read) */
+function sheetBlobSmall(){const c=document.createElement('canvas');c.width=1280;c.height=720;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(S.sheet,0,0,1280,720);return new Promise(r=>c.toBlob(r,'image/jpeg',.88))}
 
 /* ---------- 04 result: paste, find frames, cut ---------- */
 async function loadResult(f,opts){
@@ -407,12 +409,12 @@ $('autoBtn').onclick=async()=>{
     if(!puter.auth.isSignedIn()){if(SHARED_TOKEN&&!OWNER)throw new Error('บัญชีส่วนกลางใช้ไม่ได้ (token หมดอายุ) แจ้งเจ้าของเว็บ');
       autoStatus('ล็อกอินบัญชี Puter ในหน้าต่างที่เด้งขึ้นมา (ครั้งแรกครั้งเดียว)…');await puter.auth.signIn()}
     const before=await refreshCredits();
-    const blob=await sheetBlob(),t0=performance.now();
+    const blob=await sheetBlobSmall(),t0=performance.now();
     let img=null,lastErr=null,used='';
     for(const model of MODELS_TRY){
       autoStatus('Nano Banana กำลังจัดวาง 7 ไซส์… (ประมาณ 20–60 วินาที)',null,.1);
       const tick=setInterval(()=>{const p=Math.min(.92,.1+(performance.now()-t0)/60000*.8);$('autoProg').firstElementChild.style.width=Math.round(p*100)+'%'},500);
-      try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/png',aspect_ratio:'16:9',quality:'1K'});used=model;clearInterval(tick);break}
+      try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/jpeg',aspect_ratio:'16:9',quality:'1K'});used=model;clearInterval(tick);break}
       catch(e){clearInterval(tick);lastErr=e;const m=String((e&&(e.message||e.error&&e.error.message))||e);
         if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว รอเดือนถัดไปนะคะ');
         if(/401|unauthori|token|auth/i.test(m)&&SHARED_TOKEN)throw new Error('บัญชีส่วนกลางใช้ไม่ได้ (token หมดอายุ) แจ้งเจ้าของเว็บ');
