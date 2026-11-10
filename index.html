@@ -130,6 +130,9 @@ textarea.prompt{width:100%;min-height:96px;border:var(--sw) solid var(--line);bo
 .progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
 .sheetview{border:var(--sw) solid var(--line);border-radius:10px;padding:10px}
 .sheetview canvas{display:block;max-width:100%;height:auto}
+.auto{display:grid;gap:8px;padding-bottom:4px}
+.autobar{display:flex;align-items:center;gap:10px}.autobar:has(.status:empty):has(.progress[hidden]){display:none}
+#autoBtn{font-size:15px;padding:13px 12px}
 details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-weight:600}
 </style>
 </head><body>
@@ -138,6 +141,10 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
   <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="2" y="6" width="13" height="8" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1" opacity=".75"/><rect x="5" y="16" width="8" height="5" rx="1" opacity=".55"/></svg></div>
   <div><h1>Layout Guide</h1></div>
   <p class="disclaimer">ไกด์จัดวาง 7 ไซส์จากภาพต้นแบบภาพเดียว ด้วย Gemini (ฟรี) · ใช้ Gemini แค่ 1 ครั้งต่อ 7 ไซส์ · ภาพไม่ถูกส่งไปที่อื่นนอกจาก Gemini ที่คุณเปิดเอง</p>
+  <div class="quota" id="pquota" hidden title="เครดิตฟรีรายเดือนของบัญชี Puter · รีเซ็ตทุกเดือน">
+    <div><b id="pLeft">–</b></div>
+    <small>เครดิต Puter เหลือ<br><span id="pSub">เดือนนี้</span></small>
+  </div>
   <div class="quota" id="quota" title="นับเฉพาะครั้งที่ใช้ผ่านเว็บนี้ · รีเซ็ตเที่ยงคืน">
     <div><b id="qLeft">20</b></div>
     <small>ครั้งที่เหลือวันนี้<br>ใช้ไป <span id="qUsed">0</span> / <input id="qLimit" type="number" min="1" max="1000" value="20" aria-label="โควตาต่อวัน"></small>
@@ -172,7 +179,13 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
   <section class="panel n-pink" aria-label="ส่งไป Gemini">
     <div class="phead"><span class="step">03</span><h2>ส่งไป Gemini</h2></div>
     <div class="pbody">
-      <div class="steps">
+      <div class="auto">
+        <button class="btn primary block" id="autoBtn" type="button" disabled>✨ สร้าง 7 ไซส์อัตโนมัติ (คลิกเดียว)</button>
+        <div class="autobar"><div class="progress" id="autoProg" hidden><i></i></div><span class="status" id="autoStatus" role="status"></span></div>
+        <span class="hint">ใช้ Nano Banana (Gemini) ผ่าน Puter · ครั้งแรกให้ล็อกอินบัญชี Puter ฟรี · ใช้เครดิตฟรีรายเดือนของบัญชีคุณ</span>
+      </div>
+      <details class="more"><summary>หรือทำเองผ่านแอป Gemini (ก๊อป-วาง)</summary>
+      <div class="steps" style="margin-top:10px">
         <div class="srow"><div class="t"><b>ก๊อปแผ่นงาน แล้วเปิด Gemini</b>
           <div class="btnrow"><button class="btn primary" id="sendBtn" type="button" disabled>ก๊อปแผ่นงาน + เปิด Gemini</button>
           <button class="btn small" id="dlSheet" type="button" disabled>ดาวน์โหลดแผ่นงานแทน</button></div>
@@ -183,6 +196,7 @@ details.more>summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-we
         <div class="srow"><div class="t"><b>ได้ภาพแล้ว: คลิกขวาที่ภาพใน Gemini → Copy image แล้วกลับมาวางในช่อง 04</b>
           <span class="hint">ใช้รุ่นที่สร้างภาพได้ (เช่น เลือก "Create image" / Nano Banana) · ถ้าภาพออกมาเป็นสัดส่วนอื่น ให้บอก Gemini ว่า "ให้ผลลัพธ์เป็นภาพ 16:9 ขนาดเท่าแผ่นงาน"</span></div></div>
       </div>
+      </details>
       <details class="more"><summary>ดูแผ่นงานที่จะส่ง</summary><div class="tpl checker" style="margin-top:8px"><canvas id="tplView"></canvas></div></details>
     </div>
   </section>
@@ -281,7 +295,7 @@ function buildSheet(){
     x.fillStyle='#bbb';x.font=`700 ${Math.round(Math.min(f.w,f.h)*.3)}px Archivo,Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText(s.r,f.x+f.w/2,f.y+f.h/2);x.textAlign='left';x.textBaseline='top'}
   S.sheet=c;
   const v=$('tplView');v.width=SW/2;v.height=SH/2;v.getContext('2d').drawImage(c,0,0,SW/2,SH/2);
-  $('sendBtn').disabled=$('dlSheet').disabled=!S.src||!sel.size;
+  $('sendBtn').disabled=$('dlSheet').disabled=$('autoBtn').disabled=!S.src||!sel.size;
 }
 $('prompt').value=PROMPT();
 const sheetBlob=()=>new Promise(r=>S.sheet.toBlob(r,'image/png'));
@@ -296,7 +310,7 @@ $('dlSheet').onclick=async()=>saveBlob(await sheetBlob(),S.name+'_layout-sheet.p
 $('copyPrompt').onclick=async()=>{try{await navigator.clipboard.writeText($('prompt').value);$('copyStatus').className='status ok';$('copyStatus').textContent='ก๊อปคำสั่งแล้ว — วางใน Gemini แล้วกดส่ง'}catch(e){$('prompt').select();document.execCommand('copy')}};
 
 /* ---------- 04 result: paste, find frames, cut ---------- */
-async function loadResult(f){
+async function loadResult(f,opts){
   if(!f)return;if(!sel.size){setRes('ยังไม่ได้เลือกไซส์','bad');return}
   try{const im=await loadImg(f);
     // bring the result onto sheet coordinates (Gemini may return a different pixel size)
@@ -304,7 +318,7 @@ async function loadResult(f){
     const ar=im.naturalWidth/im.naturalHeight;
     S.result=c;S.crops={};const found=detectFrames(x);
     for(const s of SIZES)S.crops[s.id]=found[s.id];
-    bumpQuota(1);buildCards();drawSheetView();
+    if(!opts||!opts.auto)bumpQuota(1);buildCards();drawSheetView();
     const miss=SIZES.filter(s=>sel.has(s.id)&&!found[s.id].hit).length;
     setRes(`ตัดแยก ${sel.size} ไซส์แล้ว`+(Math.abs(ar-16/9)>.04?` · ภาพที่วางไม่ใช่ 16:9 (${im.naturalWidth}×${im.naturalHeight}) กรอบอาจเพี้ยน`:'')+(miss?` · หาเส้นกรอบไม่เจอ ${miss} ไซส์ ใช้ตำแหน่งตามแผ่นงานแทน ตรวจได้ที่ปุ่มเลื่อน`:''),miss||Math.abs(ar-16/9)>.04?'bad':'ok');
     $('showSheet').hidden=false;$('zipBtn').disabled=false;
@@ -381,6 +395,52 @@ $('zipBtn').onclick=async()=>{const btn=$('zipBtn'),prog=$('prog'),bar=prog.firs
     for(let i=0;i<list.length;i++){zip.file(fileName(list[i]),await exportBlob(list[i]));bar.style.width=((i+1)/list.length*100)+'%'}
     saveBlob(await zip.generateAsync({type:'blob'}),S.name+'_layout-guide.zip')}
   catch(e){setRes(e.message,'bad')}finally{btn.disabled=false;setTimeout(()=>{prog.hidden=true;bar.style.width='0'},600)}};
+
+
+/* ---------- one-click: Nano Banana through Puter.js (user-pays: each user spends their own free monthly credits) ---------- */
+let puterP=null;
+function loadPuter(){if(window.puter)return Promise.resolve();if(puterP)return puterP;
+  puterP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://js.puter.com/v2/';s.onload=()=>res();s.onerror=()=>{puterP=null;rej(new Error('โหลด Puter ไม่สำเร็จ'))};document.head.appendChild(s)});return puterP}
+loadPuter().then(refreshCredits).catch(()=>{}); // warm up so the sign-in popup can open straight from the click
+function autoStatus(t,cls,p){const s=$('autoStatus');s.textContent=t||'';s.className='status'+(cls?' '+cls:'');const pr=$('autoProg');pr.hidden=p==null;if(p!=null)pr.firstElementChild.style.width=Math.round(p*100)+'%'}
+function pickNum(o,keys){for(const k of keys){const v=k.split('.').reduce((a,b)=>a&&a[b],o);if(typeof v==='number')return v}return null}
+let creditInfo=null;
+async function refreshCredits(){
+  try{if(!window.puter||!puter.auth.isSignedIn())return null;const u=await puter.auth.getMonthlyUsage();
+    const left=pickNum(u,['allowanceInfo.remaining','remaining','allowance.remaining']),total=pickNum(u,['allowanceInfo.monthUsageAllowance','monthUsageAllowance','allowance.total']);
+    if(left==null)return null;
+    // Puter reports micro-units; the dashboard shows 1,000 credits for the free allowance, so scale to that
+    const scale=total?1000/total:1;creditInfo={left:left*scale,total:(total||left)*scale,raw:u};
+    $('pquota').hidden=false;$('pLeft').textContent=Math.floor(creditInfo.left).toLocaleString();$('pSub').textContent='จาก '+Math.round(creditInfo.total).toLocaleString()+' ต่อเดือน';
+    $('pquota').classList.toggle('low',creditInfo.left<creditInfo.total*.1);return creditInfo}
+  catch(e){return null}}
+const MODELS_TRY=['google/gemini-nano-banana-2.1','gemini-3.1-flash-image','google/gemini-2.5-flash-image'];
+$('autoBtn').onclick=async()=>{
+  const btn=$('autoBtn');if(!S.src||!S.sheet)return;btn.disabled=true;
+  try{
+    if(!window.puter){autoStatus('กำลังโหลด Puter…');await loadPuter()}
+    if(!puter.auth.isSignedIn()){autoStatus('ล็อกอินบัญชี Puter ในหน้าต่างที่เด้งขึ้นมา (ครั้งแรกครั้งเดียว)…');await puter.auth.signIn()}
+    const before=await refreshCredits();
+    const blob=await sheetBlob(),t0=performance.now();
+    let img=null,lastErr=null,used='';
+    for(const model of MODELS_TRY){
+      autoStatus('Nano Banana กำลังจัดวาง 7 ไซส์… (ประมาณ 20–60 วินาที)',null,.1);
+      const tick=setInterval(()=>{const p=Math.min(.92,.1+(performance.now()-t0)/60000*.8);$('autoProg').firstElementChild.style.width=Math.round(p*100)+'%'},500);
+      try{img=await puter.ai.txt2img(PROMPT(),{model,input_image:blob,input_image_mime_type:'image/png',aspect_ratio:'16:9',quality:'2K'});used=model;clearInterval(tick);break}
+      catch(e){clearInterval(tick);lastErr=e;const m=String((e&&(e.message||e.error&&e.error.message))||e);
+        if(/insufficient|402|funds|credit/i.test(m))throw new Error('เครดิตฟรีเดือนนี้หมดแล้ว');
+        if(!/model|not found|unsupported|invalid/i.test(m))throw e}}
+    if(!img)throw lastErr||new Error('ไม่ได้ภาพกลับมา');
+    autoStatus('ได้ภาพแล้ว กำลังตัดแยก…',null,.96);
+    let rb;try{rb=await (await fetch(img.src)).blob()}catch(e){rb=await new Promise((res,rej)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);c.toBlob(res,'image/png')};im.onerror=()=>rej(new Error('ดึงภาพผลลัพธ์ไม่ได้'));im.src=img.src})}
+    await loadResult(rb,{auto:true});
+    const after=await refreshCredits(),sec=((performance.now()-t0)/1000).toFixed(0);
+    const cost=before&&after?Math.max(0,before.left-after.left):null;
+    autoStatus(`เสร็จใน ${sec} วินาที`+(cost!=null?` · ใช้ไป ${cost.toFixed(1)} เครดิต · เหลือทำได้อีก ~${cost>0?Math.floor(after.left/cost):'?'} ครั้งเดือนนี้`:'')+` · ${used}`,'ok');
+    $('results').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){console.error(e);autoStatus('ไม่สำเร็จ: '+((e&&(e.message||e.error&&e.error.message))||e),'bad')}
+  finally{btn.disabled=!S.src||!sel.size}
+};
 
 /* ---------- paste / drop wiring ---------- */
 $('paste').onclick=()=>$('resInput').click();$('paste').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('resInput').click()};
